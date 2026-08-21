@@ -20,7 +20,7 @@ export default function Lookbook() {
   ];
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 md:py-28">
+    <section ref={ref} className="relative overflow-hidden bg-lila/10 py-20 md:py-28">
       <FloralAccent flor="lavanda" className="right-8 top-16 hidden w-14 md:block" rotate={12} float />
       <FloralAccent flor="tulipanRosa" className="bottom-24 right-1/4 hidden w-14 lg:block" rotate={-8} opacity={90} />
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 md:grid-cols-2 md:px-8">

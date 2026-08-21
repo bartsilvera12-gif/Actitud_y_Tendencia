@@ -19,7 +19,7 @@ export default function ProductCard({ product, onOpen }: Props) {
   return (
     <SpotlightCard
       className={cn(
-        "group relative rounded-[1.6rem] border border-crema-200 bg-gradient-to-br to-crema p-3 shadow-[0_18px_50px_-30px_rgba(94,138,111,0.5)] ring-1 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_70px_-30px_rgba(94,138,111,0.55)]",
+        "group relative rounded-[1.6rem] border border-white/60 p-3 shadow-[0_18px_50px_-30px_rgba(94,138,111,0.5)] ring-1 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_70px_-30px_rgba(94,138,111,0.55)]",
         t.tint,
         t.ring
       )}

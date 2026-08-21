@@ -7,10 +7,10 @@ import { waGeneral } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { label: "Colección", href: "#coleccion" },
-  { label: "Nuevos ingresos", href: "#nuevos" },
-  { label: "Nosotras", href: "#manifiesto" },
-  { label: "Instagram", href: "#instagram" },
+  { label: "Colección", href: "#coleccion", pill: "bg-salvia/25 hover:bg-salvia/45", dot: "bg-salvia-600" },
+  { label: "Nuevos ingresos", href: "#nuevos", pill: "bg-rosa/30 hover:bg-rosa/50", dot: "bg-rosa" },
+  { label: "Nosotras", href: "#manifiesto", pill: "bg-lila/30 hover:bg-lila/50", dot: "bg-lila" },
+  { label: "Instagram", href: "#instagram", pill: "bg-amarillo/35 hover:bg-amarillo/55", dot: "bg-amarillo" },
 ];
 
 export default function Navbar() {
@@ -42,15 +42,18 @@ export default function Navbar() {
           />
         </a>
 
-        <ul className="hidden items-center gap-9 lg:flex">
+        <ul className="hidden items-center gap-2 lg:flex">
           {links.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className="group relative text-[13px] font-medium tracking-wide text-tinta/80 transition-colors hover:text-salvia-700"
+                className={cn(
+                  "flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-medium tracking-wide text-tinta transition-all duration-300 hover:-translate-y-0.5",
+                  l.pill
+                )}
               >
+                <span className={cn("h-1.5 w-1.5 rounded-full", l.dot)} />
                 {l.label}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-salvia-600 transition-all duration-300 group-hover:w-full" />
               </a>
             </li>
           ))}
@@ -113,8 +116,9 @@ export default function Navbar() {
                     <a
                       href={l.href}
                       onClick={() => setOpen(false)}
-                      className="block border-b border-salvia/15 py-4 font-display text-2xl text-tinta transition-colors hover:text-salvia-700"
+                      className="flex items-center gap-3 border-b border-salvia/15 py-4 font-display text-2xl text-tinta transition-colors hover:text-salvia-700"
                     >
+                      <span className={cn("h-2.5 w-2.5 rounded-full", l.dot)} />
                       {l.label}
                     </a>
                   </li>
