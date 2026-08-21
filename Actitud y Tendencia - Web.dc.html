@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Actitud &amp; Tendencia | Boutique de Moda Femenina</title>
+<meta name="description" content="Descubrí las últimas tendencias en moda femenina en Actitud &amp; Tendencia. Prendas seleccionadas para expresar tu estilo, actitud y personalidad." />
+<meta property="og:title" content="Actitud &amp; Tendencia | Boutique de Moda Femenina" />
+<meta property="og:description" content="Prendas seleccionadas para expresar tu estilo, actitud y personalidad. Consultá por WhatsApp." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&amp;display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#FFFFFF;color:#252525;font-family:Montserrat,"Helvetica Neue",Helvetica,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:#252525;text-decoration:none}
+  a:hover{color:#7EA68C}
+  h1,h2,h3,p{margin:0}
+  ::selection{background:#CDE9E4;color:#252525}
+  :focus-visible{outline:2px solid #7EA68C;outline-offset:3px}
+  @keyframes atMarquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+  @keyframes atFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-14px,0)}}
+  @keyframes atFadeUp{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:none}}
+</style>
+<script src="./image-slot.js"></script>
+<script>
+(function(){
+  if (window.__atInit) return; window.__atInit = true;
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function motion(){ if (RM) return 'off'; return document.documentElement.getAttribute('data-motion') || 'full'; }
+  function desk(){ return window.innerWidth >= 900; }
+
+  function show(el){
+    var m = motion(), d = parseInt(el.getAttribute('data-delay') || '0', 10);
+    if (m === 'off'){ el.style.transition = 'none'; d = 0; }
+    else if (m === 'subtle'){ d = Math.round(d * 0.4); }
+    el.style.transitionDelay = d + 'ms';
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+    if (el.hasAttribute('data-mask')) el.style.clipPath = 'inset(0 0 0 0)';
+  }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting){ show(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0.04, rootMargin: '0px 0px -48px 0px' });
+
+  function group(el){
+    var on = function(state){
+      el.querySelectorAll('[data-h-zoom]').forEach(function(n){ n.style.transform = state ? 'scale(1.045)' : 'none'; });
+      el.querySelectorAll('[data-h-fade]').forEach(function(n){ n.style.opacity = state ? '1' : '0'; });
+      el.querySelectorAll('[data-h-scrim]').forEach(function(n){ n.style.opacity = state ? '1' : '0'; });
+      el.querySelectorAll('[data-h-rise]').forEach(function(n){ n.style.transform = state ? 'translate3d(0,0,0)' : 'translate3d(0,14px,0)'; n.style.opacity = state ? '1' : '0'; });
+      el.querySelectorAll('[data-h-shift]').forEach(function(n){ n.style.transform = state ? 'translate3d(0,-6px,0)' : 'none'; });
+      el.querySelectorAll('[data-h-arrow]').forEach(function(n){ n.style.transform = state ? 'translate3d(6px,0,0)' : 'none'; });
+    };
+    el.addEventListener('mouseenter', function(){ on(true); });
+    el.addEventListener('mouseleave', function(){ on(false); });
+    el.addEventListener('focusin', function(){ on(true); });
+    el.addEventListener('focusout', function(){ on(false); });
+  }
+
+  function drag(el){
+    var down = false, sx = 0, sl = 0;
+    el.addEventListener('pointerdown', function(e){
+      if (e.pointerType === 'touch') return;
+      down = true; sx = e.clientX; sl = el.scrollLeft; el.style.cursor = 'grabbing';
+    });
+    window.addEventListener('pointerup', function(){ down = false; el.style.cursor = ''; });
+    el.addEventListener('pointermove', function(e){
+      if (!down) return; e.preventDefault(); el.scrollLeft = sl - (e.clientX - sx);
+    });
+  }
+
+  function pill(el){
+    var lbl = el.querySelector('[data-wa-label]');
+    if (!lbl) return;
+    el.addEventListener('mouseenter', function(){ lbl.textContent = 'Escribinos por WhatsApp'; });
+    el.addEventListener('mouseleave', function(){ lbl.textContent = '¿Te ayudamos?'; });
+  }
+
+  function magnetic(el){
+    if (!desk()) return;
+    el.addEventListener('mousemove', function(e){
+      if (motion() !== 'full') return;
+      var r = el.getBoundingClientRect();
+      el.style.transform = 'translate3d(' + ((e.clientX - r.left - r.width / 2) * 0.12).toFixed(2) + 'px,' + ((e.clientY - r.top - r.height / 2) * 0.18).toFixed(2) + 'px,0)';
+    });
+    el.addEventListener('mouseleave', function(){ el.style.transform = 'none'; });
+  }
+
+  function wa(el){
+    var name = el.getAttribute('data-wa'), price = el.getAttribute('data-price');
+    var t = name
+      ? 'Hola Actitud & Tendencia 💚 Me interesa este producto: ' + name + (price ? ' (' + price + ')' : '') + '. ¿Podrían darme más información? ' + location.href
+      : 'Hola Actitud & Tendencia 💚 Estuve viendo la web y quiero que me ayuden a encontrar mi próximo look.';
+    el.setAttribute('href', 'https://wa.me/595983460912?text=' + encodeURIComponent(t));
+  }
+
+  function once(sel, flag, fn){
+    document.querySelectorAll(sel).forEach(function(el){
+      if (el.getAttribute(flag) !== null) return;
+      el.setAttribute(flag, ''); fn(el);
+    });
+  }
+  function scan(){
+    once('[data-reveal]', 'data-obs', function(el){ io.observe(el); });
+    once('[data-hover-group]', 'data-hgi', group);
+    once('[data-drag-scroll]', 'data-dsi', drag);
+    once('[data-wa-pill]', 'data-wpi', pill);
+    once('[data-magnetic]', 'data-mgi', magnetic);
+    once('[data-wa-link]', 'data-wli', wa);
+  }
+  scan();
+  new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true });
+
+  var header = null, ticking = false;
+  function frame(){
+    ticking = false;
+    var y = window.scrollY || 0;
+    header = header || document.querySelector('[data-header]');
+    if (header){
+      var on = y > 40;
+      header.style.background = on ? 'rgba(255,255,255,0.82)' : 'transparent';
+      header.style.backdropFilter = on ? 'saturate(140%) blur(14px)' : 'none';
+      header.style.webkitBackdropFilter = on ? 'saturate(140%) blur(14px)' : 'none';
+      header.style.boxShadow = on ? '0 1px 0 rgba(37,37,37,0.06)' : 'none';
+      header.style.height = on ? '68px' : '86px';
+    }
+    if (motion() === 'full' && desk()){
+      document.querySelectorAll('[data-parallax]').forEach(function(el){
+        var f = parseFloat(el.getAttribute('data-parallax')) || 0;
+        var r = el.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > window.innerHeight + 200) return;
+        var c = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
+        el.style.transform = 'translate3d(0,' + (-c * f * 100).toFixed(2) + 'px,0)';
+      });
+    }
+  }
+  window.addEventListener('scroll', function(){ if (!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  requestAnimationFrame(frame);
+
+  window.addEventListener('mousemove', function(e){
+    if (motion() !== 'full' || !desk()) return;
+    var nx = (e.clientX / window.innerWidth - 0.5), ny = (e.clientY / window.innerHeight - 0.5);
+    document.querySelectorAll('[data-tilt]').forEach(function(el){
+      var f = parseFloat(el.getAttribute('data-tilt')) || 6;
+      el.style.transform = 'translate3d(' + (nx * f).toFixed(2) + 'px,' + (ny * f).toFixed(2) + 'px,0)';
+    });
+  }, { passive: true });
+})();
+</script>
+</helmet>
+
+<div style="position:relative;width:100%;overflow:hidden">
+
+  <header data-header role="banner" style="position:fixed;top:0;left:0;right:0;z-index:90;height:86px;display:flex;align-items:center;transition:height .5s cubic-bezier(.16,1,.3,1),background .5s ease,box-shadow .5s ease,backdrop-filter .5s ease">
+    <div style="width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px);display:flex;align-items:center;justify-content:space-between;gap:24px">
+
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <nav aria-label="Navegación principal" style="display:flex;align-items:center;gap:clamp(14px,2vw,30px);flex:1 1 0;min-width:0">
+          <a href="#inicio" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding-bottom:3px;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:0 1px;transition:background-size .45s cubic-bezier(.16,1,.3,1),color .3s ease" style-hover="background-size:100% 1px">Inicio</a>
+          <a href="#coleccion" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding-bottom:3px;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:0 1px;transition:background-size .45s cubic-bezier(.16,1,.3,1),color .3s ease" style-hover="background-size:100% 1px">Nueva Colección</a>
+          <a href="#productos" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding-bottom:3px;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:0 1px;transition:background-size .45s cubic-bezier(.16,1,.3,1),color .3s ease" style-hover="background-size:100% 1px">Productos</a>
+          <a href="#categorias" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding-bottom:3px;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:0 1px;transition:background-size .45s cubic-bezier(.16,1,.3,1),color .3s ease" style-hover="background-size:100% 1px">Categorías</a>
+        </nav>
+      </sc-if>
+
+      <a href="#inicio" aria-label="Actitud y Tendencia — inicio" style="flex:0 0 auto;display:block">
+        <image-slot id="at-logo" shape="rect" fit="contain" style="width:clamp(132px,17vw,186px);height:48px" placeholder="logotipo A&amp;T"></image-slot>
+      </a>
+
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:clamp(10px,1.6vw,18px);flex:1 1 0;min-width:0">
+        <button type="button" aria-label="Buscar" onClick="{{ toggleSearch }}" style="appearance:none;border:0;background:transparent;padding:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px">
+          <span style="display:block;width:15px;height:15px;border:1.4px solid #252525;border-radius:50%;position:relative">
+            <span style="position:absolute;right:-6px;bottom:-5px;width:8px;height:1.4px;background:#252525;transform:rotate(45deg)"></span>
+          </span>
+        </button>
+
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <a href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" aria-label="Instagram de Actitud y Tendencia" style="display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;transition:transform .4s cubic-bezier(.16,1,.3,1)" style-hover="transform:translateY(-2px)">
+            <span style="display:block;width:18px;height:18px;border:1.4px solid #252525;border-radius:5px;position:relative">
+              <span style="position:absolute;top:3.3px;left:3.3px;width:8px;height:8px;border:1.4px solid #252525;border-radius:50%"></span>
+              <span style="position:absolute;top:2.6px;right:2.6px;width:2px;height:2px;background:#252525;border-radius:50%"></span>
+            </span>
+          </a>
+        </sc-if>
+
+        <a data-wa-link data-magnetic href="https://wa.me/595983460912" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;background:#A9C6B2;color:#20301f;padding:12px 20px;border-radius:999px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;transition:transform .45s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#96b8a1;color:#20301f">
+          <span style="display:block;width:13px;height:13px;background:#20301f;border-radius:50% 50% 4px 50%"></span>
+          WhatsApp
+        </a>
+
+        <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+          <button type="button" aria-label="Abrir menú" onClick="{{ openMenu }}" style="appearance:none;border:0;background:transparent;padding:10px;cursor:pointer;display:flex;flex-direction:column;gap:5px;align-items:flex-end;min-width:44px;min-height:44px;justify-content:center">
+            <span style="display:block;width:22px;height:1.4px;background:#252525"></span>
+            <span style="display:block;width:15px;height:1.4px;background:#252525"></span>
+          </button>
+        </sc-if>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Buscar productos" style="position:fixed;inset:0;z-index:120;background:rgba(250,249,246,0.97);backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;animation:atFadeUp .5s cubic-bezier(.16,1,.3,1) both">
+      <button type="button" aria-label="Cerrar búsqueda" onClick="{{ toggleSearch }}" style="position:absolute;top:26px;right:26px;appearance:none;border:0;background:transparent;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:12px">Cerrar</button>
+      <div style="width:100%;max-width:620px;display:flex;flex-direction:column;gap:26px">
+        <span style="font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:#6A6A6A">Buscar</span>
+        <input type="search" autofocus="" placeholder="Vestidos, conjuntos, blusas…" style="width:100%;border:0;border-bottom:1px solid #A9C6B2;background:transparent;padding:14px 2px;font-family:Montserrat,sans-serif;font-size:clamp(22px,4vw,34px);font-weight:300;color:#252525;outline:none" />
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <a href="#coleccion" onClick="{{ toggleSearch }}" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;border:1px solid #E4E1DA;border-radius:999px;padding:10px 16px;transition:background .35s ease" style-hover="background:#CDE9E4">Nuevos ingresos</a>
+          <a href="#categorias" onClick="{{ toggleSearch }}" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;border:1px solid #E4E1DA;border-radius:999px;padding:10px 16px;transition:background .35s ease" style-hover="background:#CDE9E4">Vestidos</a>
+          <a href="#productos" onClick="{{ toggleSearch }}" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;border:1px solid #E4E1DA;border-radius:999px;padding:10px 16px;transition:background .35s ease" style-hover="background:#CDE9E4">Favoritos</a>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Menú" style="position:fixed;inset:0;z-index:130;background:#FAF9F6;display:flex;flex-direction:column;padding:26px;animation:atFadeUp .45s cubic-bezier(.16,1,.3,1) both">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <image-slot id="at-logo-menu" shape="rect" fit="contain" style="width:150px;height:44px" placeholder="logotipo A&amp;T"></image-slot>
+        <button type="button" aria-label="Cerrar menú" onClick="{{ closeMenu }}" style="appearance:none;border:0;background:transparent;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;padding:12px">Cerrar</button>
+      </div>
+      <nav aria-label="Navegación móvil" style="margin-top:44px;display:flex;flex-direction:column;gap:4px">
+        <a href="#inicio" onClick="{{ closeMenu }}" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:300;padding:12px 0;border-bottom:1px solid #EDEAE3">Inicio</a>
+        <a href="#coleccion" onClick="{{ closeMenu }}" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:300;padding:12px 0;border-bottom:1px solid #EDEAE3">Nueva Colección</a>
+        <a href="#productos" onClick="{{ closeMenu }}" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:300;padding:12px 0;border-bottom:1px solid #EDEAE3">Productos</a>
+        <a href="#categorias" onClick="{{ closeMenu }}" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:300;padding:12px 0;border-bottom:1px solid #EDEAE3">Categorías</a>
+        <a href="#nosotras" onClick="{{ closeMenu }}" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:300;padding:12px 0;border-bottom:1px solid #EDEAE3">Sobre Nosotros</a>
+        <a href="#contacto" onClick="{{ closeMenu }}" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:300;padding:12px 0;border-bottom:1px solid #EDEAE3">Contacto</a>
+      </nav>
+      <div style="margin-top:auto;display:flex;flex-direction:column;gap:12px">
+        <a data-wa-link href="https://wa.me/595983460912" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#A9C6B2;color:#20301f;padding:18px;border-radius:999px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600">
+          <span style="display:block;width:14px;height:14px;background:#20301f;border-radius:50% 50% 4px 50%"></span>
+          Comprar por WhatsApp
+        </a>
+        <a href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="text-align:center;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6A6A6A;padding:10px">@actitud_tendencia.sdg</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- HERO -->
+  <section id="inicio" style="position:relative;background:#FAF9F6;padding:clamp(112px,13vw,150px) 0 clamp(56px,7vw,96px);overflow:hidden">
+    <div aria-hidden="true" data-tilt="14" style="position:absolute;top:-90px;right:-60px;width:min(46vw,520px);height:min(46vw,520px);border-radius:50%;background:radial-gradient(circle at 40% 40%,#CDE9E4 0%,rgba(205,233,228,0) 70%);filter:blur(4px);transition:transform 1.2s cubic-bezier(.16,1,.3,1)"></div>
+    <div aria-hidden="true" data-tilt="-9" style="position:absolute;bottom:-120px;left:-80px;width:min(40vw,440px);height:min(40vw,440px);border-radius:50%;background:radial-gradient(circle at 60% 50%,#D7C6E8 0%,rgba(215,198,232,0) 72%);filter:blur(6px);transition:transform 1.2s cubic-bezier(.16,1,.3,1)"></div>
+
+    <div style="position:relative;width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px);display:flex;flex-wrap:wrap;align-items:center;gap:clamp(30px,5vw,72px)">
+      <div style="flex:1 1 380px;min-width:min(100%,320px);display:flex;flex-direction:column;gap:clamp(18px,2.4vw,30px)">
+        <div data-reveal data-delay="80" style="display:flex;align-items:center;gap:12px;opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)">
+          <span style="display:block;width:34px;height:1px;background:#A9C6B2"></span>
+          <span style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#6A6A6A">Nueva colección</span>
+        </div>
+
+        <h1 style="font-weight:300;font-size:clamp(2.7rem,6.2vw,5.2rem);line-height:1.02;letter-spacing:-0.02em">
+          <span data-reveal data-delay="140" style="display:block;overflow:hidden">
+            <span style="display:inline-block">Vestí tu</span>
+          </span>
+          <span data-reveal data-delay="240" style="display:block;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);font-weight:500">actitud.</span>
+          <span data-reveal data-delay="380" style="display:block;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;color:#7EA68C;font-size:1.06em">Marcá tendencia.</span>
+        </h1>
+
+        <p data-reveal data-delay="520" style="max-width:44ch;font-size:clamp(14.5px,1.15vw,16.5px);line-height:1.75;color:#6A6A6A;text-wrap:pretty;opacity:0;transform:translateY(20px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">Descubrí piezas elegidas para acompañar tu estilo y expresar quién sos.</p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">
+          <a data-reveal data-delay="620" data-magnetic href="#coleccion" style="opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),background .4s ease;display:inline-flex;align-items:center;gap:12px;background:#A9C6B2;color:#20301f;padding:19px 32px;border-radius:999px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600" style-hover="background:#96b8a1;color:#20301f">
+            Descubrir colección
+            <span data-h-arrow style="transition:transform .4s ease">→</span>
+          </a>
+          <a data-reveal data-delay="720" data-wa-link href="https://wa.me/595983460912" target="_blank" rel="noopener" style="opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),border-color .4s ease,background .4s ease;display:inline-flex;align-items:center;gap:10px;border:1px solid #D8D4CB;padding:19px 30px;border-radius:999px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500" style-hover="background:#FFFFFF;border-color:#A9C6B2">
+            <span style="display:block;width:13px;height:13px;background:#A9C6B2;border-radius:50% 50% 4px 50%"></span>
+            Comprar por WhatsApp
+          </a>
+        </div>
+
+        <div data-reveal data-delay="820" style="display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,40px);margin-top:clamp(10px,2vw,24px);padding-top:22px;border-top:1px solid #EDEAE3;opacity:0;transform:translateY(16px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600">Nuevos ingresos</span><span style="font-size:12px;color:#6A6A6A">Cada semana</span></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600">Envíos</span><span style="font-size:12px;color:#6A6A6A">A todo el país</span></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600">Atención</span><span style="font-size:12px;color:#6A6A6A">Personalizada por WhatsApp</span></div>
+        </div>
+      </div>
+
+      <div style="flex:1 1 380px;min-width:min(100%,300px);position:relative">
+        <div data-reveal data-mask data-delay="120" style="position:relative;aspect-ratio:4/5;width:100%;overflow:hidden;border-radius:2px;clip-path:inset(0 0 100% 0);opacity:0;transform:none;transition:clip-path 1.4s cubic-bezier(.16,1,.3,1),opacity 1.1s ease">
+          <div data-tilt="-10" style="position:absolute;inset:-3%;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
+            <image-slot id="hero-main" shape="rect" placeholder="foto editorial · modelo look completo"></image-slot>
+          </div>
+        </div>
+        <div data-reveal data-delay="900" style="position:absolute;left:clamp(-10px,-1.4vw,0px);bottom:clamp(-18px,-2vw,-10px);background:#FFFFFF;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 12px 40px rgba(37,37,37,0.07);opacity:0;transform:translateY(20px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">
+          <span style="display:block;width:8px;height:8px;border-radius:50%;background:#F6B6C6"></span>
+          <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:19px;color:#252525">Temporada primavera</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div aria-hidden="true" style="background:#A9C6B2;color:#20301f;padding:15px 0;overflow:hidden;white-space:nowrap">
+    <div style="display:inline-flex;gap:0;animation:atMarquee 34s linear infinite;will-change:transform">
+      <span style="display:inline-flex;gap:44px;padding-right:44px;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:600"><span>Nuevos ingresos cada semana</span><span>·</span><span>Envíos a todo el país</span><span>·</span><span>Consultá disponibilidad por WhatsApp</span><span>·</span><span>Reservá el tuyo</span><span>·</span></span>
+      <span style="display:inline-flex;gap:44px;padding-right:44px;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:600"><span>Nuevos ingresos cada semana</span><span>·</span><span>Envíos a todo el país</span><span>·</span><span>Consultá disponibilidad por WhatsApp</span><span>·</span><span>Reservá el tuyo</span><span>·</span></span>
+    </div>
+  </div>
+
+  <!-- CATEGORIAS -->
+  <section id="categorias" style="padding:clamp(64px,9vw,124px) 0 clamp(56px,7vw,100px);background:#FFFFFF">
+    <div style="width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px">
+      <div data-reveal style="display:flex;flex-direction:column;gap:14px;opacity:0;transform:translateY(24px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+        <span style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#6A6A6A">Categorías</span>
+        <h2 style="font-weight:300;font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.06;letter-spacing:-0.02em">Encontrá tu <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;color:#7EA68C">estilo</span></h2>
+      </div>
+      <p data-reveal data-delay="120" style="max-width:34ch;font-size:14px;line-height:1.7;color:#6A6A6A;opacity:0;transform:translateY(24px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">Deslizá para recorrer la boutique. Cada categoría con selección propia y talles disponibles.</p>
+    </div>
+
+    <div data-drag-scroll data-reveal data-delay="180" style="margin-top:clamp(28px,4vw,52px);display:flex;gap:clamp(12px,1.6vw,22px);overflow-x:auto;scroll-snap-type:x mandatory;padding:4px clamp(18px,4vw,56px) 18px;cursor:grab;scrollbar-width:thin;opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">
+
+      <a data-hover-group href="#coleccion" style="flex:0 0 auto;scroll-snap-align:start;width:clamp(230px,26vw,330px);position:relative;aspect-ratio:3/4.4;overflow:hidden;background:#FAF9F6">
+        <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="cat-vestidos" shape="rect" placeholder="foto categoría · vestidos"></image-slot></div>
+        <div data-h-scrim aria-hidden="true" style="position:absolute;inset:0;opacity:0;background:linear-gradient(to top,rgba(37,37,37,0.42),rgba(37,37,37,0) 62%);transition:opacity .7s ease;pointer-events:none"></div>
+        <div data-h-shift style="position:absolute;left:0;right:0;bottom:0;padding:22px;display:flex;flex-direction:column;gap:6px;transition:transform .7s cubic-bezier(.16,1,.3,1);pointer-events:none">
+          <span style="font-size:clamp(19px,1.8vw,25px);font-weight:500;color:#FFFFFF;text-shadow:0 1px 14px rgba(37,37,37,0.28)">Vestidos</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.86)">Livianos, midi y de fiesta</span>
+          <span data-h-rise style="display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#FFFFFF;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Ver categoría <span>→</span></span>
+        </div>
+      </a>
+
+      <a data-hover-group href="#coleccion" style="flex:0 0 auto;scroll-snap-align:start;width:clamp(230px,26vw,330px);position:relative;aspect-ratio:3/4.4;overflow:hidden;background:#FAF9F6">
+        <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="cat-conjuntos" shape="rect" placeholder="foto categoría · conjuntos"></image-slot></div>
+        <div data-h-scrim aria-hidden="true" style="position:absolute;inset:0;opacity:0;background:linear-gradient(to top,rgba(37,37,37,0.42),rgba(37,37,37,0) 62%);transition:opacity .7s ease;pointer-events:none"></div>
+        <div data-h-shift style="position:absolute;left:0;right:0;bottom:0;padding:22px;display:flex;flex-direction:column;gap:6px;transition:transform .7s cubic-bezier(.16,1,.3,1);pointer-events:none">
+          <span style="font-size:clamp(19px,1.8vw,25px);font-weight:500;color:#FFFFFF;text-shadow:0 1px 14px rgba(37,37,37,0.28)">Conjuntos</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.86)">Dos piezas listas para usar</span>
+          <span data-h-rise style="display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#FFFFFF;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Ver categoría <span>→</span></span>
+        </div>
+      </a>
+
+      <a data-hover-group href="#coleccion" style="flex:0 0 auto;scroll-snap-align:start;width:clamp(230px,26vw,330px);position:relative;aspect-ratio:3/4.4;overflow:hidden;background:#FAF9F6">
+        <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="cat-blusas" shape="rect" placeholder="foto categoría · blusas"></image-slot></div>
+        <div data-h-scrim aria-hidden="true" style="position:absolute;inset:0;opacity:0;background:linear-gradient(to top,rgba(37,37,37,0.42),rgba(37,37,37,0) 62%);transition:opacity .7s ease;pointer-events:none"></div>
+        <div data-h-shift style="position:absolute;left:0;right:0;bottom:0;padding:22px;display:flex;flex-direction:column;gap:6px;transition:transform .7s cubic-bezier(.16,1,.3,1);pointer-events:none">
+          <span style="font-size:clamp(19px,1.8vw,25px);font-weight:500;color:#FFFFFF;text-shadow:0 1px 14px rgba(37,37,37,0.28)">Blusas</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.86)">Frescas para todos los días</span>
+          <span data-h-rise style="display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#FFFFFF;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Ver categoría <span>→</span></span>
+        </div>
+      </a>
+
+      <a data-hover-group href="#coleccion" style="flex:0 0 auto;scroll-snap-align:start;width:clamp(230px,26vw,330px);position:relative;aspect-ratio:3/4.4;overflow:hidden;background:#FAF9F6">
+        <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="cat-pantalones" shape="rect" placeholder="foto categoría · pantalones"></image-slot></div>
+        <div data-h-scrim aria-hidden="true" style="position:absolute;inset:0;opacity:0;background:linear-gradient(to top,rgba(37,37,37,0.42),rgba(37,37,37,0) 62%);transition:opacity .7s ease;pointer-events:none"></div>
+        <div data-h-shift style="position:absolute;left:0;right:0;bottom:0;padding:22px;display:flex;flex-direction:column;gap:6px;transition:transform .7s cubic-bezier(.16,1,.3,1);pointer-events:none">
+          <span style="font-size:clamp(19px,1.8vw,25px);font-weight:500;color:#FFFFFF;text-shadow:0 1px 14px rgba(37,37,37,0.28)">Pantalones</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.86)">Calce cómodo, caída perfecta</span>
+          <span data-h-rise style="display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#FFFFFF;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Ver categoría <span>→</span></span>
+        </div>
+      </a>
+
+      <a data-hover-group href="#coleccion" style="flex:0 0 auto;scroll-snap-align:start;width:clamp(230px,26vw,330px);position:relative;aspect-ratio:3/4.4;overflow:hidden;background:#FAF9F6">
+        <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="cat-accesorios" shape="rect" placeholder="foto categoría · accesorios"></image-slot></div>
+        <div data-h-scrim aria-hidden="true" style="position:absolute;inset:0;opacity:0;background:linear-gradient(to top,rgba(37,37,37,0.42),rgba(37,37,37,0) 62%);transition:opacity .7s ease;pointer-events:none"></div>
+        <div data-h-shift style="position:absolute;left:0;right:0;bottom:0;padding:22px;display:flex;flex-direction:column;gap:6px;transition:transform .7s cubic-bezier(.16,1,.3,1);pointer-events:none">
+          <span style="font-size:clamp(19px,1.8vw,25px);font-weight:500;color:#FFFFFF;text-shadow:0 1px 14px rgba(37,37,37,0.28)">Accesorios</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.86)">El detalle que completa</span>
+          <span data-h-rise style="display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#FFFFFF;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Ver categoría <span>→</span></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- NUEVA COLECCION -->
+  <section id="coleccion" style="padding:clamp(56px,7vw,104px) 0;background:#FAF9F6">
+    <div style="width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px">
+        <div data-reveal style="display:flex;flex-direction:column;gap:14px;opacity:0;transform:translateY(24px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+          <span style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#6A6A6A">Recién llegado</span>
+          <h2 style="font-weight:300;font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.06;letter-spacing:-0.02em">Nueva <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;color:#7EA68C">colección</span></h2>
+        </div>
+        <a data-hover-group href="#productos" style="display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;padding-bottom:6px;border-bottom:1px solid #A9C6B2">Ver todo <span data-h-arrow style="transition:transform .4s ease">→</span></a>
+      </div>
+
+      <div id="productos" style="margin-top:clamp(28px,4vw,54px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,44%),1fr));gap:clamp(14px,2vw,32px) clamp(12px,1.6vw,26px)">
+
+        <article data-hover-group data-reveal data-delay="0" style="opacity:0;transform:translateY(28px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+          <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FFFFFF">
+            <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="p1a" shape="rect" placeholder="Vestido Aurora · foto 1"></image-slot></div>
+            <div data-h-fade style="position:absolute;inset:0;opacity:0;transition:opacity .8s ease"><image-slot id="p1b" shape="rect" placeholder="Vestido Aurora · foto 2"></image-slot></div>
+            <span data-accent style="position:absolute;top:14px;left:14px;background:#F6B6C6;color:#252525;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;padding:7px 11px;border-radius:999px">Nuevo</span>
+            <a data-h-rise data-wa-link data-wa="Vestido Aurora" data-price="Gs. 285.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(255,255,255,0.94);backdrop-filter:blur(6px);padding:15px;border-radius:999px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#A9C6B2">
+              <span style="display:block;width:12px;height:12px;background:#7EA68C;border-radius:50% 50% 3px 50%"></span> Consultar
+            </a>
+          </div>
+          <div style="padding:16px 2px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6A6A6A">Vestidos</span>
+              <h3 data-h-shift style="font-size:16px;font-weight:500;transition:transform .6s cubic-bezier(.16,1,.3,1)">Vestido Aurora</h3>
+            </div>
+            <span style="font-size:15px;font-weight:500;white-space:nowrap">Gs. 285.000</span>
+          </div>
+        </article>
+
+        <article data-hover-group data-reveal data-delay="90" style="opacity:0;transform:translateY(28px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+          <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FFFFFF">
+            <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="p2a" shape="rect" placeholder="Conjunto Sauce · foto 1"></image-slot></div>
+            <div data-h-fade style="position:absolute;inset:0;opacity:0;transition:opacity .8s ease"><image-slot id="p2b" shape="rect" placeholder="Conjunto Sauce · foto 2"></image-slot></div>
+            <a data-h-rise data-wa-link data-wa="Conjunto Sauce" data-price="Gs. 320.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(255,255,255,0.94);backdrop-filter:blur(6px);padding:15px;border-radius:999px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#A9C6B2">
+              <span style="display:block;width:12px;height:12px;background:#7EA68C;border-radius:50% 50% 3px 50%"></span> Consultar
+            </a>
+          </div>
+          <div style="padding:16px 2px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6A6A6A">Conjuntos</span>
+              <h3 data-h-shift style="font-size:16px;font-weight:500;transition:transform .6s cubic-bezier(.16,1,.3,1)">Conjunto Sauce</h3>
+            </div>
+            <span style="font-size:15px;font-weight:500;white-space:nowrap">Gs. 320.000</span>
+          </div>
+        </article>
+
+        <article data-hover-group data-reveal data-delay="180" style="opacity:0;transform:translateY(28px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+          <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FFFFFF">
+            <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="p3a" shape="rect" placeholder="Blusa Bruma · foto 1"></image-slot></div>
+            <div data-h-fade style="position:absolute;inset:0;opacity:0;transition:opacity .8s ease"><image-slot id="p3b" shape="rect" placeholder="Blusa Bruma · foto 2"></image-slot></div>
+            <span data-accent style="position:absolute;top:14px;left:14px;background:#F6B6C6;color:#252525;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;padding:7px 11px;border-radius:999px">Nuevo</span>
+            <a data-h-rise data-wa-link data-wa="Blusa Bruma" data-price="Gs. 165.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(255,255,255,0.94);backdrop-filter:blur(6px);padding:15px;border-radius:999px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#A9C6B2">
+              <span style="display:block;width:12px;height:12px;background:#7EA68C;border-radius:50% 50% 3px 50%"></span> Consultar
+            </a>
+          </div>
+          <div style="padding:16px 2px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6A6A6A">Blusas</span>
+              <h3 data-h-shift style="font-size:16px;font-weight:500;transition:transform .6s cubic-bezier(.16,1,.3,1)">Blusa Bruma</h3>
+            </div>
+            <span style="font-size:15px;font-weight:500;white-space:nowrap">Gs. 165.000</span>
+          </div>
+        </article>
+
+        <article data-hover-group data-reveal data-delay="0" style="opacity:0;transform:translateY(28px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+          <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FFFFFF">
+            <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="p4a" shape="rect" placeholder="Pantalón Alba · foto 1"></image-slot></div>
+            <div data-h-fade style="position:absolute;inset:0;opacity:0;transition:opacity .8s ease"><image-slot id="p4b" shape="rect" placeholder="Pantalón Alba · foto 2"></image-slot></div>
+            <a data-h-rise data-wa-link data-wa="Pantalón Alba" data-price="Gs. 240.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(255,255,255,0.94);backdrop-filter:blur(6px);padding:15px;border-radius:999px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#A9C6B2">
+              <span style="display:block;width:12px;height:12px;background:#7EA68C;border-radius:50% 50% 3px 50%"></span> Consultar
+            </a>
+          </div>
+          <div style="padding:16px 2px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6A6A6A">Pantalones</span>
+              <h3 data-h-shift style="font-size:16px;font-weight:500;transition:transform .6s cubic-bezier(.16,1,.3,1)">Pantalón Alba</h3>
+            </div>
+            <span style="font-size:15px;font-weight:500;white-space:nowrap">Gs. 240.000</span>
+          </div>
+        </article>
+
+        <article data-hover-group data-reveal data-delay="90" style="opacity:0;transform:translateY(28px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+          <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FFFFFF">
+            <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="p5a" shape="rect" placeholder="Vestido Jazmín · foto 1"></image-slot></div>
+            <div data-h-fade style="position:absolute;inset:0;opacity:0;transition:opacity .8s ease"><image-slot id="p5b" shape="rect" placeholder="Vestido Jazmín · foto 2"></image-slot></div>
+            <a data-h-rise data-wa-link data-wa="Vestido Jazmín" data-price="Gs. 310.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(255,255,255,0.94);backdrop-filter:blur(6px);padding:15px;border-radius:999px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#A9C6B2">
+              <span style="display:block;width:12px;height:12px;background:#7EA68C;border-radius:50% 50% 3px 50%"></span> Consultar
+            </a>
+          </div>
+          <div style="padding:16px 2px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6A6A6A">Vestidos</span>
+              <h3 data-h-shift style="font-size:16px;font-weight:500;transition:transform .6s cubic-bezier(.16,1,.3,1)">Vestido Jazmín</h3>
+            </div>
+            <span style="font-size:15px;font-weight:500;white-space:nowrap">Gs. 310.000</span>
+          </div>
+        </article>
+
+        <article data-hover-group data-reveal data-delay="180" style="opacity:0;transform:translateY(28px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+          <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FFFFFF">
+            <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="p6a" shape="rect" placeholder="Cárdigan Neblina · foto 1"></image-slot></div>
+            <div data-h-fade style="position:absolute;inset:0;opacity:0;transition:opacity .8s ease"><image-slot id="p6b" shape="rect" placeholder="Cárdigan Neblina · foto 2"></image-slot></div>
+            <a data-h-rise data-wa-link data-wa="Cárdigan Neblina" data-price="Gs. 270.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(255,255,255,0.94);backdrop-filter:blur(6px);padding:15px;border-radius:999px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#A9C6B2">
+              <span style="display:block;width:12px;height:12px;background:#7EA68C;border-radius:50% 50% 3px 50%"></span> Consultar
+            </a>
+          </div>
+          <div style="padding:16px 2px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6A6A6A">Abrigos</span>
+              <h3 data-h-shift style="font-size:16px;font-weight:500;transition:transform .6s cubic-bezier(.16,1,.3,1)">Cárdigan Neblina</h3>
+            </div>
+            <span style="font-size:15px;font-weight:500;white-space:nowrap">Gs. 270.000</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITORIAL -->
+  <section id="nosotras" style="padding:clamp(64px,9vw,124px) 0;background:#FFFFFF;position:relative;overflow:hidden">
+    <div aria-hidden="true" style="position:absolute;top:12%;right:6%;width:min(28vw,300px);height:min(28vw,300px);border-radius:50%;background:radial-gradient(circle at 50% 50%,#F8D873 0%,rgba(248,216,115,0) 70%);opacity:.5;filter:blur(8px);animation:atFloat 12s ease-in-out infinite"></div>
+    <div style="position:relative;width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px);display:flex;flex-wrap:wrap;align-items:center;gap:clamp(28px,5vw,80px)">
+      <div data-reveal data-mask style="flex:1 1 400px;min-width:min(100%,300px);position:relative;aspect-ratio:4/4.6;overflow:hidden;clip-path:inset(0 0 100% 0);transition:clip-path 1.4s cubic-bezier(.16,1,.3,1)">
+        <div data-parallax="0.06" style="position:absolute;inset:-4%"><image-slot id="editorial-main" shape="rect" placeholder="foto editorial · detalle de tela / look"></image-slot></div>
+      </div>
+      <div style="flex:1 1 360px;min-width:min(100%,300px);display:flex;flex-direction:column;gap:clamp(16px,2vw,26px)">
+        <span data-reveal data-delay="80" style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#6A6A6A;opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)">Actitud &amp; Tendencia</span>
+        <h2 data-reveal data-delay="180" style="font-weight:300;font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.12;letter-spacing:-0.02em;text-wrap:pretty;opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">No seguimos tendencias. Las hacemos parte de nuestra <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;color:#7EA68C">actitud.</span></h2>
+        <p data-reveal data-delay="280" style="max-width:48ch;font-size:clamp(14.5px,1.1vw,16px);line-height:1.8;color:#6A6A6A;text-wrap:pretty;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">Una selección pensada para mujeres que disfrutan vestirse, sentirse bien y expresar su personalidad en cada detalle.</p>
+        <div data-reveal data-delay="380" style="display:flex;gap:clamp(20px,3vw,44px);padding:22px 0;border-top:1px solid #EDEAE3;border-bottom:1px solid #EDEAE3;opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;line-height:1;color:#7EA68C">+300</span><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6A6A6A">Clientas felices</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;line-height:1;color:#7EA68C">48h</span><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6A6A6A">Envío al interior</span></div>
+        </div>
+        <a data-reveal data-delay="460" data-hover-group href="#contacto" style="align-self:flex-start;display:inline-flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;padding:17px 28px;border:1px solid #252525;border-radius:999px;opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),background .4s ease,color .4s ease" style-hover="background:#252525;color:#FFFFFF">Conocé nuestra historia <span data-h-arrow style="transition:transform .4s ease">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNER -->
+  <section style="position:relative;height:min(84vh,720px);min-height:420px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#252525">
+    <div data-parallax="0.14" style="position:absolute;inset:-8% 0" aria-hidden="false">
+      <image-slot id="banner-main" shape="rect" placeholder="foto editorial full-width · movimiento"></image-slot>
+    </div>
+    <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(37,37,37,0.28),rgba(37,37,37,0.42));pointer-events:none"></div>
+    <div style="position:relative;text-align:center;padding:0 clamp(20px,5vw,60px);display:flex;flex-direction:column;align-items:center;gap:22px;pointer-events:none">
+      <h2 data-reveal style="color:#FFFFFF;font-weight:300;font-size:clamp(2.1rem,5.2vw,4.2rem);line-height:1.05;letter-spacing:-0.02em;max-width:20ch;text-wrap:pretty;opacity:0;transform:translateY(30px);transition:opacity 1.1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1)">Tu estilo habla <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic">antes que vos.</span></h2>
+      <p data-reveal data-delay="180" style="color:rgba(255,255,255,0.88);font-size:15px;line-height:1.7;max-width:40ch;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">Encontrá prendas que representen tu esencia.</p>
+      <a data-reveal data-delay="300" data-hover-group data-magnetic href="#coleccion" style="pointer-events:auto;display:inline-flex;align-items:center;gap:12px;background:#FFFFFF;color:#252525;padding:19px 32px;border-radius:999px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#A9C6B2">Ver colección <span data-h-arrow style="transition:transform .4s ease">→</span></a>
+    </div>
+  </section>
+
+  <!-- FAVORITOS -->
+  <section style="padding:clamp(64px,9vw,120px) 0;background:#FFFFFF">
+    <div style="width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px">
+      <div data-reveal style="display:flex;flex-direction:column;gap:14px;opacity:0;transform:translateY(24px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+        <span style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#6A6A6A">Más consultados</span>
+        <h2 style="font-weight:300;font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.06;letter-spacing:-0.02em">Favoritos de la <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;color:#7EA68C">semana</span></h2>
+      </div>
+      <span data-reveal data-delay="120" style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#6A6A6A;opacity:0;transform:translateY(20px);transition:opacity .9s ease,transform .9s ease">Arrastrá para ver más →</span>
+    </div>
+
+    <div data-drag-scroll data-reveal data-delay="160" style="margin-top:clamp(26px,3.6vw,46px);display:flex;gap:clamp(12px,1.6vw,22px);overflow-x:auto;scroll-snap-type:x proximity;padding:4px clamp(18px,4vw,56px) 20px;cursor:grab;opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">
+
+      <article data-hover-group style="flex:0 0 auto;scroll-snap-align:start;width:clamp(200px,22vw,280px)">
+        <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FAF9F6">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="f1" shape="rect" placeholder="Top Azahar"></image-slot></div>
+          <a data-h-rise data-wa-link data-wa="Top Azahar" data-price="Gs. 145.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:12px;right:12px;bottom:12px;text-align:center;background:rgba(255,255,255,0.94);padding:13px;border-radius:999px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Consultar</a>
+        </div>
+        <div style="padding:14px 2px 0;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:15px;font-weight:500">Top Azahar</h3><span style="font-size:14px;color:#6A6A6A">Gs. 145.000</span></div>
+      </article>
+
+      <article data-hover-group style="flex:0 0 auto;scroll-snap-align:start;width:clamp(200px,22vw,280px)">
+        <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FAF9F6">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="f2" shape="rect" placeholder="Falda Duna"></image-slot></div>
+          <a data-h-rise data-wa-link data-wa="Falda Duna" data-price="Gs. 190.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:12px;right:12px;bottom:12px;text-align:center;background:rgba(255,255,255,0.94);padding:13px;border-radius:999px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Consultar</a>
+        </div>
+        <div style="padding:14px 2px 0;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:15px;font-weight:500">Falda Duna</h3><span style="font-size:14px;color:#6A6A6A">Gs. 190.000</span></div>
+      </article>
+
+      <article data-hover-group style="flex:0 0 auto;scroll-snap-align:start;width:clamp(200px,22vw,280px)">
+        <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FAF9F6">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="f3" shape="rect" placeholder="Blazer Serena"></image-slot></div>
+          <a data-h-rise data-wa-link data-wa="Blazer Serena" data-price="Gs. 395.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:12px;right:12px;bottom:12px;text-align:center;background:rgba(255,255,255,0.94);padding:13px;border-radius:999px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Consultar</a>
+        </div>
+        <div style="padding:14px 2px 0;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:15px;font-weight:500">Blazer Serena</h3><span style="font-size:14px;color:#6A6A6A">Gs. 395.000</span></div>
+      </article>
+
+      <article data-hover-group style="flex:0 0 auto;scroll-snap-align:start;width:clamp(200px,22vw,280px)">
+        <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FAF9F6">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="f4" shape="rect" placeholder="Vestido Malva"></image-slot></div>
+          <a data-h-rise data-wa-link data-wa="Vestido Malva" data-price="Gs. 298.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:12px;right:12px;bottom:12px;text-align:center;background:rgba(255,255,255,0.94);padding:13px;border-radius:999px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Consultar</a>
+        </div>
+        <div style="padding:14px 2px 0;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:15px;font-weight:500">Vestido Malva</h3><span style="font-size:14px;color:#6A6A6A">Gs. 298.000</span></div>
+      </article>
+
+      <article data-hover-group style="flex:0 0 auto;scroll-snap-align:start;width:clamp(200px,22vw,280px)">
+        <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FAF9F6">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="f5" shape="rect" placeholder="Camisa Nube"></image-slot></div>
+          <a data-h-rise data-wa-link data-wa="Camisa Nube" data-price="Gs. 175.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:12px;right:12px;bottom:12px;text-align:center;background:rgba(255,255,255,0.94);padding:13px;border-radius:999px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Consultar</a>
+        </div>
+        <div style="padding:14px 2px 0;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:15px;font-weight:500">Camisa Nube</h3><span style="font-size:14px;color:#6A6A6A">Gs. 175.000</span></div>
+      </article>
+
+      <article data-hover-group style="flex:0 0 auto;scroll-snap-align:start;width:clamp(200px,22vw,280px)">
+        <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#FAF9F6">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.3s cubic-bezier(.16,1,.3,1)"><image-slot id="f6" shape="rect" placeholder="Bolso Trenza"></image-slot></div>
+          <a data-h-rise data-wa-link data-wa="Bolso Trenza" data-price="Gs. 210.000" href="https://wa.me/595983460912" target="_blank" rel="noopener" style="position:absolute;left:12px;right:12px;bottom:12px;text-align:center;background:rgba(255,255,255,0.94);padding:13px;border-radius:999px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)">Consultar</a>
+        </div>
+        <div style="padding:14px 2px 0;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:15px;font-weight:500">Bolso Trenza</h3><span style="font-size:14px;color:#6A6A6A">Gs. 210.000</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM -->
+  <section style="padding:clamp(56px,7vw,104px) 0;background:#FAF9F6">
+    <div style="width:100%;max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px)">
+      <div data-reveal style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;opacity:0;transform:translateY(24px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1)">
+        <span style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#6A6A6A">Comunidad</span>
+        <h2 style="font-weight:300;font-size:clamp(1.9rem,3.8vw,3rem);line-height:1.08;letter-spacing:-0.02em">Seguinos en <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;color:#7EA68C">Instagram</span></h2>
+        <p style="font-size:14.5px;color:#6A6A6A;max-width:42ch;line-height:1.7">Inspiración, nuevos ingresos y looks todos los días.</p>
+      </div>
+
+      <div style="margin-top:clamp(26px,3.6vw,46px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,30%),1fr));gap:clamp(8px,1vw,14px)">
+        <a data-hover-group data-reveal data-delay="0" href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="position:relative;aspect-ratio:1;overflow:hidden;background:#FFFFFF;opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.16,1,.3,1)"><image-slot id="ig1" shape="rect" placeholder="post IG 1"></image-slot></div>
+          <span data-h-scrim style="position:absolute;inset:0;opacity:0;background:rgba(37,37,37,0.3);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;pointer-events:none"><span style="display:block;width:22px;height:22px;border:1.6px solid #FFFFFF;border-radius:6px;position:relative"><span style="position:absolute;top:4px;left:4px;width:10px;height:10px;border:1.6px solid #FFFFFF;border-radius:50%"></span></span></span>
+        </a>
+        <a data-hover-group data-reveal data-delay="70" href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="position:relative;aspect-ratio:1;overflow:hidden;background:#FFFFFF;opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.16,1,.3,1)"><image-slot id="ig2" shape="rect" placeholder="post IG 2"></image-slot></div>
+          <span data-h-scrim style="position:absolute;inset:0;opacity:0;background:rgba(37,37,37,0.3);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;pointer-events:none"><span style="display:block;width:22px;height:22px;border:1.6px solid #FFFFFF;border-radius:6px;position:relative"><span style="position:absolute;top:4px;left:4px;width:10px;height:10px;border:1.6px solid #FFFFFF;border-radius:50%"></span></span></span>
+        </a>
+        <a data-hover-group data-reveal data-delay="140" href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="position:relative;aspect-ratio:1;overflow:hidden;background:#FFFFFF;opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.16,1,.3,1)"><image-slot id="ig3" shape="rect" placeholder="post IG 3"></image-slot></div>
+          <span data-h-scrim style="position:absolute;inset:0;opacity:0;background:rgba(37,37,37,0.3);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;pointer-events:none"><span style="display:block;width:22px;height:22px;border:1.6px solid #FFFFFF;border-radius:6px;position:relative"><span style="position:absolute;top:4px;left:4px;width:10px;height:10px;border:1.6px solid #FFFFFF;border-radius:50%"></span></span></span>
+        </a>
+        <a data-hover-group data-reveal data-delay="210" href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="position:relative;aspect-ratio:1;overflow:hidden;background:#FFFFFF;opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.16,1,.3,1)"><image-slot id="ig4" shape="rect" placeholder="post IG 4"></image-slot></div>
+          <span data-h-scrim style="position:absolute;inset:0;opacity:0;background:rgba(37,37,37,0.3);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;pointer-events:none"><span style="display:block;width:22px;height:22px;border:1.6px solid #FFFFFF;border-radius:6px;position:relative"><span style="position:absolute;top:4px;left:4px;width:10px;height:10px;border:1.6px solid #FFFFFF;border-radius:50%"></span></span></span>
+        </a>
+        <a data-hover-group data-reveal data-delay="280" href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="position:relative;aspect-ratio:1;overflow:hidden;background:#FFFFFF;opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.16,1,.3,1)"><image-slot id="ig5" shape="rect" placeholder="post IG 5"></image-slot></div>
+          <span data-h-scrim style="position:absolute;inset:0;opacity:0;background:rgba(37,37,37,0.3);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;pointer-events:none"><span style="display:block;width:22px;height:22px;border:1.6px solid #FFFFFF;border-radius:6px;position:relative"><span style="position:absolute;top:4px;left:4px;width:10px;height:10px;border:1.6px solid #FFFFFF;border-radius:50%"></span></span></span>
+        </a>
+        <a data-hover-group data-reveal data-delay="350" href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="position:relative;aspect-ratio:1;overflow:hidden;background:#FFFFFF;opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)">
+          <div data-h-zoom style="position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.16,1,.3,1)"><image-slot id="ig6" shape="rect" placeholder="post IG 6"></image-slot></div>
+          <span data-h-scrim style="position:absolute;inset:0;opacity:0;background:rgba(37,37,37,0.3);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;pointer-events:none"><span style="display:block;width:22px;height:22px;border:1.6px solid #FFFFFF;border-radius:6px;position:relative"><span style="position:absolute;top:4px;left:4px;width:10px;height:10px;border:1.6px solid #FFFFFF;border-radius:50%"></span></span></span>
+        </a>
+      </div>
+
+      <div style="display:flex;justify-content:center;margin-top:clamp(24px,3vw,40px)">
+        <a data-hover-group data-magnetic href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;border:1px solid #D8D4CB;padding:17px 28px;border-radius:999px;font-size:11px;letter-spacing:.16em;font-weight:500;transition:background .4s ease,border-color .4s ease,transform .5s cubic-bezier(.16,1,.3,1)" style-hover="background:#FFFFFF;border-color:#A9C6B2">
+          <span style="display:block;width:16px;height:16px;border:1.4px solid #252525;border-radius:5px;position:relative"><span style="position:absolute;top:2.8px;left:2.8px;width:7px;height:7px;border:1.4px solid #252525;border-radius:50%"></span></span>
+          @actitud_tendencia.sdg
+          <span data-h-arrow style="transition:transform .4s ease">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contacto" style="background:#A9C6B2;padding:clamp(64px,9vw,120px) clamp(18px,4vw,56px);position:relative;overflow:hidden">
+    <div aria-hidden="true" style="position:absolute;top:-70px;left:-40px;width:min(38vw,340px);height:min(38vw,340px);border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.5) 0%,rgba(255,255,255,0) 70%);animation:atFloat 14s ease-in-out infinite"></div>
+    <div style="position:relative;max-width:900px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(16px,2vw,26px)">
+      <h2 data-reveal style="color:#1e2e1e;font-weight:300;font-size:clamp(2rem,4.6vw,3.6rem);line-height:1.06;letter-spacing:-0.02em;opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">¿Viste algo que te <span style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic">encantó?</span></h2>
+      <p data-reveal data-delay="140" style="color:#31462f;font-size:clamp(15px,1.4vw,18px);line-height:1.7;max-width:46ch;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)">Escribinos y te ayudamos a encontrar tu próximo look.</p>
+      <a data-reveal data-delay="260" data-hover-group data-magnetic data-wa-link href="https://wa.me/595983460912" target="_blank" rel="noopener" style="margin-top:8px;display:inline-flex;align-items:center;gap:14px;background:#1e2e1e;color:#FFFFFF;padding:23px 40px;border-radius:999px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1),background .4s ease" style-hover="background:#FFFFFF;color:#1e2e1e">
+        <span style="display:block;width:16px;height:16px;background:currentColor;border-radius:50% 50% 4px 50%"></span>
+        Hablar por WhatsApp
+      </a>
+      <span data-reveal data-delay="340" style="font-size:12px;letter-spacing:.14em;color:#31462f;opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease">+595 983 460 912 · Respuesta rápida</span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#FAF9F6;padding:clamp(48px,6vw,84px) clamp(18px,4vw,56px) 30px">
+    <div style="max-width:1440px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,64px);justify-content:space-between">
+      <div style="flex:1 1 260px;min-width:min(100%,240px);display:flex;flex-direction:column;gap:16px">
+        <image-slot id="at-logo-footer" shape="rect" fit="contain" style="width:180px;height:52px" placeholder="logotipo A&amp;T"></image-slot>
+        <p style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:20px;color:#252525;max-width:22ch">Moda, actitud y estilo para cada momento.</p>
+      </div>
+      <div style="flex:0 1 auto;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#6A6A6A">Navegación</span>
+        <a href="#inicio" style="font-size:14px;color:#252525">Inicio</a>
+        <a href="#coleccion" style="font-size:14px;color:#252525">Colección</a>
+        <a href="#productos" style="font-size:14px;color:#252525">Productos</a>
+        <a href="#nosotras" style="font-size:14px;color:#252525">Nosotros</a>
+      </div>
+      <div style="flex:0 1 auto;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#6A6A6A">Ayuda</span>
+        <a data-wa-link href="https://wa.me/595983460912" target="_blank" rel="noopener" style="font-size:14px;color:#252525">Cómo comprar</a>
+        <a data-wa-link href="https://wa.me/595983460912" target="_blank" rel="noopener" style="font-size:14px;color:#252525">Cambios</a>
+        <a data-wa-link href="https://wa.me/595983460912" target="_blank" rel="noopener" style="font-size:14px;color:#252525">Preguntas frecuentes</a>
+        <a href="#contacto" style="font-size:14px;color:#252525">Contacto</a>
+      </div>
+      <div style="flex:0 1 auto;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#6A6A6A">Seguinos</span>
+        <a href="https://www.instagram.com/actitud_tendencia.sdg" target="_blank" rel="noopener" style="font-size:14px;color:#252525">Instagram</a>
+        <a data-wa-link href="https://wa.me/595983460912" target="_blank" rel="noopener" style="font-size:14px;color:#252525">WhatsApp</a>
+        <span style="font-size:14px;color:#6A6A6A">+595 983 460 912</span>
+      </div>
+    </div>
+    <div style="max-width:1440px;margin:clamp(32px,4vw,56px) auto 0;padding-top:22px;border-top:1px solid #EDEAE3;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between">
+      <span style="font-size:11.5px;color:#6A6A6A">© Actitud &amp; Tendencia</span>
+      <span style="font-size:11.5px;color:#6A6A6A">Boutique de moda femenina · Paraguay</span>
+    </div>
+  </footer>
+
+  <sc-if value="{{ showFloating }}" hint-placeholder-val="{{ true }}">
+    <a data-wa-pill data-wa-link href="https://wa.me/595983460912" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed;right:clamp(14px,2.4vw,28px);bottom:clamp(14px,2.4vw,28px);z-index:80;display:inline-flex;align-items:center;gap:11px;background:#CDE9E4;color:#20301f;padding:14px 20px;border-radius:999px;box-shadow:0 10px 34px rgba(37,37,37,0.14);font-size:11px;letter-spacing:.1em;font-weight:600;transition:background .4s ease,transform .5s cubic-bezier(.16,1,.3,1)" style-hover="background:#A9C6B2;transform:translateY(-3px)">
+      <span style="position:relative;display:block;width:17px;height:17px;background:#20301f;border-radius:50% 50% 4px 50%">
+        <span style="position:absolute;top:-3px;right:-3px;width:7px;height:7px;border-radius:50%;background:#F6B6C6;border:1.5px solid #CDE9E4"></span>
+      </span>
+      <span data-wa-label>¿Te ayudamos?</span>
+    </a>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;accentColor&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#F6B6C6&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#F6B6C6&quot;, &quot;#D7C6E8&quot;, &quot;#F8D873&quot;, &quot;#CDE9E4&quot;], &quot;section&quot;: &quot;Marca&quot; },
+  &quot;motion&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;completo&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;completo&quot;, &quot;sutil&quot;, &quot;sin animación&quot;], &quot;section&quot;: &quot;Animación&quot; },
+  &quot;showFloating&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Conversión&quot; }
+}">
+class Component extends DCLogic {
+  state = { menuOpen: false, searchOpen: false, vw: typeof window !== 'undefined' ? window.innerWidth : 1280 };
+
+  componentDidMount() {
+    this.onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('resize', this.onResize);
+    this.sync();
+  }
+  componentDidUpdate() { this.sync(); }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+
+  sync() {
+    const motion = this.props.motion || 'completo';
+    const map = { 'completo': 'full', 'sutil': 'subtle', 'sin animación': 'off' };
+    document.documentElement.setAttribute('data-motion', map[motion] || 'full');
+    const accent = this.props.accentColor || '#F6B6C6';
+    document.querySelectorAll('[data-accent]').forEach(el => { el.style.background = accent; });
+    document.body.style.overflow = (this.state.menuOpen || this.state.searchOpen) ? 'hidden' : '';
+  }
+
+  renderVals() {
+    const vw = this.state.vw;
+    return {
+      isDesktop: vw >= 900,
+      isMobile: vw < 900,
+      menuOpen: this.state.menuOpen,
+      searchOpen: this.state.searchOpen,
+      showFloating: this.props.showFloating !== false,
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen }))
+    };
+  }
+}
+</script>
+</body>
+</html>
