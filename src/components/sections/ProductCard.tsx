@@ -2,9 +2,7 @@ import { Plus } from "lucide-react";
 import type { Product } from "@/data/products";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import FloralAccent from "@/components/ui/FloralAccent";
-import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { themeFor } from "@/lib/categories";
-import { waProduct } from "@/lib/whatsapp";
 import { cn, formatGs } from "@/lib/utils";
 
 type Props = {
@@ -63,28 +61,16 @@ export default function ProductCard({ product, onOpen }: Props) {
         </span>
       </button>
 
-      <div className="flex items-start justify-between gap-3 px-1.5 pb-1 pt-3.5">
-        <div className="min-w-0">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-tinta-500">
-            {product.categoria}
-          </p>
-          <h3 className="mt-0.5 truncate text-sm font-medium text-tinta">
-            {product.nombre}
-          </h3>
-          <p className="mt-1 text-sm font-medium text-salvia-700">
-            {formatGs(product.precio)}
-          </p>
-        </div>
-        <a
-          href={waProduct(product)}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => e.stopPropagation()}
-          aria-label={`Consultar ${product.nombre} por WhatsApp`}
-          className="mt-0.5 shrink-0 rounded-full bg-crema p-2.5 text-salvia-700 shadow-sm ring-1 ring-crema-200 transition-all hover:bg-salvia-600 hover:text-white"
-        >
-          <WhatsAppIcon className="h-4 w-4" />
-        </a>
+      <div className="px-1.5 pb-1 pt-3.5">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-tinta-500">
+          {product.categoria}
+        </p>
+        <h3 className="mt-0.5 truncate text-sm font-medium text-tinta">
+          {product.nombre}
+        </h3>
+        <p className="mt-1 text-sm font-medium text-salvia-700">
+          {formatGs(product.precio)}
+        </p>
       </div>
       </SpotlightCard>
 
