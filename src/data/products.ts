@@ -187,6 +187,24 @@ export const products: Product[] = [
     ],
     nuevo: true,
   },
+  {
+    id: "blusa-corpete-alfaiataria-bege",
+    nombre: "Blusa con Corpete Alfaiataría Bege",
+    linea: "Sastrería",
+    categoria: "Blusas",
+    color: "Beige",
+    precio: 799000,
+    talles: ["40"],
+    tipoTalle: "numerico",
+    descripcion:
+      "Blusa de dos texturas: base blanca de mangas cortas con un corpete de alfaiataría acoplado en beige, escote corazón y cinto con hebilla en D. Estructura que estiliza la silueta.",
+    fotos: [
+      "/productos/blusa-corpete-alfaiataria-bege/01.webp",
+      "/productos/blusa-corpete-alfaiataria-bege/02.webp",
+    ],
+    nuevo: true,
+    destacado: true,
+  },
 ];
 
 /** Categorías presentes en el catálogo, en orden. */
