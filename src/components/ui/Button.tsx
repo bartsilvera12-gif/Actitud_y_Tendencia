@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type Variant = "salvia" | "gold" | "outline" | "whatsapp" | "ghost";
+type Variant = "salvia" | "gold" | "outline" | "whatsapp" | "ghost" | "cream";
 type Size = "sm" | "md" | "lg";
 
 type Props = {
@@ -30,6 +30,8 @@ const variants: Record<Variant, string> = {
   whatsapp:
     "bg-[#25D366] text-white hover:bg-[#1eb955] shadow-[0_10px_30px_-12px_rgba(37,211,102,0.8)] hover:-translate-y-0.5",
   ghost: "text-tinta hover:text-salvia-700",
+  cream:
+    "bg-crema text-tinta hover:bg-white shadow-[0_12px_30px_-12px_rgba(0,0,0,0.35)] hover:-translate-y-0.5",
 };
 
 const sizes: Record<Size, string> = {
