@@ -1,15 +1,8 @@
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import SplitText from "@/components/reactbits/SplitText";
-import CountUp from "@/components/reactbits/CountUp";
-import { products, categorias } from "@/data/products";
+import FloralAccent from "@/components/ui/FloralAccent";
 
 const valores = ["Fresca", "Elegante", "Cercana", "Actual", "Detallista"];
-
-const stats = [
-  { to: products.length, label: "Prendas nuevas" },
-  { to: categorias.length, label: "Categorías" },
-  { to: 100, suffix: "%", label: "Seleccionado a mano" },
-];
 
 export default function Manifesto() {
   return (
@@ -18,24 +11,20 @@ export default function Manifesto() {
       className="relative overflow-hidden bg-salvia-900 py-24 text-crema md:py-32"
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
         style={{ backgroundImage: "url(/brand/floral-pattern.png)", backgroundSize: "520px" }}
         aria-hidden
       />
-      <div
-        className="pointer-events-none absolute -right-20 top-10 h-72 w-72 opacity-30"
-        style={{
-          backgroundImage: "url(/brand/floral-cluster.png)",
-          backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
-          animation: "float 10s ease-in-out infinite",
-        }}
-        aria-hidden
-      />
+      {/* Flores de colores que resaltan sobre el verde profundo */}
+      <FloralAccent flor="cosmosRosa" className="left-6 top-16 w-16 md:left-16 md:w-24" rotate={-12} float />
+      <FloralAccent flor="cosmosAmarillo" className="right-8 top-24 hidden w-20 md:block" rotate={16} float delay={0.6} />
+      <FloralAccent flor="lavanda" className="bottom-16 left-10 hidden w-14 md:block" opacity={90} />
+      <FloralAccent flor="tulipanRosa" className="bottom-20 right-16 w-14 md:w-20" rotate={-8} />
+      <FloralAccent flor="helecho" className="left-1/2 top-8 hidden w-24 md:block" opacity={60} />
 
       <div className="relative mx-auto max-w-4xl px-5 text-center md:px-8">
         <ScrollReveal>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-salvia">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-menta">
             Nuestra esencia
           </p>
         </ScrollReveal>
@@ -65,19 +54,6 @@ export default function Manifesto() {
             ))}
           </div>
         </ScrollReveal>
-
-        <div className="mx-auto mt-14 grid max-w-2xl grid-cols-3 gap-6 border-t border-crema/15 pt-10">
-          {stats.map((s) => (
-            <div key={s.label}>
-              <p className="font-display text-4xl text-menta md:text-5xl">
-                <CountUp to={s.to} suffix={s.suffix ?? ""} />
-              </p>
-              <p className="mt-1 text-xs uppercase tracking-wider text-crema/60">
-                {s.label}
-              </p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

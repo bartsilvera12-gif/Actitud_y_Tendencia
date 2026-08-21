@@ -18,14 +18,15 @@
   --color-dorado-700: #b08d34;
 
   /* Neutros */
-  --color-crema: #faf8f3; /* base */
-  --color-crema-200: #f2ede3;
-  --color-tinta: #252525; /* texto */
-  --color-tinta-500: #6a6a6a; /* texto secundario */
+  --color-blanco: #ffffff; /* fondo principal */
+  --color-crema: #faf9f6; /* fondo alternativo / off-white */
+  --color-crema-200: #f1ece3;
+  --color-tinta: #252525; /* texto principal */
+  --color-tinta-500: #6a6a6a; /* texto secundario (gris medio) */
 
-  /* Tipografía */
+  /* Tipografía — manual de marca: solo Montserrat, una sola jerarquía */
   --font-sans: "Montserrat", "Helvetica Neue", Helvetica, sans-serif;
-  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-display: "Montserrat", "Helvetica Neue", Helvetica, sans-serif;
 
   /* Animaciones */
   --animate-marquee: marquee 38s linear infinite;
@@ -77,7 +78,7 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--color-crema);
+  background-color: var(--color-blanco);
   color: var(--color-tinta);
   font-family: var(--font-sans);
   font-weight: 400;
@@ -134,8 +135,15 @@ a {
 }
 
 /* Utilidades de composición */
+/* Display = Montserrat en peso liviano (elegancia con una sola familia). */
 .font-display {
   font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+.font-display.italic,
+.font-display .italic {
+  font-weight: 300;
 }
 
 .text-shiny-gold {

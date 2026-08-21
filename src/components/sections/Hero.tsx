@@ -5,6 +5,7 @@ import SplitText from "@/components/reactbits/SplitText";
 import BlurText from "@/components/reactbits/BlurText";
 import ShinyText from "@/components/reactbits/ShinyText";
 import Button from "@/components/ui/Button";
+import FloralAccent from "@/components/ui/FloralAccent";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { products } from "@/data/products";
 import { waGeneral } from "@/lib/whatsapp";
@@ -21,6 +22,24 @@ export default function Hero() {
         style={{ backgroundImage: "url(/brand/floral-pattern.png)", backgroundSize: "620px" }}
         aria-hidden
       />
+      {/* Acentos florales (acompañan, no compiten) */}
+      <FloralAccent flor="cosmosLila" className="left-2 top-28 w-16 md:left-8 md:w-24" rotate={-12} float delay={0.5} opacity={90} />
+      <FloralAccent flor="lavanda" className="bottom-24 left-6 hidden w-12 md:block" rotate={8} opacity={80} />
+      <FloralAccent flor="ramilleteAmarillo" className="left-1/2 top-10 hidden w-14 lg:block" opacity={70} />
+
+      {/* Masthead: logo con corona floral (lockup de marca) */}
+      <motion.div
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="relative mx-auto mb-8 max-w-2xl px-6 md:mb-12"
+      >
+        <img
+          src="/brand/logo-corona.png"
+          alt="Actitud & Tendencia"
+          className="mx-auto w-full max-w-lg drop-shadow-sm"
+        />
+      </motion.div>
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 md:px-8 lg:grid-cols-[1.05fr_0.95fr]">
         {/* Texto */}
@@ -85,16 +104,8 @@ export default function Hero() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="relative mx-auto w-full max-w-md"
         >
-          <div
-            className="absolute -right-6 -top-8 h-40 w-40 opacity-90"
-            style={{
-              backgroundImage: "url(/brand/floral-cluster.png)",
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              animation: "float 8s ease-in-out infinite",
-            }}
-            aria-hidden
-          />
+          <FloralAccent flor="cosmosRosa" className="-right-5 -top-9 z-10 w-24 md:w-28" rotate={14} float />
+          <FloralAccent flor="tulipanLila" className="-left-7 top-1/3 z-10 hidden w-16 md:block" rotate={-10} flip opacity={95} />
           <div className="relative overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-40px_rgba(94,138,111,0.55)] ring-1 ring-crema-200">
             <img
               src={hero.fotos[0]}

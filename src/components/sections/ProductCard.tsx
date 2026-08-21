@@ -1,9 +1,11 @@
 import { Plus } from "lucide-react";
 import type { Product } from "@/data/products";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
+import FloralAccent from "@/components/ui/FloralAccent";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { themeFor } from "@/lib/categories";
 import { waProduct } from "@/lib/whatsapp";
-import { formatGs } from "@/lib/utils";
+import { cn, formatGs } from "@/lib/utils";
 
 type Props = {
   product: Product;
@@ -12,9 +14,23 @@ type Props = {
 
 export default function ProductCard({ product, onOpen }: Props) {
   const [front, back] = product.fotos;
+  const t = themeFor(product.categoria);
 
   return (
-    <SpotlightCard className="group rounded-[1.6rem] border border-crema-200 bg-crema p-2.5 shadow-[0_18px_50px_-30px_rgba(94,138,111,0.5)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(94,138,111,0.6)]">
+    <SpotlightCard
+      className={cn(
+        "group relative rounded-[1.6rem] border border-crema-200 bg-gradient-to-br to-crema p-3 shadow-[0_18px_50px_-30px_rgba(94,138,111,0.5)] ring-1 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_70px_-30px_rgba(94,138,111,0.55)]",
+        t.tint,
+        t.ring
+      )}
+    >
+      {/* Flor de la categoría asomando en la esquina */}
+      <FloralAccent
+        flor={t.flor}
+        className="-right-3 -top-4 z-20 w-14 drop-shadow-sm md:w-16"
+        rotate={14}
+      />
+
       <button
         onClick={() => onOpen(product)}
         className="relative block w-full overflow-hidden rounded-[1.2rem]"
@@ -37,7 +53,12 @@ export default function ProductCard({ product, onOpen }: Props) {
         </div>
 
         {product.nuevo && (
-          <span className="absolute left-3 top-3 rounded-full bg-crema/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-salvia-700 shadow-sm backdrop-blur">
+          <span
+            className={cn(
+              "absolute left-3 top-3 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] shadow-sm",
+              t.badge
+            )}
+          >
             Nuevo
           </span>
         )}
@@ -48,7 +69,7 @@ export default function ProductCard({ product, onOpen }: Props) {
         </span>
       </button>
 
-      <div className="flex items-start justify-between gap-3 px-2 pb-2 pt-3.5">
+      <div className="flex items-start justify-between gap-3 px-1.5 pb-1 pt-3.5">
         <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-tinta-500">
             {product.categoria}
@@ -56,7 +77,7 @@ export default function ProductCard({ product, onOpen }: Props) {
           <h3 className="mt-0.5 truncate text-sm font-medium text-tinta">
             {product.nombre}
           </h3>
-          <p className="mt-1 text-sm font-light text-salvia-700">
+          <p className="mt-1 text-sm font-medium text-salvia-700">
             {formatGs(product.precio)}
           </p>
         </div>
@@ -66,7 +87,7 @@ export default function ProductCard({ product, onOpen }: Props) {
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
           aria-label={`Consultar ${product.nombre} por WhatsApp`}
-          className="mt-0.5 shrink-0 rounded-full bg-menta/70 p-2.5 text-salvia-700 transition-all hover:bg-[#25D366] hover:text-white"
+          className="mt-0.5 shrink-0 rounded-full bg-crema p-2.5 text-salvia-700 shadow-sm ring-1 ring-crema-200 transition-all hover:bg-[#25D366] hover:text-white"
         >
           <WhatsAppIcon className="h-4 w-4" />
         </a>

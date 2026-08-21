@@ -14,7 +14,7 @@ import { waGeneral } from "@/lib/whatsapp";
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-crema">
+    <div className="relative min-h-screen bg-white">
       <Navbar />
       <main>
         <Hero />

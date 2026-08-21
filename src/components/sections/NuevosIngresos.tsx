@@ -3,6 +3,7 @@ import { products } from "@/data/products";
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import TiltedCard from "@/components/reactbits/TiltedCard";
 import Button from "@/components/ui/Button";
+import FloralAccent from "@/components/ui/FloralAccent";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { waProduct } from "@/lib/whatsapp";
 import { cn, formatGs } from "@/lib/utils";
@@ -11,7 +12,10 @@ export default function NuevosIngresos() {
   const destacados = products.filter((p) => p.destacado).slice(0, 2);
 
   return (
-    <section id="nuevos" className="relative bg-menta/30 py-20 md:py-28">
+    <section id="nuevos" className="relative overflow-hidden bg-menta/25 py-20 md:py-28">
+      <FloralAccent flor="peoniaRosa" className="-left-4 top-24 hidden w-20 md:block" rotate={-10} float />
+      <FloralAccent flor="cosmosAmarillo" className="right-6 top-16 hidden w-16 lg:block" rotate={14} opacity={85} />
+      <FloralAccent flor="ramaHorizontal" className="bottom-10 right-0 hidden w-44 lg:block" opacity={40} flip />
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="flex flex-col items-center text-center">
           <ScrollReveal>

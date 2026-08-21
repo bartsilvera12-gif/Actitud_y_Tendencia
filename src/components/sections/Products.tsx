@@ -5,6 +5,8 @@ import ProductCard from "@/components/sections/ProductCard";
 import ProductModal from "@/components/sections/ProductModal";
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import SplitText from "@/components/reactbits/SplitText";
+import FloralAccent from "@/components/ui/FloralAccent";
+import { themeFor } from "@/lib/categories";
 import { cn } from "@/lib/utils";
 
 export default function Products() {
@@ -21,7 +23,9 @@ export default function Products() {
   );
 
   return (
-    <section id="coleccion" className="relative py-20 md:py-28">
+    <section id="coleccion" className="relative overflow-hidden py-20 md:py-28">
+      <FloralAccent flor="ramaHorizontal" className="left-0 top-24 hidden w-40 lg:block" opacity={45} />
+      <FloralAccent flor="ramilleteRosa" className="right-4 top-16 hidden w-16 md:block" rotate={12} opacity={80} />
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="flex flex-col items-center text-center">
           <ScrollReveal>
@@ -52,7 +56,7 @@ export default function Products() {
               className={cn(
                 "rounded-full border px-5 py-2 text-sm font-medium transition-all duration-300",
                 filtro === c
-                  ? "border-salvia-700 bg-salvia-600 text-crema shadow-md"
+                  ? cn(themeFor(c).chip, "shadow-md")
                   : "border-salvia/30 text-tinta hover:border-salvia-600 hover:bg-salvia/10"
               )}
             >

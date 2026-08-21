@@ -2,6 +2,7 @@ import { Instagram } from "lucide-react";
 import { products } from "@/data/products";
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import Button from "@/components/ui/Button";
+import FloralAccent from "@/components/ui/FloralAccent";
 import { INSTAGRAM_URL, INSTAGRAM_USER } from "@/lib/whatsapp";
 
 // Arma una grilla tipo feed tomando fotos variadas de cada producto.
@@ -9,7 +10,9 @@ const feed = products.flatMap((p) => p.fotos.slice(0, 2)).slice(0, 8);
 
 export default function InstagramFeed() {
   return (
-    <section id="instagram" className="relative py-20 md:py-28">
+    <section id="instagram" className="relative overflow-hidden py-20 md:py-28">
+      <FloralAccent flor="cosmosLila" className="left-4 top-10 hidden w-16 md:block" rotate={-14} float />
+      <FloralAccent flor="cosmosRosa" className="right-6 top-14 hidden w-16 md:block" rotate={12} float delay={0.5} />
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="flex flex-col items-center text-center">
           <ScrollReveal>

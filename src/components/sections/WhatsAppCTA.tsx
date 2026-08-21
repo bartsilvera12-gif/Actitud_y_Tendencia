@@ -1,6 +1,7 @@
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import SplitText from "@/components/reactbits/SplitText";
 import Button from "@/components/ui/Button";
+import FloralAccent from "@/components/ui/FloralAccent";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { waGeneral } from "@/lib/whatsapp";
 
@@ -14,6 +15,9 @@ export default function WhatsAppCTA() {
             style={{ backgroundImage: "url(/brand/floral-pattern.png)", backgroundSize: "440px" }}
             aria-hidden
           />
+          <FloralAccent flor="cosmosRosa" className="left-3 top-3 w-16 md:left-8 md:w-24" rotate={-16} />
+          <FloralAccent flor="cosmosAmarillo" className="bottom-3 right-4 w-16 md:right-10 md:w-24" rotate={16} />
+          <FloralAccent flor="tulipanLila" className="right-8 top-6 hidden w-12 md:block" rotate={10} />
           <div className="relative">
             <h2 className="font-display text-4xl leading-tight text-white sm:text-5xl md:text-6xl">
               <SplitText text="¿Viste algo que" by="word" />
