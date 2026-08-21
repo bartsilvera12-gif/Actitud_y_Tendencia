@@ -9,7 +9,7 @@ export const INSTAGRAM_USER = "actitud_tendencia.sdg";
 export const INSTAGRAM_URL = "https://instagram.com/actitud_tendencia.sdg";
 
 export const FACEBOOK_NAME = "Actitud y Tendencia";
-export const FACEBOOK_URL = "https://facebook.com/actitudytendencia";
+export const FACEBOOK_URL = "https://www.facebook.com/share/1Gcj44PBMg/?mibextid=wwXIfr";
 
 export const TIKTOK_USER = "actitudytendencia";
 export const TIKTOK_URL = "https://tiktok.com/@actitudytendencia";
