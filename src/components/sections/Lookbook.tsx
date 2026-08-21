@@ -48,15 +48,6 @@ export default function Lookbook() {
               className="aspect-[3/4] w-full object-cover"
             />
           </motion.div>
-          <div
-            className="pointer-events-none absolute -bottom-4 left-1/3 h-40 w-40 opacity-80"
-            style={{
-              backgroundImage: "url(/brand/floral-cluster.png)",
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-            }}
-            aria-hidden
-          />
         </div>
 
         {/* Texto */}

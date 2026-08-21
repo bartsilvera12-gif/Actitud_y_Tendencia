@@ -115,20 +115,6 @@ export default function Hero() {
             />
             <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-tinta/25 to-transparent" />
           </div>
-
-          {/* Tarjeta flotante de producto */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="absolute -bottom-6 left-4 flex items-center gap-3 rounded-2xl border border-crema-200 bg-crema/90 px-4 py-3 shadow-xl backdrop-blur sm:-left-6"
-          >
-            <div className="h-9 w-9 rounded-full bg-menta" />
-            <div>
-              <p className="text-xs font-semibold text-tinta">{hero.nombre}</p>
-              <p className="text-[11px] text-salvia-700">{formatGs(hero.precio)}</p>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </section>

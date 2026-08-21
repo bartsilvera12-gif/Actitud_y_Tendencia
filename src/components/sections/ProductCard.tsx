@@ -81,7 +81,7 @@ export default function ProductCard({ product, onOpen }: Props) {
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
           aria-label={`Consultar ${product.nombre} por WhatsApp`}
-          className="mt-0.5 shrink-0 rounded-full bg-crema p-2.5 text-salvia-700 shadow-sm ring-1 ring-crema-200 transition-all hover:bg-[#25D366] hover:text-white"
+          className="mt-0.5 shrink-0 rounded-full bg-crema p-2.5 text-salvia-700 shadow-sm ring-1 ring-crema-200 transition-all hover:bg-salvia-600 hover:text-white"
         >
           <WhatsAppIcon className="h-4 w-4" />
         </a>

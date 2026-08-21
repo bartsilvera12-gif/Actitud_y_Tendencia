@@ -23,7 +23,7 @@ export default function WhatsAppCTA() {
             <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.35em] text-menta">
               Atención personalizada
             </p>
-            <h2 className="font-display text-[2.7rem] font-light leading-[1.02] tracking-tight text-white sm:text-6xl md:text-7xl">
+            <h2 className="mx-auto max-w-3xl font-display text-[2.6rem] font-light leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl">
               <SplitText text="¿Viste algo que" by="word" />
               <span className="mt-1 block italic text-[#f3e3b8]">
                 <SplitText text="te guste?" by="word" delay={0.15} />
@@ -40,7 +40,7 @@ export default function WhatsAppCTA() {
             </div>
 
             <ScrollReveal delay={0.12}>
-              <p className="mx-auto mt-6 max-w-lg text-[15px] leading-relaxed text-white/90">
+              <p className="mx-auto mt-6 max-w-md text-center text-[15px] leading-relaxed text-white/90">
                 Escribinos por WhatsApp y te ayudamos a elegir tu talle, ver
                 disponibilidad y coordinar el envío. Atención cercana y sin vueltas.
               </p>
