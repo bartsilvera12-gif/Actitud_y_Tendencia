@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
-import TrustMarquee from "@/components/sections/TrustMarquee";
 import Products from "@/components/sections/Products";
 import NuevosIngresos from "@/components/sections/NuevosIngresos";
 import Manifesto from "@/components/sections/Manifesto";
@@ -18,7 +17,6 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        <TrustMarquee />
         <Products />
         <NuevosIngresos />
         <Manifesto />
