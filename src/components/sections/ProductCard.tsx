@@ -17,20 +17,14 @@ export default function ProductCard({ product, onOpen }: Props) {
   const t = themeFor(product.categoria);
 
   return (
-    <SpotlightCard
-      className={cn(
-        "group relative rounded-[1.6rem] border border-white/60 p-3 shadow-[0_18px_50px_-30px_rgba(94,138,111,0.5)] ring-1 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_70px_-30px_rgba(94,138,111,0.55)]",
-        t.tint,
-        t.ring
-      )}
-    >
-      {/* Flor de la categoría asomando en la esquina */}
-      <FloralAccent
-        flor={t.flor}
-        className="-right-3 -top-4 z-20 w-14 drop-shadow-sm md:w-16"
-        rotate={14}
-      />
-
+    <div className="group relative transition-transform duration-500 hover:-translate-y-1.5">
+      <SpotlightCard
+        className={cn(
+          "rounded-[1.6rem] border border-white/60 p-3 shadow-[0_18px_50px_-30px_rgba(94,138,111,0.5)] ring-1 transition-shadow duration-500 group-hover:shadow-[0_34px_70px_-30px_rgba(94,138,111,0.55)]",
+          t.tint,
+          t.ring
+        )}
+      >
       <button
         onClick={() => onOpen(product)}
         className="relative block w-full overflow-hidden rounded-[1.2rem]"
@@ -92,6 +86,14 @@ export default function ProductCard({ product, onOpen }: Props) {
           <WhatsAppIcon className="h-4 w-4" />
         </a>
       </div>
-    </SpotlightCard>
+      </SpotlightCard>
+
+      {/* Flor de la categoría asomando en la esquina (fuera del recorte de la card) */}
+      <FloralAccent
+        flor={t.flor}
+        className="-right-3 -top-4 z-20 w-14 drop-shadow-sm md:w-16"
+        rotate={14}
+      />
+    </div>
   );
 }
