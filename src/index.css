@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/* ============================================================
+   ACTITUD & TENDENCIA — Sistema de diseño
+   Paleta oficial del manual de marca (v1.0)
+   ============================================================ */
+@theme {
+  /* Marca */
+  --color-salvia: #a9c6b2; /* principal / confianza */
+  --color-salvia-600: #7ea68c; /* interacción / hover */
+  --color-salvia-700: #5f8a6f; /* texto sobre claro */
+  --color-salvia-900: #1e2e1e; /* verde profundo */
+  --color-menta: #cde9e4; /* fondos suaves / aire */
+  --color-lila: #d7c6e8; /* acento / novedad */
+  --color-rosa: #f6b6c6; /* acento / cercanía */
+  --color-amarillo: #f8d873; /* acento / energía */
+  --color-dorado: #c9a44a; /* premium / foil */
+  --color-dorado-700: #b08d34;
+
+  /* Neutros */
+  --color-crema: #faf8f3; /* base */
+  --color-crema-200: #f2ede3;
+  --color-tinta: #252525; /* texto */
+  --color-tinta-500: #6a6a6a; /* texto secundario */
+
+  /* Tipografía */
+  --font-sans: "Montserrat", "Helvetica Neue", Helvetica, sans-serif;
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+
+  /* Animaciones */
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-shimmer: shimmer 3.4s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -16px, 0);
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-crema);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-menta);
+  color: var(--color-tinta);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-salvia-600);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-crema-200);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-salvia);
+  border-radius: 10px;
+  border: 2px solid var(--color-crema-200);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utilidades de composición */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.text-shiny-gold {
+  background: linear-gradient(
+    110deg,
+    var(--color-dorado-700) 20%,
+    #f0d896 45%,
+    var(--color-dorado-700) 70%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}

@@ -1,0 +1,92 @@
+{
+  "_nota": "Catálogo Actitud & Tendencia. Precios en guaraníes (Gs.). Las fotos se copian a productos/fotos/<id>/ tras verificar el mapeo.",
+  "productos": [
+    {
+      "id": "camisa-giverny-estampada-offwhite",
+      "nombre": "Camisa Giverny Estampada Off-white",
+      "linea": "Giverny",
+      "categoria": "Camisas",
+      "color": "Off-white",
+      "precio": 299000,
+      "talles": [
+        "36",
+        "38",
+        "40"
+      ],
+      "tipoTalle": "numerico",
+      "descripcion": "Camisa de manga corta con estampado floral en acuarela sobre base off-white.",
+      "setDescarga": "base (1.webp–4.webp)",
+      "fotos": [
+        "fotos/camisa-giverny-estampada-offwhite/01.webp",
+        "fotos/camisa-giverny-estampada-offwhite/02.webp",
+        "fotos/camisa-giverny-estampada-offwhite/03.webp",
+        "fotos/camisa-giverny-estampada-offwhite/04.webp"
+      ]
+    },
+    {
+      "id": "blusa-tricot-sinmanga-giverny-offwhite",
+      "nombre": "Blusa Tricot Sin Manga Giverny Off-white",
+      "linea": "Giverny",
+      "categoria": "Blusas",
+      "color": "Off-white",
+      "precio": 299000,
+      "talles": [
+        "P",
+        "M",
+        "G"
+      ],
+      "tipoTalle": "letra",
+      "descripcion": "Blusa de tricot sin mangas con estampado floral pintado en tonos rosa y verde sobre base off-white.",
+      "setDescarga": "(1)",
+      "fotos": [
+        "fotos/blusa-tricot-sinmanga-giverny-offwhite/01.webp",
+        "fotos/blusa-tricot-sinmanga-giverny-offwhite/02.webp",
+        "fotos/blusa-tricot-sinmanga-giverny-offwhite/03.webp",
+        "fotos/blusa-tricot-sinmanga-giverny-offwhite/04.webp"
+      ]
+    },
+    {
+      "id": "camiseta-fleurs-de-giverny-offwhite",
+      "nombre": "Camiseta Fleurs De Giverny Off-white",
+      "linea": "Giverny",
+      "categoria": "Camisetas",
+      "color": "Off-white",
+      "precio": 199000,
+      "talles": [
+        "P",
+        "M",
+        "G"
+      ],
+      "tipoTalle": "letra",
+      "descripcion": "Camiseta off-white con estampado 'Fleurs de Giverny': grilla de flores en acuarela con lettering.",
+      "setDescarga": "(2)",
+      "fotos": [
+        "fotos/camiseta-fleurs-de-giverny-offwhite/01.webp",
+        "fotos/camiseta-fleurs-de-giverny-offwhite/02.webp",
+        "fotos/camiseta-fleurs-de-giverny-offwhite/03.webp",
+        "fotos/camiseta-fleurs-de-giverny-offwhite/04.webp"
+      ]
+    },
+    {
+      "id": "regata-canelada-lilas",
+      "nombre": "Regata Canelada Lilas",
+      "linea": "Básicos",
+      "categoria": "Regatas",
+      "color": "Lila",
+      "precio": 199000,
+      "talles": [
+        "P",
+        "M"
+      ],
+      "tipoTalle": "letra",
+      "descripcion": "Regata canelada (rib) sin mangas en tono lila, corte al cuerpo.",
+      "setDescarga": "(3)",
+      "fotos": [
+        "fotos/regata-canelada-lilas/01.webp",
+        "fotos/regata-canelada-lilas/02.webp",
+        "fotos/regata-canelada-lilas/03.webp",
+        "fotos/regata-canelada-lilas/04.webp"
+      ]
+    }
+  ]
+}
