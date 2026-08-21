@@ -1,9 +1,14 @@
 import { Instagram, MapPin } from "lucide-react";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { FacebookIcon, TikTokIcon } from "@/components/ui/SocialIcons";
 import {
+  FACEBOOK_NAME,
+  FACEBOOK_URL,
   INSTAGRAM_URL,
   INSTAGRAM_USER,
-  WHATSAPP_NUMBER,
+  TIKTOK_URL,
+  TIKTOK_USER,
+  WHATSAPP_DISPLAY,
   waGeneral,
 } from "@/lib/whatsapp";
 
@@ -56,7 +61,7 @@ export default function Footer() {
                   className="flex items-center gap-3 transition-colors hover:text-white"
                 >
                   <WhatsAppIcon className="h-5 w-5 text-salvia" />
-                  +595 983 460 912
+                  {WHATSAPP_DISPLAY}
                 </a>
               </li>
               <li>
@@ -70,6 +75,28 @@ export default function Footer() {
                   @{INSTAGRAM_USER}
                 </a>
               </li>
+              <li>
+                <a
+                  href={FACEBOOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 transition-colors hover:text-white"
+                >
+                  <FacebookIcon className="h-5 w-5 text-salvia" />
+                  {FACEBOOK_NAME}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={TIKTOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 transition-colors hover:text-white"
+                >
+                  <TikTokIcon className="h-5 w-5 text-salvia" />
+                  @{TIKTOK_USER}
+                </a>
+              </li>
               <li className="flex items-center gap-3">
                 <MapPin className="h-5 w-5 text-salvia" />
                 San Lorenzo · Paraguay
@@ -81,7 +108,7 @@ export default function Footer() {
         <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-crema/15 pt-7 text-xs text-crema/60 sm:flex-row">
           <p>© {new Date().getFullYear()} Actitud & Tendencia · Boutique de moda femenina.</p>
           <p aria-hidden>Hecho con 🌷 en Paraguay</p>
-          <p className="sr-only">WhatsApp {WHATSAPP_NUMBER}</p>
+          <p className="sr-only">WhatsApp {WHATSAPP_DISPLAY}</p>
         </div>
       </div>
     </footer>

@@ -48,7 +48,8 @@ una carpeta de descargas al proyecto.
 
 - Paleta: Salvia `#A9C6B2` · Menta `#CDE9E4` · Lila `#D7C6E8` · Rosa `#F6B6C6` · Amarillo `#F8D873` · Dorado `#C9A44A`
 - Tipografía: Montserrat + Cormorant Garamond (display)
-- WhatsApp: +595 983 460 912 · Instagram: [@actitud_tendencia.sdg](https://instagram.com/actitud_tendencia.sdg)
+- WhatsApp: +595 985 960 203
+- Instagram: [@actitud_tendencia.sdg](https://instagram.com/actitud_tendencia.sdg) · Facebook: Actitud y Tendencia · TikTok: [@actitudytendencia](https://tiktok.com/@actitudytendencia)
 
 > El sitio estático anterior (Claude Design) quedó archivado en `_legacy/`.
 > Los assets originales extraídos del PDF están en `brand-assets/`.

@@ -3,7 +3,7 @@ import SplitText from "@/components/reactbits/SplitText";
 import Button from "@/components/ui/Button";
 import FloralAccent from "@/components/ui/FloralAccent";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
-import { waGeneral } from "@/lib/whatsapp";
+import { WHATSAPP_DISPLAY, waGeneral } from "@/lib/whatsapp";
 
 export default function WhatsAppCTA() {
   return (
@@ -44,7 +44,7 @@ export default function WhatsAppCTA() {
                   Escribinos ahora
                 </Button>
                 <span className="text-sm font-medium text-white/90">
-                  +595 983 460 912
+                  {WHATSAPP_DISPLAY}
                 </span>
               </div>
             </ScrollReveal>
