@@ -44,6 +44,30 @@ const themes: Record<string, CatTheme> = {
     dot: "bg-menta",
     flor: "lavanda",
   },
+  Chalecos: {
+    chip: "border-salvia-700 bg-salvia-600 text-crema",
+    ring: "ring-salvia/40",
+    tint: "from-salvia/12",
+    badge: "bg-salvia-600 text-crema",
+    dot: "bg-salvia-600",
+    flor: "cosmosLila",
+  },
+  Pantalones: {
+    chip: "border-amarillo bg-amarillo text-tinta",
+    ring: "ring-amarillo/50",
+    tint: "from-amarillo/12",
+    badge: "bg-amarillo text-tinta",
+    dot: "bg-amarillo",
+    flor: "ramilleteAmarillo",
+  },
+  Vestidos: {
+    chip: "border-rosa bg-rosa text-tinta",
+    ring: "ring-rosa/40",
+    tint: "from-rosa/12",
+    badge: "bg-rosa text-tinta",
+    dot: "bg-rosa",
+    flor: "peoniaRosa",
+  },
 };
 
 const fallback: CatTheme = {
