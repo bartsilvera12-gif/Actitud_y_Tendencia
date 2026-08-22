@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, SlidersHorizontal } from "lucide-react";
+import { ArrowLeft, SlidersHorizontal, X } from "lucide-react";
 import { categorias, lineas, products, type Product } from "@/data/products";
 import ProductCard from "@/components/sections/ProductCard";
 import ProductModal from "@/components/sections/ProductModal";
@@ -69,7 +69,6 @@ export default function Catalogo() {
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-28 pb-20 md:pt-32">
-      <FloralAccent flor="ramaHorizontal" className="left-0 top-24 hidden w-40 lg:block" opacity={40} />
       <FloralAccent flor="cosmosRosa" className="right-6 top-20 hidden w-16 md:block" rotate={12} opacity={80} />
 
       <div className="mx-auto max-w-7xl px-5 md:px-8">
@@ -82,80 +81,84 @@ export default function Catalogo() {
           Volver al inicio
         </button>
 
-        <p className="mt-7 text-[11px] font-semibold uppercase tracking-[0.25em] text-salvia-700">
-          Catálogo
-        </p>
-        <h1 className="mt-2 font-display text-4xl text-tinta sm:text-5xl md:text-6xl">
-          {titulo}
-        </h1>
-        <p className="mt-3 text-[15px] text-tinta-500">
-          {visibles.length} {visibles.length === 1 ? "producto" : "productos"}
-          {visibles.length > 0 && (
-            <> · precio hasta {formatGs(Math.max(...visibles.map((p) => p.precio)))}</>
-          )}
-        </p>
+        {/* ── Encabezado: título + filtros de categoría y línea ───────── */}
+        <div className="relative mt-6 overflow-hidden rounded-[2rem] bg-gradient-to-br from-menta/70 via-menta/40 to-salvia/45 px-6 py-9 ring-1 ring-inset ring-salvia/25 md:px-10 md:py-11">
+          <FloralAccent
+            flor="ramilleteRosa"
+            className="right-6 top-6 hidden w-16 md:block"
+            rotate={10}
+            opacity={70}
+          />
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[248px_1fr] lg:gap-10">
-          {/* ── Panel de filtros ─────────────────────────────── */}
+          <span className="inline-flex rounded-full bg-salvia-900 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-crema">
+            Catálogo
+          </span>
+
+          <h1 className="mt-5 font-display text-4xl text-tinta sm:text-5xl md:text-6xl">
+            {titulo}
+          </h1>
+          <p className="mt-2.5 text-[15px] text-tinta-500">
+            {visibles.length} {visibles.length === 1 ? "producto" : "productos"}
+            {visibles.length > 0 && (
+              <> · precio hasta {formatGs(Math.max(...visibles.map((p) => p.precio)))}</>
+            )}
+          </p>
+
+          <FilaChips titulo="Categoría">
+            {["Todos", ...categorias].map((c) => (
+              <Chip
+                key={c}
+                activo={categoria === c}
+                claseActiva={themeFor(c).chip}
+                onClick={() => setCategoria(c)}
+              >
+                {c}
+              </Chip>
+            ))}
+          </FilaChips>
+
+          <FilaChips titulo="Línea">
+            {["Todas", ...lineas].map((l) => (
+              <Chip
+                key={l}
+                activo={linea === l}
+                claseActiva="border-salvia-700 bg-salvia-600 text-crema"
+                onClick={() => setLinea(l)}
+              >
+                {l}
+              </Chip>
+            ))}
+          </FilaChips>
+        </div>
+
+        {/* ── Sidebar de filtros + grilla ─────────────────────────────── */}
+        <div className="mt-8 grid gap-6 lg:grid-cols-[260px_1fr] lg:gap-8">
           <aside className="lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-[1.5rem] border border-salvia/25 bg-crema/50 p-5">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-tinta">
-                  <SlidersHorizontal className="h-3.5 w-3.5" />
+                <span className="flex items-center gap-2 text-sm font-semibold text-tinta">
+                  <SlidersHorizontal className="h-4 w-4 text-salvia-700" />
                   Filtros
                 </span>
                 {!limpio && (
                   <button
                     type="button"
                     onClick={limpiar}
-                    className="text-xs font-medium text-salvia-700 underline underline-offset-4 transition-colors hover:text-salvia-900"
+                    className="flex items-center gap-1 text-xs font-medium text-salvia-700 transition-colors hover:text-salvia-900"
                   >
+                    <X className="h-3.5 w-3.5" />
                     Limpiar
                   </button>
                 )}
               </div>
 
-              <Grupo titulo="Categoría">
-                <div className="flex flex-wrap gap-2">
-                  {["Todos", ...categorias].map((c) => (
-                    <button
-                      key={c}
-                      type="button"
-                      onClick={() => setCategoria(c)}
-                      className={cn(
-                        "rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-all duration-300",
-                        categoria === c
-                          ? cn(themeFor(c).chip, "shadow-sm")
-                          : "border-salvia/30 text-tinta hover:border-salvia-600 hover:bg-salvia/10"
-                      )}
-                    >
-                      {c}
-                    </button>
-                  ))}
+              <div className="mt-6">
+                <div className="flex items-baseline justify-between">
+                  <p className="text-[13px] font-semibold text-tinta">Precio máximo</p>
+                  <p className="text-[13px] font-semibold text-salvia-700">
+                    {formatGs(precioMax)}
+                  </p>
                 </div>
-              </Grupo>
-
-              <Grupo titulo="Línea">
-                <div className="flex flex-wrap gap-2">
-                  {["Todas", ...lineas].map((l) => (
-                    <button
-                      key={l}
-                      type="button"
-                      onClick={() => setLinea(l)}
-                      className={cn(
-                        "rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-all duration-300",
-                        linea === l
-                          ? "border-salvia-700 bg-salvia-600 text-crema shadow-sm"
-                          : "border-salvia/30 text-tinta hover:border-salvia-600 hover:bg-salvia/10"
-                      )}
-                    >
-                      {l}
-                    </button>
-                  ))}
-                </div>
-              </Grupo>
-
-              <Grupo titulo="Precio máximo">
                 <input
                   type="range"
                   min={precioPiso}
@@ -164,49 +167,38 @@ export default function Catalogo() {
                   value={precioMax}
                   onChange={(e) => setPrecioMax(Number(e.target.value))}
                   aria-label="Precio máximo"
-                  className="w-full accent-salvia-600"
+                  className="mt-3 w-full accent-salvia-600"
                 />
-                <p className="mt-2 text-sm font-medium text-salvia-700">
-                  {formatGs(precioMax)}
-                </p>
-              </Grupo>
+              </div>
 
-              <Grupo titulo="Ordenar por">
-                <div className="flex flex-col gap-1.5">
+              <div className="mt-6">
+                <label
+                  htmlFor="orden"
+                  className="text-[13px] font-semibold text-tinta"
+                >
+                  Ordenar por
+                </label>
+                <select
+                  id="orden"
+                  value={orden}
+                  onChange={(e) => setOrden(e.target.value as Orden)}
+                  className="mt-2 w-full rounded-xl border border-salvia/35 bg-white px-3.5 py-2.5 text-[13px] text-tinta transition-colors hover:border-salvia-600 focus:border-salvia-600 focus:outline-none"
+                >
                   {ordenes.map((o) => (
-                    <button
-                      key={o.id}
-                      type="button"
-                      onClick={() => setOrden(o.id)}
-                      className={cn(
-                        "flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-colors duration-300",
-                        orden === o.id
-                          ? "bg-salvia/25 font-medium text-tinta"
-                          : "text-tinta-500 hover:bg-salvia/10"
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          "h-1.5 w-1.5 rounded-full transition-colors",
-                          orden === o.id ? "bg-salvia-600" : "bg-salvia/40"
-                        )}
-                      />
+                    <option key={o.id} value={o.id}>
                       {o.label}
-                    </button>
+                    </option>
                   ))}
-                </div>
-              </Grupo>
+                </select>
+              </div>
 
-              <Grupo titulo="Mostrar solo">
-                <div className="flex flex-col gap-2">
-                  <Toggle label="Destacados" activo={soloDestacados} onChange={setSoloDestacados} />
-                  <Toggle label="Novedades" activo={soloNuevos} onChange={setSoloNuevos} />
-                </div>
-              </Grupo>
+              <div className="mt-6 flex flex-col gap-2.5 border-t border-salvia/20 pt-5">
+                <Toggle label="Destacados" activo={soloDestacados} onChange={setSoloDestacados} />
+                <Toggle label="Novedades" activo={soloNuevos} onChange={setSoloNuevos} />
+              </div>
             </div>
           </aside>
 
-          {/* ── Grilla ───────────────────────────────────────── */}
           <div>
             {visibles.length === 0 ? (
               <div className="rounded-[1.5rem] border border-dashed border-salvia/40 px-6 py-20 text-center">
@@ -225,10 +217,7 @@ export default function Catalogo() {
                 </button>
               </div>
             ) : (
-              <motion.div
-                layout
-                className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3"
-              >
+              <motion.div layout className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
                 <AnimatePresence mode="popLayout">
                   {visibles.map((p, i) => (
                     <motion.div
@@ -254,14 +243,48 @@ export default function Catalogo() {
   );
 }
 
-function Grupo({ titulo, children }: { titulo: string; children: React.ReactNode }) {
+/** Etiqueta a la izquierda y los chips fluyendo al lado, como en la referencia. */
+function FilaChips({
+  titulo,
+  children,
+}: {
+  titulo: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="mt-6 border-t border-salvia/20 pt-5 first-of-type:mt-5">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-tinta-500">
+    <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2.5">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-tinta-500">
         {titulo}
-      </p>
+      </span>
       {children}
     </div>
+  );
+}
+
+function Chip({
+  activo,
+  claseActiva,
+  onClick,
+  children,
+}: {
+  activo: boolean;
+  claseActiva: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "rounded-full border px-4 py-1.5 text-[13px] font-medium transition-all duration-300",
+        activo
+          ? cn(claseActiva, "shadow-sm")
+          : "border-transparent bg-white/75 text-tinta hover:bg-white"
+      )}
+    >
+      {children}
+    </button>
   );
 }
 

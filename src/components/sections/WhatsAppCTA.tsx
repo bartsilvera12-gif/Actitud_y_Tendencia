@@ -17,6 +17,7 @@ export default function WhatsAppCTA() {
           />
           <FloralAccent flor="cosmosRosa" className="left-3 top-3 w-16 md:left-8 md:w-24" rotate={-16} />
           <FloralAccent flor="cosmosAmarillo" className="bottom-3 right-4 w-16 md:right-10 md:w-24" rotate={16} />
+          <FloralAccent flor="cosmosLila" className="bottom-3 left-4 w-16 md:left-10 md:w-24" rotate={-16} />
           <FloralAccent flor="tulipanLila" className="right-8 top-6 hidden w-12 md:block" rotate={10} />
 
           <div className="relative">

@@ -1,60 +1,41 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
-import AuroraBackground from "@/components/reactbits/AuroraBackground";
+import { ArrowRight } from "lucide-react";
 import SplitText from "@/components/reactbits/SplitText";
 import BlurText from "@/components/reactbits/BlurText";
 import ShinyText from "@/components/reactbits/ShinyText";
 import Button from "@/components/ui/Button";
-import FloralAccent from "@/components/ui/FloralAccent";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
-import { products } from "@/data/products";
 import { waGeneral } from "@/lib/whatsapp";
-import { formatGs } from "@/lib/utils";
 
 export default function Hero() {
-  const hero = products[0];
-
   return (
-    <section id="top" className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
-      <AuroraBackground />
+    // Padding simétrico: con `items-center`, un pt distinto al pb corre el bloque
+    // del centro real. Los 112px de arriba ya despejan el navbar fijo.
+    <section
+      id="top"
+      className="relative flex min-h-[660px] items-center overflow-hidden py-28 md:min-h-[780px] md:py-32"
+    >
+      {/* Fondo: la foto trae su propio floral y su espacio limpio a la izquierda,
+          así que acá no van ni la aurora ni los acentos sueltos. */}
+      <img
+        src="/brand/hero-fondo.png"
+        alt=""
+        aria-hidden
+        loading="eager"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+      />
+      {/* Velo crema para que el texto se lea sin importar cómo recorte la foto. */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
-        style={{ backgroundImage: "url(/brand/floral-pattern.png)", backgroundSize: "620px" }}
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-crema/90 via-crema/55 to-transparent lg:via-crema/25"
         aria-hidden
       />
-      {/* Acentos florales (acompañan, no compiten) */}
-      <FloralAccent flor="cosmosLila" className="left-2 top-28 w-16 md:left-8 md:w-24" rotate={-12} float delay={0.5} opacity={90} />
-      <FloralAccent flor="lavanda" className="bottom-24 left-6 hidden w-12 md:block" rotate={8} opacity={80} />
-      <FloralAccent flor="ramilleteAmarillo" className="left-1/2 top-10 hidden w-14 lg:block" opacity={70} />
 
-      {/* Masthead: logo con corona floral (lockup de marca) */}
-      <motion.div
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="relative mx-auto mb-8 max-w-2xl px-6 md:mb-12"
-      >
-        <img
-          src="/brand/logo-corona.png"
-          alt="Actitud & Tendencia"
-          className="mx-auto w-full max-w-lg drop-shadow-sm"
-        />
-      </motion.div>
-
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 md:px-8 lg:grid-cols-[1.05fr_0.95fr]">
-        {/* Texto */}
-        <div className="text-center lg:text-left">
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2 rounded-full border border-salvia/40 bg-crema/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-salvia-700 backdrop-blur"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            Nueva colección · Verano
-          </motion.span>
-
-          <h1 className="mt-6 font-display text-[3.3rem] leading-[0.98] tracking-tight text-tinta sm:text-7xl lg:text-[5.2rem]">
+      <div className="relative mx-auto w-full max-w-7xl px-5 md:px-8">
+        {/* El bloque se centra dentro de la mitad izquierda —la zona crema
+            limpia de la foto— en vez de pegarse al borde del contenedor. */}
+        <div className="lg:w-[76%]">
+          <div className="mx-auto max-w-xl text-center lg:text-left">
+          <h1 className="font-display text-[3.1rem] leading-[0.98] tracking-tight text-tinta sm:text-6xl lg:text-[4.6rem]">
             <SplitText text="Vestí tu" by="word" />
             <span className="block italic text-salvia-700">
               <SplitText text="actitud." by="word" delay={0.15} />
@@ -95,27 +76,8 @@ export default function Hero() {
               Comprar por WhatsApp
             </Button>
           </motion.div>
-        </div>
-
-        {/* Imagen destacada */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mx-auto w-full max-w-md"
-        >
-          <FloralAccent flor="cosmosRosa" className="-right-5 -top-9 z-10 w-24 md:w-28" rotate={14} float />
-          <FloralAccent flor="tulipanLila" className="-left-7 top-1/3 z-10 hidden w-16 md:block" rotate={-10} flip opacity={95} />
-          <div className="relative overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-40px_rgba(94,138,111,0.55)] ring-1 ring-crema-200">
-            <img
-              src={hero.fotos[0]}
-              alt={hero.nombre}
-              className="aspect-[3/4] w-full object-cover"
-              loading="eager"
-            />
-            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-tinta/25 to-transparent" />
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
