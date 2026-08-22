@@ -1,26 +1,17 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { products, categorias, type Product } from "@/data/products";
+import { ArrowRight } from "lucide-react";
+import { products, type Product } from "@/data/products";
 import ProductCard from "@/components/sections/ProductCard";
 import ProductModal from "@/components/sections/ProductModal";
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import SplitText from "@/components/reactbits/SplitText";
 import FloralAccent from "@/components/ui/FloralAccent";
-import { themeFor } from "@/lib/categories";
-import { cn } from "@/lib/utils";
+import { useCatalogo } from "@/lib/catalogo";
 
 export default function Products() {
-  const [filtro, setFiltro] = useState<string>("Todos");
+  const { abrir } = useCatalogo();
   const [active, setActive] = useState<Product | null>(null);
-
-  const chips = ["Todos", ...categorias];
-  const visibles = useMemo(
-    () =>
-      filtro === "Todos"
-        ? products
-        : products.filter((p) => p.categoria === filtro),
-    [filtro]
-  );
 
   return (
     <section id="coleccion" className="relative overflow-hidden py-20 md:py-28">
@@ -47,31 +38,27 @@ export default function Products() {
           </ScrollReveal>
         </div>
 
-        {/* Filtros */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-2.5">
-          {chips.map((c) => (
+        <ScrollReveal delay={0.2}>
+          <div className="mt-8 flex justify-center">
             <button
-              key={c}
-              onClick={() => setFiltro(c)}
-              className={cn(
-                "rounded-full border px-5 py-2 text-sm font-medium transition-all duration-300",
-                filtro === c
-                  ? cn(themeFor(c).chip, "shadow-md")
-                  : "border-salvia/30 text-tinta hover:border-salvia-600 hover:bg-salvia/10"
-              )}
+              type="button"
+              onClick={() => abrir()}
+              className="group flex items-center gap-2 rounded-full border border-salvia/40 px-5 py-2.5 text-sm font-medium text-tinta transition-all duration-300 hover:border-salvia-600 hover:bg-salvia/15"
             >
-              {c}
+              Ver todos
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
-          ))}
-        </div>
+          </div>
+        </ScrollReveal>
 
         {/* Grilla */}
         <motion.div
           layout
-          className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4"
+          id="productos"
+          className="mt-12 grid scroll-mt-28 grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4"
         >
           <AnimatePresence mode="popLayout">
-            {visibles.map((p, i) => (
+            {products.map((p, i) => (
               <motion.div
                 key={p.id}
                 layout

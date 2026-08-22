@@ -3,19 +3,30 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { useCatalogo } from "@/lib/catalogo";
 import { waGeneral } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
+// `href` baja a una sección del home; `catalogo` abre la vista de catálogo completo.
 const links = [
   { label: "Colección", href: "#coleccion", pill: "bg-salvia/25 hover:bg-salvia/45", dot: "bg-salvia-600" },
+  { label: "Categorías", href: "#categorias", pill: "bg-menta/60 hover:bg-menta", dot: "bg-dorado" },
+  { label: "Productos", catalogo: true, pill: "bg-amarillo/35 hover:bg-amarillo/55", dot: "bg-amarillo" },
   { label: "Nuevos ingresos", href: "#nuevos", pill: "bg-rosa/30 hover:bg-rosa/50", dot: "bg-rosa" },
   { label: "Nosotras", href: "#manifiesto", pill: "bg-lila/30 hover:bg-lila/50", dot: "bg-lila" },
-  { label: "Instagram", href: "#instagram", pill: "bg-amarillo/35 hover:bg-amarillo/55", dot: "bg-amarillo" },
-];
+] as const;
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { abrir, irASeccion } = useCatalogo();
+
+  /** Un mismo handler para las dos variantes de link (sección del home o catálogo). */
+  const navegar = (link: (typeof links)[number]) => {
+    setOpen(false);
+    if ("catalogo" in link) abrir();
+    else irASeccion(link.href);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -42,19 +53,20 @@ export default function Navbar() {
           />
         </a>
 
-        <ul className="hidden items-center gap-2 lg:flex">
+        <ul className="hidden items-center gap-1.5 lg:flex xl:gap-2">
           {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
+            <li key={l.label}>
+              <button
+                type="button"
+                onClick={() => navegar(l)}
                 className={cn(
-                  "flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-medium tracking-wide text-tinta transition-all duration-300 hover:-translate-y-0.5",
+                  "flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] font-medium tracking-wide text-tinta transition-all duration-300 hover:-translate-y-0.5 xl:px-4",
                   l.pill
                 )}
               >
                 <span className={cn("h-1.5 w-1.5 rounded-full", l.dot)} />
                 {l.label}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
@@ -112,15 +124,15 @@ export default function Navbar() {
               </div>
               <ul className="mt-10 flex flex-col gap-2">
                 {links.map((l) => (
-                  <li key={l.href}>
-                    <a
-                      href={l.href}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center gap-3 border-b border-salvia/15 py-4 font-display text-2xl text-tinta transition-colors hover:text-salvia-700"
+                  <li key={l.label}>
+                    <button
+                      type="button"
+                      onClick={() => navegar(l)}
+                      className="flex w-full items-center gap-3 border-b border-salvia/15 py-4 text-left font-display text-2xl text-tinta transition-colors hover:text-salvia-700"
                     >
                       <span className={cn("h-2.5 w-2.5 rounded-full", l.dot)} />
                       {l.label}
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ul>

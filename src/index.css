@@ -92,16 +92,23 @@ body {
   color: var(--color-tinta);
 }
 
-h1,
-h2,
-h3,
-p {
-  margin: 0;
+/* Va en @layer base: fuera de un layer, esta regla le gana a las utilidades
+   de Tailwind y mata `mt-*` / `mx-auto` en todo h1/h2/h3/p del sitio. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Mismo motivo: sin @layer, `color: inherit` pisa cualquier `text-*` en un <a>. */
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 :focus-visible {

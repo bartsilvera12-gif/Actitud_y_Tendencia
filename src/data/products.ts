@@ -209,3 +209,6 @@ export const products: Product[] = [
 
 /** Categorías presentes en el catálogo, en orden. */
 export const categorias = Array.from(new Set(products.map((p) => p.categoria)));
+
+/** Líneas de la colección (Giverny, básicos, etc.). */
+export const lineas = Array.from(new Set(products.map((p) => p.linea)));

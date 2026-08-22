@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
+import Categorias from "@/components/sections/Categorias";
+import Catalogo from "@/components/sections/Catalogo";
 import Products from "@/components/sections/Products";
 import NuevosIngresos from "@/components/sections/NuevosIngresos";
 import Manifesto from "@/components/sections/Manifesto";
@@ -9,21 +11,39 @@ import Lookbook from "@/components/sections/Lookbook";
 import InstagramFeed from "@/components/sections/InstagramFeed";
 import WhatsAppCTA from "@/components/sections/WhatsAppCTA";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { CatalogoProvider, useCatalogo } from "@/lib/catalogo";
 import { waGeneral } from "@/lib/whatsapp";
 
 export default function App() {
   return (
+    <CatalogoProvider>
+      <Contenido />
+    </CatalogoProvider>
+  );
+}
+
+function Contenido() {
+  const { abierto } = useCatalogo();
+
+  return (
     <div className="relative min-h-screen bg-white">
       <Navbar />
-      <main>
-        <Hero />
-        <Products />
-        <NuevosIngresos />
-        <Manifesto />
-        <Lookbook />
-        <InstagramFeed />
-        <WhatsAppCTA />
-      </main>
+      {abierto ? (
+        <main>
+          <Catalogo />
+        </main>
+      ) : (
+        <main>
+          <Hero />
+          <Categorias />
+          <Products />
+          <NuevosIngresos />
+          <Manifesto />
+          <Lookbook />
+          <InstagramFeed />
+          <WhatsAppCTA />
+        </main>
+      )}
       <Footer />
 
       {/* Botón flotante de WhatsApp */}

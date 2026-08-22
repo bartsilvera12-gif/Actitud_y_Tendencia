@@ -4,8 +4,6 @@ import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import TiltedCard from "@/components/reactbits/TiltedCard";
 import Button from "@/components/ui/Button";
 import FloralAccent from "@/components/ui/FloralAccent";
-import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
-import { waProduct } from "@/lib/whatsapp";
 import { cn, formatGs } from "@/lib/utils";
 
 export default function NuevosIngresos() {
@@ -77,15 +75,6 @@ export default function NuevosIngresos() {
                   ))}
                 </div>
                 <div className="mt-7 flex flex-wrap gap-3">
-                  <Button
-                    href={waProduct(p)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="whatsapp"
-                  >
-                    <WhatsAppIcon className="h-4 w-4" />
-                    Consultar disponibilidad
-                  </Button>
                   <Button href="#coleccion" variant="ghost">
                     Ver la colección
                     <ArrowUpRight className="h-4 w-4" />

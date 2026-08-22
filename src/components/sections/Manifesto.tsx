@@ -1,8 +1,16 @@
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import SplitText from "@/components/reactbits/SplitText";
 import FloralAccent from "@/components/ui/FloralAccent";
+import { cn } from "@/lib/utils";
 
-const valores = ["Fresca", "Elegante", "Cercana", "Actual", "Detallista"];
+// Un pastel de la paleta de marca por valor, para que resalten sobre el verde profundo.
+const valores = [
+  { label: "Fresca", pill: "bg-menta hover:bg-menta/85" },
+  { label: "Elegante", pill: "bg-lila hover:bg-lila/85" },
+  { label: "Cercana", pill: "bg-rosa hover:bg-rosa/85" },
+  { label: "Actual", pill: "bg-amarillo hover:bg-amarillo/85" },
+  { label: "Detallista", pill: "bg-salvia hover:bg-salvia/85" },
+];
 
 export default function Manifesto() {
   return (
@@ -46,10 +54,13 @@ export default function Manifesto() {
           <div className="mt-9 flex flex-wrap justify-center gap-2.5">
             {valores.map((v) => (
               <span
-                key={v}
-                className="rounded-full border border-crema/25 px-4 py-1.5 text-sm text-crema/90"
+                key={v.label}
+                className={cn(
+                  "rounded-full px-4 py-1.5 text-sm font-medium text-salvia-900 transition-colors duration-300",
+                  v.pill
+                )}
               >
-                {v}
+                {v.label}
               </span>
             ))}
           </div>
