@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import Button from "@/components/ui/Button";
-import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { Heart, Menu, ShoppingBag, X } from "lucide-react";
 import { useCatalogo } from "@/lib/catalogo";
-import { waGeneral } from "@/lib/whatsapp";
+import { useTienda } from "@/lib/tienda";
 import { cn } from "@/lib/utils";
 
 // `href` baja a una sección del home; `catalogo` abre la vista de catálogo completo.
@@ -57,6 +55,7 @@ export default function Navbar() {
     menuAbierto: open,
     setMenuAbierto: setOpen,
   } = useCatalogo();
+  const { unidades, favoritos, abrirPanel } = useTienda();
 
   /** Un mismo handler para las dos variantes de link (sección del home o catálogo). */
   const navegar = (link: Link) => {
@@ -152,18 +151,24 @@ export default function Navbar() {
           {/* El `hidden` va en este span y no en el Button: el Button ya trae
               `inline-flex` en su base y esa clase le gana en la hoja de estilos,
               con lo cual nunca se ocultaría. */}
-          <span className="hidden sm:inline-flex">
-            <Button
-              href={waGeneral()}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="whatsapp"
-              size="sm"
-            >
-              <WhatsAppIcon className="h-4 w-4" />
-              Consultar
-            </Button>
-          </span>
+          <IconoConContador
+            onClick={() => abrirPanel("favoritos")}
+            etiqueta="Favoritos"
+            cantidad={favoritos.length}
+            colorContador="bg-rosa text-tinta"
+          >
+            <Heart className={cn("h-5 w-5", favoritos.length > 0 && "fill-rosa text-rosa")} />
+          </IconoConContador>
+
+          <IconoConContador
+            onClick={() => abrirPanel("carrito")}
+            etiqueta="Carrito"
+            cantidad={unidades}
+            colorContador="bg-salvia-600 text-crema"
+          >
+            <ShoppingBag className="h-5 w-5" />
+          </IconoConContador>
+
           <button
             className="-mr-1 rounded-full p-2.5 text-tinta lg:hidden"
             onClick={() => setOpen(true)}
@@ -224,21 +229,46 @@ export default function Navbar() {
                   );
                 })}
               </ul>
-              <Button
-                href={waGeneral()}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="whatsapp"
-                size="lg"
-                className="mt-auto"
-              >
-                <WhatsAppIcon className="h-5 w-5" />
-                Escribinos por WhatsApp
-              </Button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </header>
+  );
+}
+
+/** Icono del navbar con la burbujita de cantidad. */
+function IconoConContador({
+  children,
+  onClick,
+  etiqueta,
+  cantidad,
+  colorContador,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  etiqueta: string;
+  cantidad: number;
+  colorContador: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={cantidad > 0 ? `${etiqueta} (${cantidad})` : etiqueta}
+      className="relative rounded-full p-2.5 text-tinta transition-colors hover:bg-salvia/15"
+    >
+      {children}
+      {cantidad > 0 && (
+        <span
+          className={cn(
+            "absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-semibold shadow-sm",
+            colorContador
+          )}
+        >
+          {cantidad}
+        </span>
+      )}
+    </button>
   );
 }

@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, ShoppingBag, X } from "lucide-react";
 import type { Product } from "@/data/products";
-import Button from "@/components/ui/Button";
-import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
-import { waProduct } from "@/lib/whatsapp";
+import { useTienda } from "@/lib/tienda";
 import { cn, formatGs } from "@/lib/utils";
 
 type Props = {
@@ -17,6 +15,8 @@ export default function ProductModal({ product, onClose }: Props) {
   const [emblaRef, embla] = useEmblaCarousel({ loop: true });
   const [selected, setSelected] = useState(0);
   const [talle, setTalle] = useState<string | null>(null);
+  const { agregar, abrirPanel, esFavorito, alternarFavorito } = useTienda();
+  const favorito = product ? esFavorito(product.id) : false;
 
   const scrollTo = useCallback((i: number) => embla?.scrollTo(i), [embla]);
 
@@ -171,19 +171,40 @@ export default function ProductModal({ product, onClose }: Props) {
                 </div>
               </div>
 
-              <Button
-                href={waProduct(product, talle ?? undefined)}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="whatsapp"
-                size="lg"
-                className="mt-8 w-full"
-              >
-                <WhatsAppIcon className="h-5 w-5" />
-                {talle ? `Consultar talle ${talle}` : "Consultar por WhatsApp"}
-              </Button>
+              <div className="mt-8 flex gap-2">
+                <button
+                  type="button"
+                  disabled={!talle}
+                  onClick={() => {
+                    if (!talle) return;
+                    agregar(product.id, talle);
+                    onClose();
+                    abrirPanel("carrito");
+                  }}
+                  className={cn(
+                    "flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium transition-all duration-300",
+                    talle
+                      ? "bg-salvia-600 text-crema shadow-sm hover:bg-salvia-700"
+                      : "cursor-not-allowed bg-salvia/25 text-tinta-500"
+                  )}
+                >
+                  <ShoppingBag className="h-4 w-4" />
+                  {talle ? `Agregar talle ${talle}` : "Elegí un talle"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => alternarFavorito(product.id)}
+                  aria-pressed={favorito}
+                  aria-label={favorito ? "Quitar de favoritos" : "Guardar en favoritos"}
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-salvia/40 text-tinta transition-colors hover:border-rosa hover:bg-rosa/15"
+                >
+                  <Heart className={cn("h-5 w-5", favorito && "fill-rosa text-rosa")} />
+                </button>
+              </div>
+
               <p className="mt-3 text-center text-xs text-tinta-500">
-                Te respondemos con disponibilidad y formas de pago.
+                Coordinás el pago y el envío por WhatsApp al enviar el pedido.
               </p>
             </div>
           </motion.div>

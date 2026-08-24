@@ -10,13 +10,17 @@ import Lookbook from "@/components/sections/Lookbook";
 import InstagramFeed from "@/components/sections/InstagramFeed";
 import WhatsAppCTA from "@/components/sections/WhatsAppCTA";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import PanelTienda from "@/components/layout/PanelTienda";
 import { CatalogoProvider, useCatalogo } from "@/lib/catalogo";
+import { TiendaProvider } from "@/lib/tienda";
 import { waGeneral } from "@/lib/whatsapp";
 
 export default function App() {
   return (
     <CatalogoProvider>
-      <Contenido />
+      <TiendaProvider>
+        <Contenido />
+      </TiendaProvider>
     </CatalogoProvider>
   );
 }
@@ -56,6 +60,8 @@ function Contenido() {
         </main>
       )}
       <Footer />
+
+      <PanelTienda />
 
       {/* Botón flotante de WhatsApp. Con el menú abierto no se renderiza: ahí
           se superponía al "Escribinos por WhatsApp" del propio menú. Se

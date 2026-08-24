@@ -1,8 +1,9 @@
-import { Plus } from "lucide-react";
+import { Heart, Plus } from "lucide-react";
 import type { Product } from "@/data/products";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import FloralAccent from "@/components/ui/FloralAccent";
 import { themeFor } from "@/lib/categories";
+import { useTienda } from "@/lib/tienda";
 import { cn, formatGs } from "@/lib/utils";
 
 type Props = {
@@ -13,6 +14,8 @@ type Props = {
 export default function ProductCard({ product, onOpen }: Props) {
   const [front, back] = product.fotos;
   const t = themeFor(product.categoria);
+  const { esFavorito, alternarFavorito } = useTienda();
+  const favorito = esFavorito(product.id);
 
   return (
     <div className="group relative transition-transform duration-500 hover:-translate-y-1.5">
@@ -75,6 +78,23 @@ export default function ProductCard({ product, onOpen }: Props) {
         </p>
       </div>
       </SpotlightCard>
+
+      {/* Corazón de favoritos: hermano del botón de "Ver detalle" y no hijo,
+          porque un botón dentro de otro botón es HTML inválido y el click no
+          llega. Se posiciona contra el contenedor de la card. */}
+      <button
+        type="button"
+        onClick={() => alternarFavorito(product.id)}
+        aria-pressed={favorito}
+        aria-label={
+          favorito
+            ? `Quitar ${product.nombre} de favoritos`
+            : `Guardar ${product.nombre} en favoritos`
+        }
+        className="absolute right-5 top-5 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-crema/85 text-tinta shadow-sm backdrop-blur transition-all duration-300 hover:scale-110 hover:bg-crema"
+      >
+        <Heart className={cn("h-4 w-4", favorito && "fill-rosa text-rosa")} />
+      </button>
 
       {/* Flor de la categoría asomando en la esquina (fuera del recorte de la card).
           En el celular no se muestra: con dos columnas angostas se salía de la

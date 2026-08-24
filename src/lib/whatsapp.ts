@@ -35,3 +35,19 @@ export function waGeneral(): string {
     "¡Hola Actitud & Tendencia! 🌷 Quería consultar por la nueva colección."
   );
 }
+
+/** Pedido completo del carrito, listo para enviar. */
+export function waPedido(
+  lineas: Array<{ nombre: string; talle: string; cantidad: number; subtotal: number }>,
+  total: number
+): string {
+  const detalle = lineas
+    .map(
+      (l) =>
+        `• ${l.nombre} — talle ${l.talle} × ${l.cantidad} (${formatGs(l.subtotal)})`
+    )
+    .join("\n");
+  return waLink(
+    `¡Hola Actitud & Tendencia! 🌷\nQuiero hacer este pedido:\n\n${detalle}\n\n*Total: ${formatGs(total)}*`
+  );
+}
