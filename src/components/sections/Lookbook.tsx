@@ -34,7 +34,7 @@ export default function Lookbook() {
               src={imgA?.fotos[2] ?? imgA?.fotos[0]}
               alt={imgA?.nombre}
               loading="lazy"
-              className="aspect-[3/4] w-full object-cover"
+              className="aspect-[2/3] w-full object-cover"
             />
           </motion.div>
           <motion.div
@@ -45,7 +45,7 @@ export default function Lookbook() {
               src={imgB?.fotos[1] ?? imgB?.fotos[0]}
               alt={imgB?.nombre}
               loading="lazy"
-              className="aspect-[3/4] w-full object-cover"
+              className="aspect-[2/3] w-full object-cover"
             />
           </motion.div>
         </div>

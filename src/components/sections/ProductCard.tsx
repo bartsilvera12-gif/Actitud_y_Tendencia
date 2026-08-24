@@ -28,7 +28,7 @@ export default function ProductCard({ product, onOpen }: Props) {
         className="relative block w-full overflow-hidden rounded-[1.2rem]"
         aria-label={`Ver ${product.nombre}`}
       >
-        <div className="relative aspect-[3/4] w-full">
+        <div className="relative aspect-[2/3] w-full">
           <img
             src={front}
             alt={product.nombre}

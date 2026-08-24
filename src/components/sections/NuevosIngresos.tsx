@@ -47,7 +47,7 @@ export default function NuevosIngresos() {
                   <ParallaxImage
                     src={p.fotos[0]}
                     alt={p.nombre}
-                    className="aspect-[4/5] w-full rounded-[2rem] shadow-[0_40px_80px_-45px_rgba(94,138,111,0.6)] ring-1 ring-crema-200"
+                    className="aspect-[2/3] w-full rounded-[2rem] shadow-[0_40px_80px_-45px_rgba(94,138,111,0.6)] ring-1 ring-crema-200"
                   />
                 </TiltedCard>
               </ScrollReveal>

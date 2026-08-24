@@ -56,7 +56,7 @@ export default function Categorias() {
                     type="button"
                     onClick={() => abrir(cat.nombre)}
                     className={cn(
-                      "group relative block aspect-[3/4] w-[190px] overflow-hidden rounded-[1.4rem] text-left ring-1 transition-all duration-500 hover:-translate-y-1.5 sm:w-[220px]",
+                      "group relative block aspect-[2/3] w-[190px] overflow-hidden rounded-[1.4rem] text-left ring-1 transition-all duration-500 hover:-translate-y-1.5 sm:w-[220px]",
                       t.ring
                     )}
                   >

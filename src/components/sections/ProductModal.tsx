@@ -85,7 +85,7 @@ export default function ProductModal({ product, onClose }: Props) {
                       <img
                         src={src}
                         alt={`${product.nombre} ${i + 1}`}
-                        className="aspect-[3/4] w-full object-cover"
+                        className="aspect-[2/3] w-full object-cover"
                       />
                     </div>
                   ))}
