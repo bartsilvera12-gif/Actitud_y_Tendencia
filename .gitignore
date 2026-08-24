@@ -6,3 +6,7 @@ dist
 # Tooling / archivos locales
 .claude/
 _legacy/
+
+# Variables de entorno (nunca commitear)
+.env
+.env.local
