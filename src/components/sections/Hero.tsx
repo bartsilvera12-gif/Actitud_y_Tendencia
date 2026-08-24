@@ -1,5 +1,5 @@
-import SplitText from "@/components/reactbits/SplitText";
-import BlurText from "@/components/reactbits/BlurText";
+import { motion } from "framer-motion";
+import Reveal from "@/components/reactbits/Reveal";
 import ShinyText from "@/components/reactbits/ShinyText";
 
 export default function Hero() {
@@ -8,7 +8,9 @@ export default function Hero() {
     // del centro real. Los 112px de arriba ya despejan el navbar fijo.
     <section
       id="top"
-      className="relative flex min-h-[660px] items-center overflow-hidden py-28 md:min-h-[780px] md:py-32"
+      // `svh` y no `vh`: en el móvil la barra del navegador cambia de alto y con
+      // `vh` la portada se pasaría de pantalla justo al inicio.
+      className="relative flex min-h-svh items-center overflow-hidden py-20 md:py-24"
     >
       {/* Fondo: la foto trae su propio floral y su espacio limpio a la izquierda,
           así que acá no van ni la aurora ni los acentos sueltos. */}
@@ -31,24 +33,27 @@ export default function Hero() {
         <div className="lg:w-[76%]">
           <div className="mx-auto max-w-xl text-center lg:text-left">
           <h1 className="font-display text-[3.1rem] leading-[0.98] tracking-tight text-tinta sm:text-6xl lg:text-[4.6rem]">
-            <SplitText text="Vestí tu" by="word" />
-            <span className="block italic text-salvia-700">
-              <SplitText text="actitud." by="word" delay={0.15} />
-            </span>
-            <span className="block">
-              <SplitText text="Marcá" by="word" delay={0.35} />{" "}
+            <Reveal delay={0.1}>Vestí tu</Reveal>
+            <Reveal delay={0.25} className="italic text-salvia-700">
+              actitud.
+            </Reveal>
+            <Reveal delay={0.4}>
+              Marcá{" "}
               <span className="italic">
                 <ShinyText>tendencia.</ShinyText>
               </span>
-            </span>
+            </Reveal>
           </h1>
 
-          <p className="mx-auto mt-7 max-w-md text-[15px] leading-relaxed text-tinta-500 lg:mx-0">
-            <BlurText
-              text="Prendas elegidas para acompañar tu estilo y expresar quién sos. Presentación cuidada y atención que te acompaña hasta la compra."
-              delay={0.3}
-            />
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-auto mt-7 max-w-md text-[15px] leading-relaxed text-tinta-500 lg:mx-0"
+          >
+            Prendas elegidas para acompañar tu estilo y expresar quién sos.
+            Presentación cuidada y atención que te acompaña hasta la compra.
+          </motion.p>
 
           </div>
         </div>

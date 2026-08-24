@@ -78,7 +78,9 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--color-blanco);
+  /* Crema y no blanco: es lo que se ve por detrás del fondo fijo de App
+     durante la carga, y evita el destello blanco. */
+  background-color: var(--color-crema);
   color: var(--color-tinta);
   font-family: var(--font-sans);
   font-weight: 400;

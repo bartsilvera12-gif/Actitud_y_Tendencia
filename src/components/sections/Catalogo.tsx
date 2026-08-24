@@ -75,7 +75,7 @@ export default function Catalogo() {
         <button
           type="button"
           onClick={cerrar}
-          className="group flex items-center gap-2 text-sm font-medium text-tinta-500 transition-colors hover:text-salvia-700"
+          className="group -my-2 flex min-h-10 items-center gap-2 py-2 text-sm font-medium text-tinta-500 transition-colors hover:text-salvia-700"
         >
           <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
           Volver al inicio
@@ -277,7 +277,8 @@ function Chip({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-full border px-4 py-1.5 text-[13px] font-medium transition-all duration-300",
+        // min-h de 40px en táctil: 33px queda por debajo del mínimo cómodo.
+        "inline-flex min-h-10 items-center rounded-full border px-4 py-1.5 text-[13px] font-medium transition-all duration-300 sm:min-h-0",
         activo
           ? cn(claseActiva, "shadow-sm")
           : "border-transparent bg-white/75 text-tinta hover:bg-white"
@@ -303,7 +304,7 @@ function Toggle({
       role="switch"
       aria-checked={activo}
       onClick={() => onChange(!activo)}
-      className="flex items-center justify-between gap-3 text-[13px] text-tinta"
+      className="flex min-h-10 items-center justify-between gap-3 text-[13px] text-tinta"
     >
       {label}
       <span

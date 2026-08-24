@@ -71,7 +71,7 @@ export default function ProductModal({ product, onClose }: Props) {
             <button
               onClick={onClose}
               aria-label="Cerrar"
-              className="absolute right-4 top-4 z-20 rounded-full bg-crema/80 p-2 text-tinta shadow-md backdrop-blur transition-colors hover:bg-crema"
+              className="absolute right-4 top-4 z-20 rounded-full bg-crema/80 p-2.5 text-tinta shadow-md backdrop-blur transition-colors hover:bg-crema"
             >
               <X className="h-5 w-5" />
             </button>
@@ -94,28 +94,34 @@ export default function ProductModal({ product, onClose }: Props) {
               <button
                 onClick={() => embla?.scrollPrev()}
                 aria-label="Anterior"
-                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-crema/85 p-2 text-tinta shadow-md backdrop-blur transition hover:bg-crema"
+                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-crema/85 p-2.5 text-tinta shadow-md backdrop-blur transition hover:bg-crema"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <button
                 onClick={() => embla?.scrollNext()}
                 aria-label="Siguiente"
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-crema/85 p-2 text-tinta shadow-md backdrop-blur transition hover:bg-crema"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-crema/85 p-2.5 text-tinta shadow-md backdrop-blur transition hover:bg-crema"
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
-              <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2">
+              {/* El punto mide 6px pero el botón que lo contiene llega a 32px de
+                  alto, para que se pueda tocar con el dedo sin agrandar el punto. */}
+              <div className="absolute inset-x-0 bottom-0 flex justify-center">
                 {product.fotos.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => scrollTo(i)}
                     aria-label={`Foto ${i + 1}`}
-                    className={cn(
-                      "h-1.5 rounded-full transition-all",
-                      i === selected ? "w-6 bg-salvia-700" : "w-1.5 bg-crema"
-                    )}
-                  />
+                    className="flex h-8 items-center px-1.5"
+                  >
+                    <span
+                      className={cn(
+                        "block h-1.5 rounded-full transition-all",
+                        i === selected ? "w-6 bg-salvia-700" : "w-1.5 bg-crema"
+                      )}
+                    />
+                  </button>
                 ))}
               </div>
             </div>

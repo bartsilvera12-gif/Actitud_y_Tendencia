@@ -8,48 +8,38 @@ import { waGeneral } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
 // `href` baja a una sección del home; `catalogo` abre la vista de catálogo completo.
-// `pill` es el estado normal (pastel al 25-60%) y `activo` el de "estás acá":
-// el mismo tono a full, con anillo y sombra para que el salto se note.
+// El color de cada pill es fijo: la sección activa se marca solo con un anillo
+// y el texto en semibold, sin cambiar de tono.
 const links = [
   {
     label: "Colección",
     href: "#coleccion",
-    pill: "bg-salvia/25 hover:bg-salvia/45",
-    activo: "bg-salvia ring-salvia-700",
-    dot: "bg-salvia-600",
-    dotActivo: "bg-salvia-900",
+    pill: "bg-salvia/80 hover:bg-salvia",
+    dot: "bg-salvia-700",
   },
   {
     label: "Categorías",
     href: "#categorias",
-    pill: "bg-menta/60 hover:bg-menta",
-    activo: "bg-menta ring-dorado",
-    dot: "bg-dorado",
-    dotActivo: "bg-dorado-700",
+    pill: "bg-menta hover:bg-menta/80",
+    dot: "bg-dorado-700",
   },
   {
     label: "Productos",
     catalogo: true,
-    pill: "bg-amarillo/35 hover:bg-amarillo/55",
-    activo: "bg-amarillo ring-dorado-700",
-    dot: "bg-amarillo",
-    dotActivo: "bg-dorado-700",
+    pill: "bg-amarillo/85 hover:bg-amarillo",
+    dot: "bg-dorado-700",
   },
   {
     label: "Nuevos ingresos",
     href: "#nuevos",
-    pill: "bg-rosa/30 hover:bg-rosa/50",
-    activo: "bg-rosa ring-tinta/30",
-    dot: "bg-rosa",
-    dotActivo: "bg-tinta",
+    pill: "bg-rosa/80 hover:bg-rosa",
+    dot: "bg-tinta/55",
   },
   {
     label: "Nosotras",
     href: "#manifiesto",
-    pill: "bg-lila/30 hover:bg-lila/50",
-    activo: "bg-lila ring-tinta/30",
-    dot: "bg-lila",
-    dotActivo: "bg-tinta",
+    pill: "bg-lila/80 hover:bg-lila",
+    dot: "bg-tinta/55",
   },
 ] as const;
 
@@ -107,14 +97,18 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-        scrolled
-          ? "border-b border-salvia/25 bg-crema/85 backdrop-blur-xl py-3"
-          : "bg-transparent py-5"
+        // Fondo blanco sólido siempre: en transparente la foto del hero se
+        // colaba por detrás de la barra y los pills perdían definición.
+        "fixed inset-x-0 top-0 z-50 border-b border-salvia/25 bg-white transition-all duration-500",
+        scrolled ? "py-3 shadow-sm" : "py-5"
       )}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 md:px-8">
-        <a href="#top" className="shrink-0" aria-label="Actitud & Tendencia — inicio">
+        <a
+          href="#top"
+          className="flex min-h-10 shrink-0 items-center"
+          aria-label="Actitud & Tendencia — inicio"
+        >
           <img
             src="/brand/logo-gold.png"
             alt="Actitud & Tendencia"
@@ -132,18 +126,14 @@ export default function Navbar() {
                   aria-current={activo ? "page" : undefined}
                   onClick={() => navegar(l)}
                   className={cn(
-                    "flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] tracking-wide text-tinta transition-all duration-300 hover:-translate-y-0.5 xl:px-4",
+                    "flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] tracking-wide text-tinta ring-inset transition-all duration-300 hover:-translate-y-0.5 xl:px-4",
+                    l.pill,
                     activo
-                      ? cn("font-semibold shadow-sm ring-2 ring-inset", l.activo)
-                      : cn("font-medium", l.pill)
+                      ? "font-semibold ring-2 ring-tinta/45"
+                      : "font-medium ring-1 ring-tinta/10"
                   )}
                 >
-                  <span
-                    className={cn(
-                      "h-1.5 w-1.5 rounded-full transition-colors duration-300",
-                      activo ? l.dotActivo : l.dot
-                    )}
-                  />
+                  <span className={cn("h-1.5 w-1.5 rounded-full", l.dot)} />
                   {l.label}
                 </button>
               </li>
@@ -151,20 +141,24 @@ export default function Navbar() {
           })}
         </ul>
 
-        <div className="flex items-center gap-3">
-          <Button
-            href={waGeneral()}
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="whatsapp"
-            size="sm"
-            className="hidden sm:inline-flex"
-          >
-            <WhatsAppIcon className="h-4 w-4" />
-            Consultar
-          </Button>
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          {/* El `hidden` va en este span y no en el Button: el Button ya trae
+              `inline-flex` en su base y esa clase le gana en la hoja de estilos,
+              con lo cual nunca se ocultaría. */}
+          <span className="hidden sm:inline-flex">
+            <Button
+              href={waGeneral()}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="whatsapp"
+              size="sm"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              Consultar
+            </Button>
+          </span>
           <button
-            className="rounded-full p-2 text-tinta lg:hidden"
+            className="-mr-1 rounded-full p-2.5 text-tinta lg:hidden"
             onClick={() => setOpen(true)}
             aria-label="Abrir menú"
           >
@@ -213,17 +207,10 @@ export default function Navbar() {
                         onClick={() => navegar(l)}
                         className={cn(
                           "flex w-full items-center gap-3 rounded-xl border-b border-salvia/15 px-3 py-4 text-left font-display text-2xl text-tinta transition-all duration-300",
-                          activo
-                            ? cn("ring-2 ring-inset", l.activo)
-                            : "hover:text-salvia-700"
+                          activo ? "ring-2 ring-inset ring-tinta/35" : "hover:text-salvia-700"
                         )}
                       >
-                        <span
-                          className={cn(
-                            "h-2.5 w-2.5 rounded-full",
-                            activo ? l.dotActivo : l.dot
-                          )}
-                        />
+                        <span className={cn("h-2.5 w-2.5 rounded-full", l.dot)} />
                         {l.label}
                       </button>
                     </li>

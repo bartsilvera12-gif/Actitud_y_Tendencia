@@ -26,7 +26,19 @@ function Contenido() {
   const { abierto } = useCatalogo();
 
   return (
-    <div className="relative min-h-screen bg-white">
+    <div className="relative min-h-screen">
+      {/* Fondo de página: base pastel + la foto floral en `multiply`. Como la
+          foto es casi blanca, el multiply deja pasar el pastel y solo dibuja
+          las flores. Va fija, así no se repite en una página de 8000px. */}
+      <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
+        <div className="absolute inset-0 bg-gradient-to-b from-menta/50 via-crema-200/60 to-lila/30" />
+        <img
+          src="/brand/fondo-floral.jpg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-multiply"
+        />
+      </div>
+
       <Navbar />
       {abierto ? (
         <main>
