@@ -47,9 +47,16 @@ type Link = (typeof links)[number];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
   const [seccionActiva, setSeccionActiva] = useState<string | null>(null);
-  const { abierto, abrir, irASeccion } = useCatalogo();
+  // El estado del menú vive en el contexto porque el botón flotante de
+  // WhatsApp, que está en App, necesita saber si el menú está abierto.
+  const {
+    abierto,
+    abrir,
+    irASeccion,
+    menuAbierto: open,
+    setMenuAbierto: setOpen,
+  } = useCatalogo();
 
   /** Un mismo handler para las dos variantes de link (sección del home o catálogo). */
   const navegar = (link: Link) => {

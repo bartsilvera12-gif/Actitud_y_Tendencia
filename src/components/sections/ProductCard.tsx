@@ -44,10 +44,12 @@ export default function ProductCard({ product, onOpen }: Props) {
           />
         </div>
 
+        {/* Abajo y no arriba: en la card angosta del celular, el badge en la
+            esquina superior caía justo sobre la cara de la modelo. */}
         {product.nuevo && (
           <span
             className={cn(
-              "absolute left-3 top-3 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] shadow-sm",
+              "absolute bottom-3 left-3 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] shadow-sm",
               t.badge
             )}
           >
@@ -74,10 +76,12 @@ export default function ProductCard({ product, onOpen }: Props) {
       </div>
       </SpotlightCard>
 
-      {/* Flor de la categoría asomando en la esquina (fuera del recorte de la card) */}
+      {/* Flor de la categoría asomando en la esquina (fuera del recorte de la card).
+          En el celular no se muestra: con dos columnas angostas se salía de la
+          card y se metía sobre la de al lado o fuera de la pantalla. */}
       <FloralAccent
         flor={t.flor}
-        className="-right-3 -top-4 z-20 w-14 drop-shadow-sm md:w-16"
+        className="-right-3 -top-4 z-20 hidden w-14 drop-shadow-sm sm:block md:w-16"
         rotate={14}
       />
     </div>

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
@@ -12,6 +11,7 @@ import InstagramFeed from "@/components/sections/InstagramFeed";
 import WhatsAppCTA from "@/components/sections/WhatsAppCTA";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { CatalogoProvider, useCatalogo } from "@/lib/catalogo";
+import { cn } from "@/lib/utils";
 import { waGeneral } from "@/lib/whatsapp";
 
 export default function App() {
@@ -23,7 +23,7 @@ export default function App() {
 }
 
 function Contenido() {
-  const { abierto } = useCatalogo();
+  const { abierto, menuAbierto } = useCatalogo();
 
   return (
     <div className="relative min-h-screen">
@@ -58,22 +58,25 @@ function Contenido() {
       )}
       <Footer />
 
-      {/* Botón flotante de WhatsApp */}
-      <motion.a
+      {/* Botón flotante de WhatsApp. Se esconde con el menú abierto: ahí se
+          superponía al "Escribinos por WhatsApp" del propio menú. */}
+      <a
         href={waGeneral()}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Escribinos por WhatsApp"
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.2, type: "spring", stiffness: 260, damping: 20 }}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.94 }}
-        className="fixed bottom-5 right-5 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-salvia-600 text-crema shadow-[0_12px_30px_-6px_rgba(94,138,111,0.7)]"
+        aria-hidden={menuAbierto}
+        tabIndex={menuAbierto ? -1 : 0}
+        className={cn(
+          "fixed bottom-5 right-5 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-salvia-600 text-crema shadow-[0_12px_30px_-6px_rgba(94,138,111,0.7)] transition-all duration-300 hover:scale-105 active:scale-95",
+          menuAbierto
+            ? "pointer-events-none scale-50 opacity-0"
+            : "scale-100 opacity-100"
+        )}
       >
         <span className="absolute inset-0 animate-ping rounded-full bg-salvia-600 opacity-30" />
         <WhatsAppIcon className="relative h-7 w-7" />
-      </motion.a>
+      </a>
     </div>
   );
 }

@@ -22,12 +22,17 @@ type CatalogoCtx = {
   cerrar: () => void;
   /** Vuelve al home (cerrando el catálogo si hacía falta) y baja a la sección. */
   irASeccion: (href: string) => void;
+  /** Menú mobile abierto. Lo escribe el navbar y lo lee el botón flotante de
+   *  WhatsApp, que si no se superpone al "Escribinos por WhatsApp" del menú. */
+  menuAbierto: boolean;
+  setMenuAbierto: (v: boolean) => void;
 };
 
 const Ctx = createContext<CatalogoCtx | null>(null);
 
 export function CatalogoProvider({ children }: { children: ReactNode }) {
   const [abierto, setAbierto] = useState(false);
+  const [menuAbierto, setMenuAbierto] = useState(false);
   const [categoriaInicial, setCategoriaInicial] = useState("Todos");
   // Scroll del home al momento de abrir, para devolver al usuario donde estaba.
   const scrollPrevio = useRef(0);
@@ -72,8 +77,16 @@ export function CatalogoProvider({ children }: { children: ReactNode }) {
   }, [abierto, alVolver]);
 
   const value = useMemo(
-    () => ({ abierto, categoriaInicial, abrir, cerrar, irASeccion }),
-    [abierto, categoriaInicial, abrir, cerrar, irASeccion]
+    () => ({
+      abierto,
+      categoriaInicial,
+      abrir,
+      cerrar,
+      irASeccion,
+      menuAbierto,
+      setMenuAbierto,
+    }),
+    [abierto, categoriaInicial, abrir, cerrar, irASeccion, menuAbierto]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
