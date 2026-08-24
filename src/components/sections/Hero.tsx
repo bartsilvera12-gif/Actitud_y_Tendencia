@@ -1,11 +1,6 @@
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import SplitText from "@/components/reactbits/SplitText";
 import BlurText from "@/components/reactbits/BlurText";
 import ShinyText from "@/components/reactbits/ShinyText";
-import Button from "@/components/ui/Button";
-import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
-import { waGeneral } from "@/lib/whatsapp";
 
 export default function Hero() {
   return (
@@ -55,27 +50,6 @@ export default function Hero() {
             />
           </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            className="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
-          >
-            <Button href="#coleccion" variant="salvia" size="lg">
-              Descubrir colección
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button
-              href={waGeneral()}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="outline"
-              size="lg"
-            >
-              <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
-              Comprar por WhatsApp
-            </Button>
-          </motion.div>
           </div>
         </div>
       </div>

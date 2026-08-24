@@ -27,7 +27,7 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <img
-              src="/brand/logo-cream.png"
+              src="/brand/logo-gold.png"
               alt="Actitud & Tendencia"
               className="h-11 w-auto"
             />
