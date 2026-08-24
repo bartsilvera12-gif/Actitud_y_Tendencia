@@ -11,7 +11,6 @@ import InstagramFeed from "@/components/sections/InstagramFeed";
 import WhatsAppCTA from "@/components/sections/WhatsAppCTA";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { CatalogoProvider, useCatalogo } from "@/lib/catalogo";
-import { cn } from "@/lib/utils";
 import { waGeneral } from "@/lib/whatsapp";
 
 export default function App() {
@@ -58,25 +57,21 @@ function Contenido() {
       )}
       <Footer />
 
-      {/* Botón flotante de WhatsApp. Se esconde con el menú abierto: ahí se
-          superponía al "Escribinos por WhatsApp" del propio menú. */}
-      <a
-        href={waGeneral()}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Escribinos por WhatsApp"
-        aria-hidden={menuAbierto}
-        tabIndex={menuAbierto ? -1 : 0}
-        className={cn(
-          "fixed bottom-5 right-5 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-salvia-600 text-crema shadow-[0_12px_30px_-6px_rgba(94,138,111,0.7)] transition-all duration-300 hover:scale-105 active:scale-95",
-          menuAbierto
-            ? "pointer-events-none scale-50 opacity-0"
-            : "scale-100 opacity-100"
-        )}
-      >
-        <span className="absolute inset-0 animate-ping rounded-full bg-salvia-600 opacity-30" />
-        <WhatsAppIcon className="relative h-7 w-7" />
-      </a>
+      {/* Botón flotante de WhatsApp. Con el menú abierto no se renderiza: ahí
+          se superponía al "Escribinos por WhatsApp" del propio menú. Se
+          desmonta en vez de atenuarse para que no dependa de una transición. */}
+      {!menuAbierto && (
+        <a
+          href={waGeneral()}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Escribinos por WhatsApp"
+          className="fixed bottom-5 right-5 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-salvia-600 text-crema shadow-[0_12px_30px_-6px_rgba(94,138,111,0.7)] transition-transform duration-300 hover:scale-105 active:scale-95"
+        >
+          <span className="absolute inset-0 animate-ping rounded-full bg-salvia-600 opacity-30" />
+          <WhatsAppIcon className="relative h-7 w-7" />
+        </a>
+      )}
     </div>
   );
 }

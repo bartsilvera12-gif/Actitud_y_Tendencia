@@ -62,7 +62,11 @@ export default function ProductModal({ product, onClose }: Props) {
             onClick={onClose}
           />
           <motion.div
-            className="relative z-10 grid max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-3xl bg-crema shadow-2xl md:grid-cols-2"
+            // En una columna (celular) scrollea el modal entero: con
+            // `overflow-hidden` el precio, los talles y el botón quedaban
+            // recortados y sin forma de llegar a ellos. En dos columnas
+            // (desktop) el que scrollea es el panel de detalle.
+            className="relative z-10 grid max-h-[90dvh] w-full max-w-4xl overflow-y-auto overscroll-contain rounded-3xl bg-crema shadow-2xl md:grid-cols-2 md:overflow-hidden"
             initial={{ opacity: 0, y: 30, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
@@ -71,7 +75,9 @@ export default function ProductModal({ product, onClose }: Props) {
             <button
               onClick={onClose}
               aria-label="Cerrar"
-              className="absolute right-4 top-4 z-20 rounded-full bg-crema/80 p-2.5 text-tinta shadow-md backdrop-blur transition-colors hover:bg-crema"
+              // `sticky` y no `absolute`: con el modal scrolleando en el
+              // celular, en absolute la X se iba de pantalla al bajar.
+              className="sticky top-4 z-30 -mb-14 ml-auto mr-4 h-fit w-fit rounded-full bg-crema/80 p-2.5 text-tinta shadow-md backdrop-blur transition-colors hover:bg-crema md:absolute md:right-4 md:top-4 md:m-0"
             >
               <X className="h-5 w-5" />
             </button>
@@ -85,6 +91,8 @@ export default function ProductModal({ product, onClose }: Props) {
                       <img
                         src={src}
                         alt={`${product.nombre} ${i + 1}`}
+                        // 2:3 es la proporción nativa de las fotos, así que
+                        // `cover` acá no recorta nada ni deja bandas.
                         className="aspect-[2/3] w-full object-cover"
                       />
                     </div>
@@ -127,7 +135,7 @@ export default function ProductModal({ product, onClose }: Props) {
             </div>
 
             {/* Detalle */}
-            <div className="flex flex-col overflow-y-auto p-7 md:p-9">
+            <div className="flex flex-col p-7 md:overflow-y-auto md:p-9">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-salvia-700">
                 {product.categoria} · {product.color}
               </p>
