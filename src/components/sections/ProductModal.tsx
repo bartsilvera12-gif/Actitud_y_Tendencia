@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Heart, ShoppingBag, X } from "lucide-react";
-import type { Product } from "@/data/products";
+import type { Product } from "@/types/contenido";
 import { useTienda } from "@/lib/tienda";
 import { cn, formatGs } from "@/lib/utils";
 

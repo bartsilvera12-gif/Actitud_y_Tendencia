@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import { products } from "@/data/products";
+import { useDatos } from "@/lib/datos";
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import TiltedCard from "@/components/reactbits/TiltedCard";
 import ParallaxImage from "@/components/reactbits/ParallaxImage";
@@ -8,7 +8,11 @@ import FloralAccent from "@/components/ui/FloralAccent";
 import { cn, formatGs } from "@/lib/utils";
 
 export default function NuevosIngresos() {
-  const destacados = products.filter((p) => p.destacado).slice(0, 2);
+  const { productos, seccion } = useDatos();
+  const s = seccion("nuevos_ingresos");
+  // Qué prendas aparecen se decide desde el panel con el flag `destacado`.
+  const destacados = productos.filter((p) => p.destacado).slice(0, 2);
+  if (!s || destacados.length === 0) return null;
 
   return (
     <section
@@ -22,13 +26,15 @@ export default function NuevosIngresos() {
         <div className="flex flex-col items-center text-center">
           <ScrollReveal>
             <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-salvia-700">
-              Nuevos ingresos
+              {s.eyebrow ?? "Nuevos ingresos"}
             </p>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
             <h2 className="mt-3 font-display text-4xl text-tinta sm:text-5xl md:text-6xl">
-              Lo último de la línea{" "}
-              <span className="italic text-salvia-700">Giverny</span>
+              {s.titulo ?? ""}{" "}
+              {s.tituloDestacado && (
+                <span className="italic text-salvia-700">{s.tituloDestacado}</span>
+              )}
             </h2>
           </ScrollReveal>
         </div>

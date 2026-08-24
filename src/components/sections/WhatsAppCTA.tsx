@@ -3,9 +3,14 @@ import SplitText from "@/components/reactbits/SplitText";
 import Button from "@/components/ui/Button";
 import FloralAccent from "@/components/ui/FloralAccent";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
+import { useDatos } from "@/lib/datos";
 import { waGeneral } from "@/lib/whatsapp";
 
 export default function WhatsAppCTA() {
+  const { config, seccion } = useDatos();
+  const s = seccion("whatsapp_cta");
+  if (!s) return null;
+
   return (
     <section className="relative overflow-hidden py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
@@ -22,12 +27,12 @@ export default function WhatsAppCTA() {
 
           <div className="relative">
             <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.35em] text-menta">
-              Atención personalizada
+              {s.eyebrow ?? ""}
             </p>
             <h2 className="mx-auto max-w-3xl font-display text-[2.6rem] font-light leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl">
-              <SplitText text="¿Viste algo que" by="word" />
+              <SplitText text={s.titulo ?? ""} by="word" />
               <span className="mt-1 block italic text-[#f3e3b8]">
-                <SplitText text="te guste?" by="word" delay={0.15} />
+                <SplitText text={s.tituloDestacado ?? ""} by="word" delay={0.15} />
               </span>
             </h2>
 
@@ -42,14 +47,13 @@ export default function WhatsAppCTA() {
 
             <ScrollReveal delay={0.12}>
               <p className="mx-auto mt-6 max-w-md text-center text-[15px] leading-relaxed text-white/90">
-                Escribinos por WhatsApp y te ayudamos a elegir tu talle, ver
-                disponibilidad y coordinar el envío. Atención cercana y sin vueltas.
+                {s.descripcion}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <div className="mt-9 flex justify-center">
                 <Button
-                  href={waGeneral()}
+                  href={waGeneral(config?.whatsappNumero, config?.whatsappMensajeGeneral)}
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="cream"

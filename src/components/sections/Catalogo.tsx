@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, SlidersHorizontal, X } from "lucide-react";
-import { categorias, lineas, products, type Product } from "@/data/products";
+import { useDatos } from "@/lib/datos";
+import type { Product } from "@/types/contenido";
 import ProductCard from "@/components/sections/ProductCard";
 import ProductModal from "@/components/sections/ProductModal";
 import FloralAccent from "@/components/ui/FloralAccent";
 import { useCatalogo } from "@/lib/catalogo";
-import { themeFor } from "@/lib/categories";
+import { temaDe } from "@/lib/categories";
 import { cn, formatGs } from "@/lib/utils";
 
 type Orden = "recientes" | "menor" | "mayor";
@@ -17,15 +18,20 @@ const ordenes: Array<{ id: Orden; label: string }> = [
   { id: "mayor", label: "Mayor precio" },
 ];
 
-const precioTope = Math.max(...products.map((p) => p.precio));
-const precioPiso = Math.min(...products.map((p) => p.precio));
-
 export default function Catalogo() {
   const { categoriaInicial, cerrar } = useCatalogo();
+  const { productos, categorias, lineas, cargando } = useDatos();
+
+  // El rango de precios sale del catálogo real, que ahora es dinámico.
+  const [precioPiso, precioTope] = useMemo(() => {
+    if (productos.length === 0) return [0, 0];
+    const ps = productos.map((p) => p.precio);
+    return [Math.min(...ps), Math.max(...ps)];
+  }, [productos]);
 
   const [categoria, setCategoria] = useState(categoriaInicial);
   const [linea, setLinea] = useState("Todas");
-  const [precioMax, setPrecioMax] = useState(precioTope);
+  const [precioMax, setPrecioMax] = useState<number | null>(null);
   const [orden, setOrden] = useState<Orden>("recientes");
   const [soloDestacados, setSoloDestacados] = useState(false);
   const [soloNuevos, setSoloNuevos] = useState(false);
@@ -35,23 +41,23 @@ export default function Catalogo() {
   useEffect(() => setCategoria(categoriaInicial), [categoriaInicial]);
 
   const visibles = useMemo(() => {
-    const filtrados = products.filter(
+    const filtrados = productos.filter(
       (p) =>
         (categoria === "Todos" || p.categoria === categoria) &&
         (linea === "Todas" || p.linea === linea) &&
-        p.precio <= precioMax &&
+        p.precio <= (precioMax ?? precioTope) &&
         (!soloDestacados || p.destacado) &&
         (!soloNuevos || p.nuevo)
     );
     if (orden === "menor") return [...filtrados].sort((a, b) => a.precio - b.precio);
     if (orden === "mayor") return [...filtrados].sort((a, b) => b.precio - a.precio);
     return filtrados; // "recientes" = orden curado del catálogo
-  }, [categoria, linea, precioMax, orden, soloDestacados, soloNuevos]);
+  }, [productos, categoria, linea, precioMax, precioTope, orden, soloDestacados, soloNuevos]);
 
   const limpio =
     categoria === "Todos" &&
     linea === "Todas" &&
-    precioMax === precioTope &&
+    (precioMax === null || precioMax === precioTope) &&
     orden === "recientes" &&
     !soloDestacados &&
     !soloNuevos;
@@ -59,7 +65,7 @@ export default function Catalogo() {
   const limpiar = () => {
     setCategoria("Todos");
     setLinea("Todas");
-    setPrecioMax(precioTope);
+    setPrecioMax(null);
     setOrden("recientes");
     setSoloDestacados(false);
     setSoloNuevos(false);
@@ -105,11 +111,11 @@ export default function Catalogo() {
           </p>
 
           <FilaChips titulo="Categoría">
-            {["Todos", ...categorias].map((c) => (
+            {["Todos", ...categorias.map((c) => c.nombre)].map((c) => (
               <Chip
                 key={c}
                 activo={categoria === c}
-                claseActiva={themeFor(c).chip}
+                claseActiva={temaDe(c, categorias).chip}
                 onClick={() => setCategoria(c)}
               >
                 {c}
@@ -118,7 +124,7 @@ export default function Catalogo() {
           </FilaChips>
 
           <FilaChips titulo="Línea">
-            {["Todas", ...lineas].map((l) => (
+            {["Todas", ...lineas.map((l) => l.nombre)].map((l) => (
               <Chip
                 key={l}
                 activo={linea === l}
@@ -156,7 +162,7 @@ export default function Catalogo() {
                 <div className="flex items-baseline justify-between">
                   <p className="text-[13px] font-semibold text-tinta">Precio máximo</p>
                   <p className="text-[13px] font-semibold text-salvia-700">
-                    {formatGs(precioMax)}
+                    {formatGs(precioMax ?? precioTope)}
                   </p>
                 </div>
                 <input
@@ -164,7 +170,7 @@ export default function Catalogo() {
                   min={precioPiso}
                   max={precioTope}
                   step={10000}
-                  value={precioMax}
+                  value={precioMax ?? precioTope}
                   onChange={(e) => setPrecioMax(Number(e.target.value))}
                   aria-label="Precio máximo"
                   className="mt-3 w-full accent-salvia-600"

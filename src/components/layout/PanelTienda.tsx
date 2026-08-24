@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
-import { products } from "@/data/products";
+import { useDatos } from "@/lib/datos";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { useTienda } from "@/lib/tienda";
 import { waPedido } from "@/lib/whatsapp";
@@ -22,8 +22,9 @@ export default function PanelTienda() {
     abrirPanel,
   } = useTienda();
 
+  const { productos, config } = useDatos();
   const esCarrito = panel === "carrito";
-  const favoritados = products.filter((p) => favoritos.includes(p.id));
+  const favoritados = productos.filter((p) => favoritos.includes(p.id));
 
   return (
     <AnimatePresence>
@@ -181,6 +182,7 @@ export default function PanelTienda() {
 
                 <a
                   href={waPedido(
+                    config?.whatsappNumero ?? null,
                     lineas.map((l) => ({
                       nombre: l.producto.nombre,
                       talle: l.talle,

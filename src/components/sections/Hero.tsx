@@ -2,15 +2,23 @@ import { motion } from "framer-motion";
 import Reveal from "@/components/reactbits/Reveal";
 import ShinyText from "@/components/reactbits/ShinyText";
 import FloralAccent from "@/components/ui/FloralAccent";
+import { useDatos } from "@/lib/datos";
 
-// Copy propio del sitio (los mismos claims que usa TrustMarquee).
-const chips = [
-  { label: "Nuevos ingresos cada semana", pill: "bg-rosa/55" },
-  { label: "Atención por WhatsApp", pill: "bg-menta" },
-  { label: "Prendas seleccionadas", pill: "bg-amarillo/55" },
-];
+// Pastel por clave: Tailwind purga lo que no encuentre escrito.
+const PILL: Record<string, string> = {
+  rosa: "bg-rosa/55",
+  menta: "bg-menta",
+  amarillo: "bg-amarillo/55",
+  lila: "bg-lila/55",
+  salvia: "bg-salvia/55",
+  dorado: "bg-dorado/40",
+};
 
 export default function Hero() {
+  const { hero, seccion } = useDatos();
+  const s = seccion("hero");
+  if (!s || !hero) return null;
+
   return (
     // Padding simétrico: con `items-center`, un pt distinto al pb corre el bloque
     // del centro real. `svh` y no `vh` por la barra del navegador en móvil.
@@ -20,7 +28,7 @@ export default function Hero() {
     >
       {/* Fondo con un Ken Burns muy lento: da movimiento continuo sin distraer. */}
       <motion.img
-        src="/brand/hero-fondo.png"
+        src={hero.imagenUrl ?? "/brand/hero-fondo.png"}
         alt=""
         aria-hidden
         loading="eager"
@@ -43,14 +51,14 @@ export default function Hero() {
         <div className="lg:w-[76%]">
           <div className="mx-auto max-w-xl text-center lg:text-left">
             <h1 className="font-display text-[3.1rem] leading-[0.98] tracking-tight text-tinta sm:text-6xl lg:text-[4.6rem]">
-              <Reveal delay={0.1}>Vestí tu</Reveal>
+              <Reveal delay={0.1}>{hero.tituloLinea1}</Reveal>
               <Reveal delay={0.25} className="italic text-salvia-700">
-                actitud.
+                {hero.tituloDestacado1}
               </Reveal>
               <Reveal delay={0.4}>
-                Marcá{" "}
+                {hero.tituloLinea2}{" "}
                 <span className="relative inline-block italic">
-                  <ShinyText>tendencia.</ShinyText>
+                  <ShinyText>{hero.tituloDestacado2 ?? ""}</ShinyText>
                   {/* Subrayado que se dibuja solo, al terminar el reveal. */}
                   <motion.span
                     aria-hidden
@@ -69,16 +77,15 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.95, ease: [0.16, 1, 0.3, 1] }}
               className="mx-auto mt-7 max-w-md text-[15px] leading-relaxed text-tinta-500 lg:mx-0"
             >
-              Prendas elegidas para acompañar tu estilo y expresar quién sos.
-              Presentación cuidada y atención que te acompaña hasta la compra.
+              {hero.descripcion}
             </motion.p>
 
             {/* En pantallas bajas (netbooks de 600px) los chips harían que la
                 portada pase de una pantalla, así que ahí no se muestran. */}
             <ul className="mt-7 flex flex-wrap justify-center gap-2 [@media(max-height:720px)]:hidden lg:justify-start">
-              {chips.map((c, i) => (
+              {hero.chips.map((c, i) => (
                 <motion.li
-                  key={c.label}
+                  key={c.id}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -86,9 +93,9 @@ export default function Hero() {
                     delay: 1.15 + i * 0.12,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className={`rounded-full px-4 py-2 text-xs font-medium text-salvia-900 ${c.pill}`}
+                  className={`rounded-full px-4 py-2 text-xs font-medium text-salvia-900 ${PILL[c.color] ?? PILL.menta}`}
                 >
-                  {c.label}
+                  {c.texto}
                 </motion.li>
               ))}
             </ul>

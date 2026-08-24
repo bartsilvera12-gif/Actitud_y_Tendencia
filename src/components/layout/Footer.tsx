@@ -1,17 +1,13 @@
+import type React from "react";
 import { Instagram, MapPin } from "lucide-react";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { FacebookIcon, TikTokIcon } from "@/components/ui/SocialIcons";
-import {
-  FACEBOOK_NAME,
-  FACEBOOK_URL,
-  INSTAGRAM_URL,
-  INSTAGRAM_USER,
-  TIKTOK_URL,
-  TIKTOK_USER,
-  WHATSAPP_DISPLAY,
-  waGeneral,
-} from "@/lib/whatsapp";
+import { useDatos } from "@/lib/datos";
+import { waGeneral } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
+
+/** Acepta tanto los iconos de lucide (forwardRef) como los SVG propios. */
+type IconoSvg = React.ComponentType<{ className?: string }>;
 
 // Un pastel de la paleta por link, para que la navegación no sea una lista gris.
 const navegacion = [
@@ -21,13 +17,6 @@ const navegacion = [
   { label: "Instagram", href: "#instagram", pill: "bg-amarillo/45 hover:bg-amarillo/70", dot: "bg-dorado" },
 ];
 
-const contacto = [
-  { Icon: WhatsAppIcon, texto: WHATSAPP_DISPLAY, href: waGeneral(), chip: "bg-salvia/55" },
-  { Icon: Instagram, texto: `@${INSTAGRAM_USER}`, href: INSTAGRAM_URL, chip: "bg-rosa/55" },
-  { Icon: FacebookIcon, texto: FACEBOOK_NAME, href: FACEBOOK_URL, chip: "bg-lila/55" },
-  { Icon: TikTokIcon, texto: `@${TIKTOK_USER}`, href: TIKTOK_URL, chip: "bg-amarillo/55" },
-];
-
 const valores = [
   { label: "Fresca", pill: "bg-menta" },
   { label: "Elegante", pill: "bg-rosa/70" },
@@ -35,6 +24,31 @@ const valores = [
 ];
 
 export default function Footer() {
+  const { redes, config } = useDatos();
+
+  // Iconos y pastel por tipo, para que el footer siga las redes de la base.
+  const ICONO: Record<string, { Icon: IconoSvg; chip: string }> = {
+    whatsapp: { Icon: WhatsAppIcon, chip: "bg-salvia/55" },
+    instagram: { Icon: Instagram, chip: "bg-rosa/55" },
+    facebook: { Icon: FacebookIcon, chip: "bg-lila/55" },
+    tiktok: { Icon: TikTokIcon, chip: "bg-amarillo/55" },
+  };
+
+  const contacto = [
+    {
+      Icon: WhatsAppIcon,
+      texto: config?.whatsappDisplay ?? "",
+      href: waGeneral(config?.whatsappNumero, config?.whatsappMensajeGeneral),
+      chip: "bg-salvia/55",
+    },
+    ...redes.map((r) => ({
+      Icon: ICONO[r.tipo]?.Icon ?? Instagram,
+      texto: r.usuario ? "@" + r.usuario : (r.nombre ?? r.tipo),
+      href: r.url,
+      chip: ICONO[r.tipo]?.chip ?? "bg-menta",
+    })),
+  ];
+
   return (
     <footer className="relative overflow-hidden bg-gradient-to-br from-menta/75 via-crema-200/60 to-lila/45 text-tinta">
       <div
@@ -51,8 +65,8 @@ export default function Footer() {
           {/* Marca */}
           <div>
             <img
-              src="/brand/logo-gold.png"
-              alt="Actitud & Tendencia"
+              src={config?.logoUrl ?? "/brand/logo-gold.png"}
+              alt={config?.nombreMarca ?? "Actitud & Tendencia"}
               className="h-11 w-auto"
             />
             <p className="mt-5 max-w-xs font-display text-2xl leading-snug text-tinta">
@@ -125,7 +139,7 @@ export default function Footer() {
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-menta text-salvia-900">
                   <MapPin className="h-4 w-4" />
                 </span>
-                San Lorenzo · Paraguay
+                {config?.ubicacion ?? ""}
               </li>
             </ul>
           </div>
@@ -135,12 +149,12 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()}{" "}
             <span className="font-medium text-salvia-700">
-              Actitud &amp; Tendencia
+              {config?.nombreMarca ?? "Actitud & Tendencia"}
             </span>{" "}
             · Boutique de moda femenina.
           </p>
           <p aria-hidden>Hecho con 🌷 en Paraguay</p>
-          <p className="sr-only">WhatsApp {WHATSAPP_DISPLAY}</p>
+          <p className="sr-only">WhatsApp {config?.whatsappDisplay ?? ""}</p>
         </div>
       </div>
     </footer>

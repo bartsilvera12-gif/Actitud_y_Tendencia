@@ -11,22 +11,57 @@ import InstagramFeed from "@/components/sections/InstagramFeed";
 import WhatsAppCTA from "@/components/sections/WhatsAppCTA";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import PanelTienda from "@/components/layout/PanelTienda";
+import { ErrorCarga } from "@/components/ui/Skeleton";
 import { CatalogoProvider, useCatalogo } from "@/lib/catalogo";
+import { DatosProvider, useDatos } from "@/lib/datos";
 import { TiendaProvider } from "@/lib/tienda";
 import { waGeneral } from "@/lib/whatsapp";
 
 export default function App() {
   return (
-    <CatalogoProvider>
-      <TiendaProvider>
-        <Contenido />
-      </TiendaProvider>
-    </CatalogoProvider>
+    // DatosProvider va arriba: TiendaProvider resuelve el carrito contra el
+    // catálogo, y las secciones leen sus textos de la base.
+    <DatosProvider>
+      <CatalogoProvider>
+        <TiendaProvider>
+          <Contenido />
+        </TiendaProvider>
+      </CatalogoProvider>
+    </DatosProvider>
   );
 }
 
+// Cada clave de sección con su componente. El orden y la visibilidad los
+// decide `secciones_home`, no este archivo.
+// Orden por defecto: si la base no responde, el sitio igual se arma en vez
+// de quedar sin secciones.
+const ORDEN_POR_DEFECTO = [
+  "hero", "categorias", "productos", "nuevos_ingresos",
+  "manifesto", "lookbook", "redes", "whatsapp_cta",
+] as const;
+
+const SECCIONES: Record<string, () => JSX.Element | null> = {
+  hero: Hero,
+  categorias: Categorias,
+  productos: Products,
+  nuevos_ingresos: NuevosIngresos,
+  manifesto: Manifesto,
+  lookbook: Lookbook,
+  redes: InstagramFeed,
+  whatsapp_cta: WhatsAppCTA,
+};
+
 function Contenido() {
   const { abierto, menuAbierto } = useCatalogo();
+  const { secciones, config, error } = useDatos();
+
+  const claves =
+    secciones.length > 0
+      ? secciones
+          .filter((s) => SECCIONES[s.clave])
+          .sort((a, b) => a.orden - b.orden)
+          .map((s) => s.clave)
+      : ORDEN_POR_DEFECTO;
 
   return (
     <div className="relative min-h-screen">
@@ -49,14 +84,15 @@ function Contenido() {
         </main>
       ) : (
         <main>
-          <Hero />
-          <Categorias />
-          <Products />
-          <NuevosIngresos />
-          <Manifesto />
-          <Lookbook />
-          <InstagramFeed />
-          <WhatsAppCTA />
+          {error && (
+            <div className="px-5 pt-28 md:px-8">
+              <ErrorCarga mensaje={error} />
+            </div>
+          )}
+          {claves.map((clave) => {
+            const Seccion = SECCIONES[clave];
+            return <Seccion key={clave} />;
+          })}
         </main>
       )}
       <Footer />
@@ -68,7 +104,7 @@ function Contenido() {
           desmonta en vez de atenuarse para que no dependa de una transición. */}
       {!menuAbierto && (
         <a
-          href={waGeneral()}
+          href={waGeneral(config?.whatsappNumero, config?.whatsappMensajeGeneral)}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Escribinos por WhatsApp"

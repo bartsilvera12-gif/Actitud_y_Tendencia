@@ -1,43 +1,55 @@
-import type { Product } from "@/data/products";
+import type { Product } from "@/types/contenido";
 import { formatGs } from "@/lib/utils";
 
-/** Contacto y redes de la boutique. */
-export const WHATSAPP_NUMBER = "595985960203";
-export const WHATSAPP_DISPLAY = "+595 985 960 203";
+/**
+ * Armado de links de WhatsApp.
+ *
+ * El número ya no es una constante: viene de `configuracion_sitio` y se pasa
+ * como argumento. Los valores de acá abajo son solo el respaldo para cuando
+ * la configuración todavía no cargó, y coinciden con los que estaban fijos
+ * antes para que nada cambie de comportamiento.
+ */
+export const WHATSAPP_FALLBACK = "595985960203";
 
-export const INSTAGRAM_USER = "actitud_tendencia.sdg";
-export const INSTAGRAM_URL = "https://instagram.com/actitud_tendencia.sdg";
-
-export const FACEBOOK_NAME = "Actitud y Tendencia";
-export const FACEBOOK_URL = "https://www.facebook.com/share/1Gcj44PBMg/?mibextid=wwXIfr";
-
-export const TIKTOK_USER = "actitudytendencia";
-export const TIKTOK_URL = "https://tiktok.com/@actitudytendencia";
-
-/** Link de WhatsApp con mensaje pre-cargado. */
-export function waLink(message: string): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+/** wa.me exige solo dígitos: sin +, espacios ni guiones. */
+export function normalizarNumero(numero: string | null | undefined): string {
+  const limpio = (numero ?? "").replace(/\D/g, "");
+  return limpio.length >= 8 ? limpio : WHATSAPP_FALLBACK;
 }
 
-/** Consulta de un producto puntual. */
-export function waProduct(product: Product, talle?: string): string {
-  const talleTxt = talle ? ` en talle ${talle}` : "";
-  const msg =
-    `¡Hola Actitud & Tendencia! 🌷\n` +
-    `Me interesa *${product.nombre}*${talleTxt} (${formatGs(product.precio)}).\n` +
-    `¿Tienen disponibilidad?`;
-  return waLink(msg);
+export function waLink(numero: string | null | undefined, mensaje: string): string {
+  return `https://wa.me/${normalizarNumero(numero)}?text=${encodeURIComponent(mensaje)}`;
 }
 
-/** Consulta general. */
-export function waGeneral(): string {
+/** Consulta general. El mensaje también es editable desde el panel. */
+export function waGeneral(
+  numero: string | null | undefined,
+  mensaje?: string | null
+): string {
   return waLink(
-    "¡Hola Actitud & Tendencia! 🌷 Quería consultar por la nueva colección."
+    numero,
+    mensaje ?? "¡Hola Actitud & Tendencia! 🌷 Quería consultar por la nueva colección."
   );
 }
 
-/** Pedido completo del carrito, listo para enviar. */
+/** Consulta por una prenda puntual. */
+export function waProduct(
+  numero: string | null | undefined,
+  product: Product,
+  talle?: string
+): string {
+  const talleTxt = talle ? ` en talle ${talle}` : "";
+  return waLink(
+    numero,
+    `¡Hola Actitud & Tendencia! 🌷\n` +
+      `Me interesa *${product.nombre}*${talleTxt} (${formatGs(product.precio)}).\n` +
+      `¿Tienen disponibilidad?`
+  );
+}
+
+/** Pedido completo del carrito. */
 export function waPedido(
+  numero: string | null | undefined,
   lineas: Array<{ nombre: string; talle: string; cantidad: number; subtotal: number }>,
   total: number
 ): string {
@@ -48,6 +60,7 @@ export function waPedido(
     )
     .join("\n");
   return waLink(
+    numero,
     `¡Hola Actitud & Tendencia! 🌷\nQuiero hacer este pedido:\n\n${detalle}\n\n*Total: ${formatGs(total)}*`
   );
 }

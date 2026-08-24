@@ -1,8 +1,9 @@
 import { Heart, Plus } from "lucide-react";
-import type { Product } from "@/data/products";
+import type { Product } from "@/types/contenido";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import FloralAccent from "@/components/ui/FloralAccent";
-import { themeFor } from "@/lib/categories";
+import { temaDe } from "@/lib/categories";
+import { useDatos } from "@/lib/datos";
 import { useTienda } from "@/lib/tienda";
 import { cn, formatGs } from "@/lib/utils";
 
@@ -13,7 +14,8 @@ type Props = {
 
 export default function ProductCard({ product, onOpen }: Props) {
   const [front, back] = product.fotos;
-  const t = themeFor(product.categoria);
+  const { categorias } = useDatos();
+  const t = temaDe(product.categoria, categorias);
   const { esFavorito, alternarFavorito } = useTienda();
   const favorito = esFavorito(product.id);
 

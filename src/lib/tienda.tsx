@@ -7,7 +7,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { products, type Product } from "@/data/products";
+import { useDatos } from "@/lib/datos";
+import type { Product } from "@/types/contenido";
 
 export type ItemCarrito = {
   id: string;
@@ -64,6 +65,8 @@ function guardar(clave: string, valor: unknown) {
 }
 
 export function TiendaProvider({ children }: { children: ReactNode }) {
+  // El catálogo ya no se importa: viene de la base a través de DatosProvider.
+  const { productos } = useDatos();
   const [carrito, setCarrito] = useState<ItemCarrito[]>(() =>
     leer<ItemCarrito[]>(CLAVE_CARRITO, [])
   );
@@ -118,16 +121,16 @@ export function TiendaProvider({ children }: { children: ReactNode }) {
   const abrirPanel = useCallback((p: Exclude<Panel, null>) => setPanel(p), []);
   const cerrarPanel = useCallback(() => setPanel(null), []);
 
-  // Se resuelve contra el catálogo y se descartan ids que ya no existan
-  // (por ejemplo un carrito viejo guardado antes de editar products.ts).
+  // Se resuelve contra el catálogo y se descartan las líneas cuyo producto ya
+  // no exista o esté inactivo, para no romper carritos guardados de antes.
   const lineas = useMemo<LineaCarrito[]>(
     () =>
       carrito.flatMap((l) => {
-        const producto = products.find((p) => p.id === l.id);
+        const producto = productos.find((p) => p.id === l.id);
         if (!producto) return [];
         return [{ ...l, producto, subtotal: producto.precio * l.cantidad }];
       }),
-    [carrito]
+    [carrito, productos]
   );
 
   const total = useMemo(

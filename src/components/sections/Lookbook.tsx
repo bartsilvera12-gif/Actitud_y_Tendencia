@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { products } from "@/data/products";
+import { useDatos } from "@/lib/datos";
 import SplitText from "@/components/reactbits/SplitText";
 import ScrollReveal from "@/components/reactbits/ScrollReveal";
 import FloralAccent from "@/components/ui/FloralAccent";
@@ -14,10 +14,25 @@ export default function Lookbook() {
   const yA = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const yB = useTransform(scrollYProgress, [0, 1], [-40, 80]);
 
-  const [imgA, imgB] = [
-    products.find((p) => p.id === "blusa-tricot-sinmanga-giverny-offwhite"),
-    products.find((p) => p.id === "regata-canelada-lilas"),
-  ];
+  // Los items los elige el panel: ya no hay ids de producto fijos acá.
+  const { lookbook, productos, seccion } = useDatos();
+  const s = seccion("lookbook");
+
+  const resueltos = lookbook
+    .map((it) => {
+      const prod = it.productoId
+        ? productos.find((p) => p.uuid === it.productoId)
+        : undefined;
+      return {
+        url: it.imagenUrl ?? prod?.fotos[2] ?? prod?.fotos[0],
+        nombre: prod?.nombre ?? "Lookbook",
+      };
+    })
+    .filter((r): r is { url: string; nombre: string } => Boolean(r.url));
+
+  const [imgA, imgB] = resueltos;
+
+  if (!s || resueltos.length === 0) return null;
 
   return (
     <section ref={ref} className="relative overflow-hidden bg-lila/10 py-20 md:py-28">
@@ -31,7 +46,7 @@ export default function Lookbook() {
             className="absolute left-0 top-6 w-[58%] overflow-hidden rounded-[1.6rem] shadow-2xl ring-1 ring-crema-200"
           >
             <img
-              src={imgA?.fotos[2] ?? imgA?.fotos[0]}
+              src={imgA?.url}
               alt={imgA?.nombre}
               loading="lazy"
               className="aspect-[2/3] w-full object-cover"
@@ -42,7 +57,7 @@ export default function Lookbook() {
             className="absolute right-0 top-24 w-[52%] overflow-hidden rounded-[1.6rem] shadow-2xl ring-1 ring-crema-200"
           >
             <img
-              src={imgB?.fotos[1] ?? imgB?.fotos[0]}
+              src={imgB?.url ?? imgA?.url}
               alt={imgB?.nombre}
               loading="lazy"
               className="aspect-[2/3] w-full object-cover"
