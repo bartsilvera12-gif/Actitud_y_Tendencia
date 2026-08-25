@@ -252,9 +252,19 @@ function FormRed({
           ))}
         </select>
       </label>
-      {/* Los campos "Nombre" y "Usuario" se ocultaron a pedido. No se borran:
-          `b` arrastra los valores que ya tiene la fila, asi que guardar desde
-          aca los conserva y el footer sigue mostrando el @usuario de siempre. */}
+      <label className="min-w-32 flex-1">
+        <span className="text-[11px] uppercase tracking-wider text-tinta-500">Nombre</span>
+        <input value={b.nombre} onChange={(e) => setB({ ...b, nombre: e.target.value })} className={cn(INPUT, "mt-1")} />
+      </label>
+      <label className="min-w-32 flex-1">
+        <span className="text-[11px] uppercase tracking-wider text-tinta-500">Usuario</span>
+        <input
+          value={b.usuario}
+          onChange={(e) => setB({ ...b, usuario: e.target.value })}
+          placeholder="sin @"
+          className={cn(INPUT, "mt-1")}
+        />
+      </label>
       <label className="min-w-48 flex-[2]">
         <span className="text-[11px] uppercase tracking-wider text-tinta-500">URL</span>
         <input value={b.url} onChange={(e) => setB({ ...b, url: e.target.value })} className={cn(INPUT, "mt-1")} />
