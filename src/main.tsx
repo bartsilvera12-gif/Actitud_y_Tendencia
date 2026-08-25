@@ -4,6 +4,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import ProtectedAdminRoute from "@/admin/components/ProtectedAdminRoute";
+import { ToastProvider } from "@/admin/components/Toasts";
+import AdminLayout from "@/admin/layouts/AdminLayout";
 import Dashboard from "@/admin/pages/Dashboard";
 import Login from "@/admin/pages/Login";
 import { AuthProvider } from "@/lib/auth";
@@ -29,15 +31,20 @@ createRoot(document.getElementById("root")!).render(
             </AuthProvider>
           }
         />
+
         <Route
           path="/admin"
           element={
             <AuthProvider>
-              <ProtectedAdminRoute />
+              <ToastProvider>
+                <ProtectedAdminRoute />
+              </ToastProvider>
             </AuthProvider>
           }
         >
-          <Route index element={<Dashboard />} />
+          <Route element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+          </Route>
         </Route>
 
         {/* Cualquier otra ruta vuelve a la tienda. */}
