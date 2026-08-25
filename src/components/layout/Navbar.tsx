@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Menu, ShoppingBag, X } from "lucide-react";
 import { useCatalogo } from "@/lib/catalogo";
+import { useDatos } from "@/lib/datos";
 import { useTienda } from "@/lib/tienda";
 import { cn } from "@/lib/utils";
 
@@ -12,12 +13,14 @@ const links = [
   {
     label: "Colección",
     href: "#coleccion",
+    seccion: "productos",
     pill: "bg-salvia/80 hover:bg-salvia",
     dot: "bg-salvia-700",
   },
   {
     label: "Categorías",
     href: "#categorias",
+    seccion: "categorias",
     pill: "bg-menta hover:bg-menta/80",
     dot: "bg-dorado-700",
   },
@@ -30,12 +33,14 @@ const links = [
   {
     label: "Nuevos ingresos",
     href: "#nuevos",
+    seccion: "nuevos_ingresos",
     pill: "bg-rosa/80 hover:bg-rosa",
     dot: "bg-tinta/55",
   },
   {
     label: "Nosotras",
     href: "#manifiesto",
+    seccion: "manifesto",
     pill: "bg-lila/80 hover:bg-lila",
     dot: "bg-tinta/55",
   },
@@ -56,6 +61,15 @@ export default function Navbar() {
     setMenuAbierto: setOpen,
   } = useCatalogo();
   const { unidades, favoritos, abrirPanel } = useTienda();
+
+  // Una sección que el panel apagó no debe dejar un ítem de menú apuntando a
+  // un ancla que ya no existe en el DOM. "Productos" abre el catálogo completo,
+  // así que no depende de ninguna sección del home y siempre se muestra.
+  const { seccion } = useDatos();
+  const visibles = links.filter((l) => !("seccion" in l) || seccion(l.seccion) !== null);
+  // Clave estable para re-suscribir el scrollspy cuando cambian las secciones
+  // (los datos llegan después del primer render).
+  const clavesVisibles = visibles.map((l) => l.label).join("|");
 
   /** Un mismo handler para las dos variantes de link (sección del home o catálogo). */
   const navegar = (link: Link) => {
@@ -80,7 +94,7 @@ export default function Navbar() {
   useEffect(() => {
     if (abierto) return;
 
-    const observados = links
+    const observados = visibles
       .filter((l): l is Extract<Link, { href: string }> => "href" in l)
       .map((l) => document.getElementById(l.href.slice(1)))
       .filter((el): el is HTMLElement => el !== null);
@@ -98,7 +112,7 @@ export default function Navbar() {
 
     observados.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, [abierto]);
+  }, [abierto, clavesVisibles]);
 
   return (
     <header
@@ -123,7 +137,7 @@ export default function Navbar() {
         </a>
 
         <ul className="hidden items-center gap-1.5 lg:flex xl:gap-2">
-          {links.map((l) => {
+          {visibles.map((l) => {
             const activo = esActivo(l);
             return (
               <li key={l.label}>
@@ -209,7 +223,7 @@ export default function Navbar() {
                 </button>
               </div>
               <ul className="mt-10 flex flex-col gap-2">
-                {links.map((l) => {
+                {visibles.map((l) => {
                   const activo = esActivo(l);
                   return (
                     <li key={l.label}>

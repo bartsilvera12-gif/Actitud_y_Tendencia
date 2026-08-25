@@ -40,16 +40,21 @@ editarlo a mano.
 ## 3. Exponer el schema en PostgREST — **paso obligatorio**
 
 Crear el schema **no** lo publica en la API. Sin esto, el frontend recibe
-`404` en todas las consultas.
+`PGRST106 Invalid schema` en todas las consultas.
 
-Esta instancia es self-hosted, así que hay que editar la variable de entorno
-del contenedor de PostgREST:
+En esta instancia self-hosted PostgREST lee su configuración del rol
+`authenticator` **dentro de la propia base**, así que se resuelve por SQL, sin
+tocar el servidor ni reiniciar contenedores:
 
-```env
-PGRST_DB_SCHEMAS=public,storage,graphql_public,actitudytendencia
+```bash
+psql "$DATABASE_URL" -f supabase/migrations/20260825_0003_expose_schema.sql
 ```
 
-y reiniciar el servicio. Para verificar que quedó expuesto:
+La migración **appendea** a la lista existente y nunca la reescribe. Es
+importante: la instancia es compartida con más de cien schemas de otros
+clientes y pisar la lista los sacaría a todos de la API.
+
+Para verificar:
 
 ```bash
 curl -s "$VITE_SUPABASE_URL/rest/v1/productos?select=nombre&limit=1" \
@@ -65,18 +70,25 @@ En Supabase Cloud el equivalente es **Settings → API → Exposed schemas**.
 
 ## 4. Storage
 
-Crear un bucket **público** llamado `actitudytendencia` con esta estructura:
+```bash
+psql "$DATABASE_URL" -f supabase/migrations/20260825_0005_storage.sql
+```
+
+Crea el bucket público `actitudytendencia` (5 MB por archivo, solo
+`jpeg`/`png`/`webp`) y sus policies sobre `storage.objects`: lectura pública,
+escritura y borrado solo para administradores activos.
+
+`storage.objects` es una tabla **compartida por toda la instancia**. Por eso
+cada policy filtra por `bucket_id` y lleva el prefijo `ayt_`, y la migración
+solo dropea las propias.
+
+Estructura de carpetas:
 
 ```
 actitudytendencia/
   productos/<producto_uuid>/<archivo>.webp
-  categorias/
-  hero/
-  lookbook/
-  brand/
+  categorias/    hero/    lookbook/    brand/
 ```
-
-Formatos aceptados: `jpg`, `jpeg`, `png`, `webp`.
 
 Las fotos que ya existen siguen sirviéndose desde `/productos/...` del repo;
 solo las nuevas van a Storage. Conviven sin problema.
@@ -136,31 +148,48 @@ RESET ROLE;
 
 ## 8. Estado de la verificación
 
-Con el schema todavía sin exponer, se verificó lo que no depende de PostgREST
-conectando directo a Postgres y simulando el JWT de cada rol.
+Verificado con el schema expuesto y el bucket creado, ejecutando contra la base
+real — no por lectura de código.
 
 **Autorización (20 pruebas):** el administrador real puede escribir en las 13
 tablas de contenido; un autenticado que no es admin no modifica ninguna fila;
-`anon` solo lee lo activo.
+`anon` solo lee lo activo. `administradores` y `auditoria` responden 401 a
+`anon`, no una lista vacía.
 
 **Reglas de negocio:** el borrado en cascada limpia talles e imágenes, el
 CHECK rechaza precios negativos, el índice único impide dos portadas por
 producto, el CHECK del WhatsApp rechaza letras, el índice singleton impide una
 segunda fila de configuración y el trigger actualiza `updated_at`.
 
-**Bug encontrado y corregido:** la policy `superadmin_gestiona` consultaba
-`administradores` dentro de una policy de esa misma tabla, lo que provocaba
-`infinite recursion detected in policy`. Como el login verifica ahí si el
-usuario es administrador, **nadie habría podido entrar al panel**. Se corrigió
-en `20260824_0002_fix_recursion_administradores.sql` con una función
-`is_superadmin()` SECURITY DEFINER, igual que `is_admin()`.
+**Ciclo completo desde el panel:** login en `/admin`; alta de un producto que
+apareció en la web pública **sin volver a desplegar**; desactivarlo lo sacó del
+sitio; eliminarlo lo borró junto con sus talles e imágenes.
 
-### Lo que falta verificar
+**Storage (7 pruebas):** `anon` no puede subir ni borrar; el administrador sí;
+la lectura pública funciona sin sesión; un `text/plain` es rechazado por el
+bucket. Desde el panel: subir, reordenar, marcar portada y eliminar — al
+eliminar, el archivo desaparece también del bucket, sin quedar huérfano.
 
-Requiere el schema expuesto y el bucket creado:
+**Contenido:** ocultar una sección la saca del home y del menú; editar el
+número de WhatsApp cambió los 3 enlaces del sitio en vivo.
 
-- crear, editar y eliminar productos desde el panel
-- subir, reordenar y eliminar fotos
-- que un producto nuevo aparezca en la web sin volver a desplegar
-- que un producto desactivado desaparezca del público
-- el login completo entrando a `/admin`
+### Bugs encontrados y corregidos
+
+1. La policy `superadmin_gestiona` consultaba `administradores` dentro de una
+   policy de esa misma tabla → `infinite recursion detected in policy`. Como
+   el login verifica ahí si el usuario es administrador, **nadie habría podido
+   entrar al panel**. Corregido en
+   `20260824_0002_fix_recursion_administradores.sql` con `is_superadmin()`
+   SECURITY DEFINER.
+2. Unos `GRANT` amplios aplicados por fuera de estas migraciones devolvieron a
+   `anon` el `SELECT` sobre `administradores` y `auditoria` (HTTP 200 en vez
+   de 401; RLS igual devolvía `[]`, así que no hubo filtración). Revertido en
+   `20260825_0004_revocar_anon_tablas_internas.sql`.
+3. Ocultar una sección desde el panel la sacaba de la página pero **dejaba su
+   ítem en el menú**, apuntando a un ancla inexistente. El menú ahora se filtra
+   por las secciones visibles.
+
+### Pendiente
+
+- La auditoría registra altas, bajas y ediciones, pero no las operaciones sobre
+  fotos (subir, reordenar, portada, eliminar).
