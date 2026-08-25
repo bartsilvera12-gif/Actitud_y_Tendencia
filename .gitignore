@@ -10,3 +10,6 @@ _legacy/
 # Variables de entorno (nunca commitear)
 .env
 .env.local
+
+# Fotos de estado de PostgREST (locales)
+supabase/.schemas-*.txt
