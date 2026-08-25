@@ -8,6 +8,10 @@ import { ToastProvider } from "@/admin/components/Toasts";
 import AdminLayout from "@/admin/layouts/AdminLayout";
 import Dashboard from "@/admin/pages/Dashboard";
 import Login from "@/admin/pages/Login";
+import Productos from "@/admin/pages/Productos";
+import ProductoEditar from "@/admin/pages/ProductoEditar";
+import Categorias from "@/admin/pages/Categorias";
+import Lineas from "@/admin/pages/Lineas";
 import { AuthProvider } from "@/lib/auth";
 
 /**
@@ -44,6 +48,11 @@ createRoot(document.getElementById("root")!).render(
         >
           <Route element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path="productos" element={<Productos />} />
+            <Route path="productos/nuevo" element={<ProductoEditar />} />
+            <Route path="productos/:slug" element={<ProductoEditar />} />
+            <Route path="categorias" element={<Categorias />} />
+            <Route path="lineas" element={<Lineas />} />
           </Route>
         </Route>
 
