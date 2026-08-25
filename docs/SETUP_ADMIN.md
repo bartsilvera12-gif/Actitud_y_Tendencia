@@ -131,3 +131,36 @@ SET ROLE anon;
 INSERT INTO actitudytendencia.productos (slug, nombre) VALUES ('x','X'); -- debe fallar
 RESET ROLE;
 ```
+
+---
+
+## 8. Estado de la verificación
+
+Con el schema todavía sin exponer, se verificó lo que no depende de PostgREST
+conectando directo a Postgres y simulando el JWT de cada rol.
+
+**Autorización (20 pruebas):** el administrador real puede escribir en las 13
+tablas de contenido; un autenticado que no es admin no modifica ninguna fila;
+`anon` solo lee lo activo.
+
+**Reglas de negocio:** el borrado en cascada limpia talles e imágenes, el
+CHECK rechaza precios negativos, el índice único impide dos portadas por
+producto, el CHECK del WhatsApp rechaza letras, el índice singleton impide una
+segunda fila de configuración y el trigger actualiza `updated_at`.
+
+**Bug encontrado y corregido:** la policy `superadmin_gestiona` consultaba
+`administradores` dentro de una policy de esa misma tabla, lo que provocaba
+`infinite recursion detected in policy`. Como el login verifica ahí si el
+usuario es administrador, **nadie habría podido entrar al panel**. Se corrigió
+en `20260824_0002_fix_recursion_administradores.sql` con una función
+`is_superadmin()` SECURITY DEFINER, igual que `is_admin()`.
+
+### Lo que falta verificar
+
+Requiere el schema expuesto y el bucket creado:
+
+- crear, editar y eliminar productos desde el panel
+- subir, reordenar y eliminar fotos
+- que un producto nuevo aparezca en la web sin volver a desplegar
+- que un producto desactivado desaparezca del público
+- el login completo entrando a `/admin`
