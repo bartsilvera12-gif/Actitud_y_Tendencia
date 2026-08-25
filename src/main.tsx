@@ -17,7 +17,9 @@ import HeroEditar from "@/admin/pages/HeroEditar";
 import LookbookEditar from "@/admin/pages/LookbookEditar";
 import Redes from "@/admin/pages/Redes";
 import Configuracion from "@/admin/pages/Configuracion";
+import PoliticaPrivacidad from "@/pages/PoliticaPrivacidad";
 import { AuthProvider } from "@/lib/auth";
+import { DatosProvider } from "@/lib/datos";
 
 /**
  * `/` sigue siendo la tienda tal cual estaba: una sola página con anclas,
@@ -31,6 +33,18 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+
+        {/* Página legal, sin enlace desde el sitio: se llega solo por la URL.
+            Va dentro de DatosProvider para que el WhatsApp y la ubicación que
+            muestra sean los que estén cargados en el panel. */}
+        <Route
+          path="/politicadeprivacidad"
+          element={
+            <DatosProvider>
+              <PoliticaPrivacidad />
+            </DatosProvider>
+          }
+        />
 
         <Route
           path="/admin/login"

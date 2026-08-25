@@ -154,6 +154,17 @@ export default function Footer() {
             · Boutique de moda femenina.
           </p>
           <p aria-hidden>Hecho con 🌷 en Paraguay</p>
+          <p>
+            Desarrollado por{" "}
+            <a
+              href="https://neura.com.py"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold tracking-wide text-salvia-700 underline decoration-salvia/40 underline-offset-4 transition-colors hover:text-salvia-900"
+            >
+              NEURA
+            </a>
+          </p>
           <p className="sr-only">WhatsApp {config?.whatsappDisplay ?? ""}</p>
         </div>
       </div>
