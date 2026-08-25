@@ -30,7 +30,18 @@ export default function Lookbook() {
     })
     .filter((r): r is { url: string; nombre: string } => Boolean(r.url));
 
-  const [imgA, imgB] = resueltos;
+  // El collage de parallax son dos piezas posicionadas a mano. Las que se
+  // agreguen desde el panel más allá de esas dos van abajo, en una grilla que
+  // crece sola. Con dos ítems la sección se ve exactamente igual que antes.
+  const [imgA, imgB, ...extras] = resueltos;
+
+  // Los textos ahora salen del panel. Si están vacíos se usan los de siempre,
+  // así nada cambia hasta que alguien los edite.
+  const titulo = s?.titulo?.trim() || "Tu estilo";
+  const destacado = s?.tituloDestacado?.trim() || "habla por vos.";
+  const descripcion =
+    s?.descripcion?.trim() ||
+    "Combiná estampados y básicos a tu manera. Piezas versátiles para el día, la oficina o una salida — siempre con esa cuota de frescura que te hace sentir vos.";
 
   if (!s || resueltos.length === 0) return null;
 
@@ -67,17 +78,20 @@ export default function Lookbook() {
 
         {/* Texto */}
         <div>
+          {s?.eyebrow ? (
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-salvia-700">
+              {s.eyebrow}
+            </p>
+          ) : null}
           <h2 className="font-display text-4xl leading-[1.05] text-tinta sm:text-5xl md:text-6xl">
-            <SplitText text="Tu estilo" by="word" />
+            <SplitText text={titulo} by="word" />
             <span className="block italic text-salvia-700">
-              <SplitText text="habla por vos." by="word" delay={0.15} />
+              <SplitText text={destacado} by="word" delay={0.15} />
             </span>
           </h2>
           <ScrollReveal delay={0.15}>
             <p className="mt-6 max-w-md text-[15px] leading-relaxed text-tinta-500">
-              Combiná estampados y básicos a tu manera. Piezas versátiles para el
-              día, la oficina o una salida — siempre con esa cuota de frescura que
-              te hace sentir vos.
+              {descripcion}
             </p>
           </ScrollReveal>
           <ScrollReveal delay={0.25}>
@@ -87,6 +101,25 @@ export default function Lookbook() {
           </ScrollReveal>
         </div>
       </div>
+
+      {extras.length > 0 ? (
+        <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-4 px-5 sm:grid-cols-3 md:mt-16 md:px-8 lg:grid-cols-4">
+          {extras.map((img, i) => (
+            <div
+              key={img.url}
+              className="overflow-hidden rounded-[1.6rem] shadow-xl ring-1 ring-crema-200"
+            >
+              <img
+                src={img.url}
+                alt={img.nombre}
+                loading="lazy"
+                className="aspect-[2/3] w-full object-cover transition-transform duration-700 hover:scale-105"
+                style={{ animationDelay: `${i * 60}ms` }}
+              />
+            </div>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }

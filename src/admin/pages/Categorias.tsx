@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronUp, Loader2, Pencil, Plus, Trash2, TriangleAlert, X } from "lucide-react";
 import Confirmar from "@/admin/components/Confirmar";
 import { useToast } from "@/admin/components/Toasts";
@@ -13,6 +13,7 @@ import {
 import { TEMAS_DISPONIBLES, temaPorClave } from "@/lib/categories";
 import { flores, type FlorKey } from "@/lib/flowers";
 import type { FilaCategoria, TemaColor } from "@/types/database";
+import { borrarImagen, subirImagen, validarImagen } from "@/services/storage";
 import { cn } from "@/lib/utils";
 
 const FLORES = Object.keys(flores) as FlorKey[];
@@ -24,6 +25,8 @@ type Borrador = {
   descripcion: string;
   tema_color: TemaColor;
   flor_key: string;
+  imagen_url: string | null;
+  imagen_storage_path: string | null;
   orden: number;
   activo: boolean;
 };
@@ -35,6 +38,8 @@ const VACIA: Borrador = {
   descripcion: "",
   tema_color: "salvia",
   flor_key: "tulipanLila",
+  imagen_url: null,
+  imagen_storage_path: null,
   orden: 0,
   activo: true,
 };
@@ -47,6 +52,43 @@ export default function Categorias() {
   const [editando, setEditando] = useState<Borrador | null>(null);
   const [guardando, setGuardando] = useState(false);
   const [aEliminar, setAEliminar] = useState<FilaCategoria | null>(null);
+  const inputFile = useRef<HTMLInputElement>(null);
+  const [subiendo, setSubiendo] = useState(false);
+
+  /**
+   * La foto se sube apenas se elige, no al guardar: así se ve la miniatura
+   * antes de confirmar. Si después se cancela el formulario queda un archivo
+   * suelto en el bucket, que es preferible a perder la subida.
+   */
+  async function subirFoto(files: FileList | null) {
+    const file = files?.[0];
+    if (!file || !editando) return;
+    const invalido = validarImagen(file);
+    if (invalido) {
+      toast.error(invalido);
+      return;
+    }
+    setSubiendo(true);
+    try {
+      const anterior = editando.imagen_storage_path;
+      const { url, path } = await subirImagen(file, "categorias");
+      setEditando({ ...editando, imagen_url: url, imagen_storage_path: path });
+      if (anterior) await borrarImagen(anterior);
+      toast.ok("Imagen subida");
+    } catch (e) {
+      toast.error(mensajeError(e));
+    } finally {
+      setSubiendo(false);
+      if (inputFile.current) inputFile.current.value = "";
+    }
+  }
+
+  async function quitarFoto() {
+    if (!editando) return;
+    const path = editando.imagen_storage_path;
+    setEditando({ ...editando, imagen_url: null, imagen_storage_path: null });
+    if (path) await borrarImagen(path).catch(() => {});
+  }
 
   async function cargar() {
     setCargando(true);
@@ -83,6 +125,8 @@ export default function Categorias() {
         descripcion: editando.descripcion.trim() || null,
         tema_color: editando.tema_color,
         flor_key: editando.flor_key,
+        imagen_url: editando.imagen_url,
+        imagen_storage_path: editando.imagen_storage_path,
         orden: editando.orden,
         activo: editando.activo,
       });
@@ -171,6 +215,8 @@ export default function Categorias() {
                           descripcion: c.descripcion ?? "",
                           tema_color: c.tema_color,
                           flor_key: c.flor_key,
+                          imagen_url: c.imagen_url,
+                          imagen_storage_path: c.imagen_storage_path,
                           orden: c.orden,
                           activo: c.activo,
                         })
@@ -232,6 +278,56 @@ export default function Categorias() {
                   rows={2}
                   className={cn(INPUT, "min-h-20 py-3")}
                 />
+              </Campo>
+
+              <Campo
+                etiqueta="Imagen"
+                ayuda="Opcional. Si no cargás ninguna, la web usa la foto del primer producto de la categoría."
+              >
+                <div className="flex items-center gap-3">
+                  {editando.imagen_url ? (
+                    <img
+                      src={editando.imagen_url}
+                      alt=""
+                      className="h-20 w-16 shrink-0 rounded-xl object-cover ring-1 ring-salvia/30"
+                    />
+                  ) : null}
+                  <input
+                    ref={inputFile}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={(e) => void subirFoto(e.target.files)}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => inputFile.current?.click()}
+                    disabled={subiendo}
+                    className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-salvia/40 px-4 text-sm text-tinta transition-colors hover:border-salvia-600 hover:bg-salvia/10 disabled:opacity-60"
+                  >
+                    {subiendo ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Subiendo…
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="h-4 w-4" />
+                        {editando.imagen_url ? "Cambiar imagen" : "Subir una imagen"}
+                      </>
+                    )}
+                  </button>
+                  {editando.imagen_url ? (
+                    <button
+                      type="button"
+                      onClick={() => void quitarFoto()}
+                      aria-label="Quitar imagen"
+                      className="rounded-full p-2.5 text-tinta hover:bg-rosa/25"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  ) : null}
+                </div>
               </Campo>
 
               <Campo etiqueta="Color" ayuda="Define el tono de los chips y las cards.">
