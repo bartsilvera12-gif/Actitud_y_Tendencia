@@ -12,6 +12,11 @@ import Productos from "@/admin/pages/Productos";
 import ProductoEditar from "@/admin/pages/ProductoEditar";
 import Categorias from "@/admin/pages/Categorias";
 import Lineas from "@/admin/pages/Lineas";
+import Inicio from "@/admin/pages/Inicio";
+import HeroEditar from "@/admin/pages/HeroEditar";
+import LookbookEditar from "@/admin/pages/LookbookEditar";
+import Redes from "@/admin/pages/Redes";
+import Configuracion from "@/admin/pages/Configuracion";
 import { AuthProvider } from "@/lib/auth";
 
 /**
@@ -53,6 +58,11 @@ createRoot(document.getElementById("root")!).render(
             <Route path="productos/:slug" element={<ProductoEditar />} />
             <Route path="categorias" element={<Categorias />} />
             <Route path="lineas" element={<Lineas />} />
+            <Route path="inicio" element={<Inicio />} />
+            <Route path="hero" element={<HeroEditar />} />
+            <Route path="lookbook" element={<LookbookEditar />} />
+            <Route path="redes" element={<Redes />} />
+            <Route path="configuracion" element={<Configuracion />} />
           </Route>
         </Route>
 
