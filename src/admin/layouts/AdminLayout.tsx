@@ -2,7 +2,6 @@ import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Home,
   ExternalLink,
   Heart,
   Image,
@@ -25,7 +24,9 @@ const MENU = [
   { to: "/admin/productos", label: "Productos", Icon: Shirt },
   { to: "/admin/categorias", label: "Categorías", Icon: Tags },
   { to: "/admin/lineas", label: "Líneas", Icon: Layers },
-  { to: "/admin/inicio", label: "Contenido del inicio", Icon: Home },
+  // "Contenido del inicio" se saca del menú a pedido. La ruta /admin/inicio
+  // sigue viva y se llega escribiéndola: es el único lugar donde se editan los
+  // textos de las secciones de la web y se las oculta o reordena.
   { to: "/admin/hero", label: "Hero", Icon: Image },
   { to: "/admin/lookbook", label: "Lookbook", Icon: Heart },
   { to: "/admin/redes", label: "Redes y contacto", Icon: Share2 },

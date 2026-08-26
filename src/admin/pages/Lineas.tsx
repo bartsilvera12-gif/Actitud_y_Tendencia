@@ -209,15 +209,9 @@ export default function Lineas() {
                   className={cn(INPUT, "mt-2")}
                 />
               </label>
-              <label className="block">
-                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-tinta">Descripción</span>
-                <textarea
-                  value={editando.descripcion}
-                  onChange={(e) => setEditando({ ...editando, descripcion: e.target.value })}
-                  rows={2}
-                  className={cn(INPUT, "mt-2 min-h-20 py-3")}
-                />
-              </label>
+              {/* El campo "Descripción" se saca del formulario: la web no lo muestra en
+                  ningún lado. La columna sigue en la base y lo que ya estuviera cargado
+                  se conserva al guardar. */}
               <label className="flex min-h-12 items-center justify-between gap-3">
                 <span className="text-sm text-tinta">Visible en la web</span>
                 <input
