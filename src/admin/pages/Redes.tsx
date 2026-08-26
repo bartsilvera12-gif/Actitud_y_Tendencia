@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import Confirmar from "@/admin/components/Confirmar";
 import { useToast } from "@/admin/components/Toasts";
-import { AREA, Aviso, BarraGuardar, Bloque, Campo, INPUT } from "@/admin/components/CamposUI";
+import { Aviso, Bloque, INPUT } from "@/admin/components/CamposUI";
 import { mensajeError } from "@/services/admin";
 import {
   eliminarRed,
-  guardarConfig,
   guardarRed,
   listarRedesAdmin,
-  normalizarWhatsapp,
-  obtenerConfigAdmin,
 } from "@/services/contenidoAdmin";
-import type { FilaConfiguracion, FilaRedSocial, TipoRed } from "@/types/database";
+import type { FilaRedSocial, TipoRed } from "@/types/database";
 import { cn } from "@/lib/utils";
 
 const TIPOS: TipoRed[] = ["instagram", "facebook", "tiktok", "whatsapp", "otro"];
@@ -28,31 +25,16 @@ type Borrador = {
 export default function Redes() {
   const toast = useToast();
   const [redes, setRedes] = useState<FilaRedSocial[]>([]);
-  const [config, setConfig] = useState<FilaConfiguracion | null>(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [guardando, setGuardando] = useState(false);
   const [aEliminar, setAEliminar] = useState<FilaRedSocial | null>(null);
   const [nueva, setNueva] = useState<Borrador | null>(null);
 
-  // Campos de contacto, editables junto con las redes.
-  const [numero, setNumero] = useState("");
-  const [display, setDisplay] = useState("");
-  const [mensaje, setMensaje] = useState("");
-  const [ubicacion, setUbicacion] = useState("");
 
   async function cargar() {
     setCargando(true);
     try {
-      const [r, c] = await Promise.all([listarRedesAdmin(), obtenerConfigAdmin()]);
-      setRedes(r);
-      setConfig(c);
-      if (c) {
-        setNumero(c.whatsapp_numero ?? "");
-        setDisplay(c.whatsapp_display ?? "");
-        setMensaje(c.whatsapp_mensaje_general ?? "");
-        setUbicacion(c.ubicacion ?? "");
-      }
+      setRedes(await listarRedesAdmin());
       setError(null);
     } catch (e) {
       setError(mensajeError(e));
@@ -64,31 +46,6 @@ export default function Redes() {
   useEffect(() => {
     void cargar();
   }, []);
-
-  const numeroLimpio = normalizarWhatsapp(numero);
-  const numeroValido = numeroLimpio.length >= 8 && numeroLimpio.length <= 15;
-
-  async function guardarContacto() {
-    if (!numeroValido) {
-      toast.error("El número de WhatsApp debe tener entre 8 y 15 dígitos.");
-      return;
-    }
-    setGuardando(true);
-    try {
-      await guardarConfig(config?.id ?? null, {
-        whatsapp_numero: numeroLimpio,
-        whatsapp_display: display.trim() || null,
-        whatsapp_mensaje_general: mensaje.trim() || null,
-        ubicacion: ubicacion.trim() || null,
-      });
-      toast.ok("Datos de contacto guardados");
-      await cargar();
-    } catch (e) {
-      toast.error(mensajeError(e));
-    } finally {
-      setGuardando(false);
-    }
-  }
 
   async function guardarUnaRed(b: Borrador) {
     if (!b.url.trim()) {
@@ -115,45 +72,9 @@ export default function Redes() {
     <div className="flex flex-col gap-5">
       {error && <Aviso mensaje={error} />}
 
-      <Bloque
-        titulo="WhatsApp y ubicación"
-        ayuda="Este número es el que usan el botón flotante, el footer y el pedido del carrito."
-      >
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Campo
-            etiqueta="Número"
-            requerido
-            ayuda={
-              numero && !numeroValido
-                ? "Debe tener entre 8 y 15 dígitos."
-                : `Se guarda como ${numeroLimpio || "…"} (solo dígitos, para wa.me).`
-            }
-          >
-            <input
-              value={numero}
-              onChange={(e) => setNumero(e.target.value)}
-              className={cn(INPUT, numero && !numeroValido && "border-rosa")}
-              placeholder="595985960203"
-            />
-          </Campo>
-          <Campo etiqueta="Número visible" ayuda="Cómo se muestra en la web.">
-            <input
-              value={display}
-              onChange={(e) => setDisplay(e.target.value)}
-              className={INPUT}
-              placeholder="+595 985 960 203"
-            />
-          </Campo>
-        </div>
-        <Campo etiqueta="Mensaje predeterminado" ayuda="El texto que se precarga en la consulta general.">
-          <textarea value={mensaje} onChange={(e) => setMensaje(e.target.value)} rows={3} className={AREA} />
-        </Campo>
-        <Campo etiqueta="Ubicación">
-          <input value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} className={INPUT} placeholder="San Lorenzo · Paraguay" />
-        </Campo>
-        <BarraGuardar guardando={guardando} onGuardar={() => void guardarContacto()} />
-      </Bloque>
-
+      {/* El bloque "WhatsApp y ubicación" se saca de acá: los mismos campos
+          ya están en Configuración y tener dos formularios sobre la misma fila
+          invita a que uno pise lo que guardó el otro. */}
       <Bloque titulo="Redes sociales">
         {cargando ? (
           <p className="py-6 text-center text-sm text-tinta-500">Cargando…</p>
