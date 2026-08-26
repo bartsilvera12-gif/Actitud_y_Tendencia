@@ -1,3 +1,4 @@
+import { borrarImagenes } from "@/services/storage";
 import { supabase } from "@/lib/supabase";
 import type {
   FilaCategoria,
@@ -177,8 +178,18 @@ export async function alternarActivoProducto(
 }
 
 export async function eliminarProducto(id: string): Promise<void> {
+  // Las filas de `producto_imagenes` caen en cascada, pero los archivos del
+  // bucket no. Hay que juntar las rutas ANTES del delete o se pierden y las
+  // fotos quedan huérfanas ocupando lugar para siempre.
+  const { data: imagenes } = await supabase
+    .from("producto_imagenes")
+    .select("storage_path")
+    .eq("producto_id", id);
+
   const { error } = await supabase.from("productos").delete().eq("id", id);
   if (error) throw error;
+
+  await borrarImagenes((imagenes ?? []).map((i) => i.storage_path));
   await auditar("eliminar", "producto", id);
 }
 

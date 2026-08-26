@@ -82,6 +82,20 @@ export async function subirImagen(
  * Borra del bucket. No propaga el error a propósito: si el archivo ya no
  * estaba, la fila igual tiene que poder eliminarse.
  */
+/**
+ * Borra varios archivos de una. Se usa al eliminar un producto: sus filas de
+ * `producto_imagenes` se van en cascada, pero los archivos del bucket no.
+ */
+export async function borrarImagenes(paths: Array<string | null>): Promise<void> {
+  const rutas = paths.filter((p): p is string => Boolean(p));
+  if (rutas.length === 0) return;
+  try {
+    await supabase.storage.from(BUCKET).remove(rutas);
+  } catch {
+    /* huérfanos en el bucket: molesto, pero no bloquea al usuario */
+  }
+}
+
 export async function borrarImagen(path: string | null): Promise<void> {
   if (!path) return;
   try {

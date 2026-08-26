@@ -31,6 +31,27 @@ import { cn } from "@/lib/utils";
 
 type Form = DatosProducto & { talles: string[] };
 
+/**
+ * Los campos numéricos van como `type="text"` a propósito.
+ *
+ * En un `type="number"` React no reescribe el valor del DOM cuando el nuevo
+ * es igual en número al que ya está ("01000" == 1000), así que el cero inicial
+ * quedaba pegado adelante de lo que se tipeaba. Con texto la comparación es
+ * por string y el campo se limpia solo.
+ *
+ * Devuelve "" para el 0, para que el campo arranque vacío y no haya un cero
+ * que estorbe.
+ */
+function comoTexto(n: number): string {
+  return n === 0 ? "" : String(n);
+}
+
+/** Deja solo dígitos y descarta los ceros de la izquierda. */
+function soloDigitos(v: string): number {
+  const limpio = v.replace(/\D/g, "").replace(/^0+/, "");
+  return limpio === "" ? 0 : Number(limpio);
+}
+
 const VACIO: Form = {
   nombre: "",
   slug: "",
@@ -57,6 +78,11 @@ export default function ProductoEditar() {
   const navegar = useNavigate();
   const toast = useToast();
   const inputFile = useRef<HTMLInputElement>(null);
+
+  // Fotos elegidas antes de que el producto exista. Se guardan acá con una
+  // preview local y se suben recién al crearlo, porque en Storage van bajo
+  // productos/<uuid>/ y ese uuid todavía no está.
+  const [enCola, setEnCola] = useState<Array<{ file: File; preview: string }>>([]);
 
   const [form, setForm] = useState<Form>(VACIO);
   const [productoId, setProductoId] = useState<string | null>(null);
@@ -113,6 +139,9 @@ export default function ProductoEditar() {
       }
     })();
   }, [slug, esNuevo]);
+
+  // Las previews son object URLs: hay que soltarlas o quedan en memoria.
+  useEffect(() => () => enCola.forEach((c) => URL.revokeObjectURL(c.preview)), [enCola]);
 
   function set<K extends keyof Form>(campo: K, valor: Form[K]) {
     setForm((f) => ({ ...f, [campo]: valor }));
@@ -172,6 +201,36 @@ export default function ProductoEditar() {
       }
       await guardarTalles(id, form.talles);
 
+      // Recién ahora existe el uuid, así que se suben las fotos que habían
+      // quedado en cola. Si alguna falla no se pierde el producto: se avisa y
+      // las que no subieron siguen en la cola para reintentar.
+      if (enCola.length > 0) {
+        setSubiendo(enCola.length);
+        const fallaron: Array<{ file: File; preview: string }> = [];
+        let orden = imagenes.length;
+        for (const item of enCola) {
+          try {
+            const { url, path } = await subirImagen(item.file, "productos", id);
+            await agregarImagen(id, url, path, orden, orden === 0);
+            URL.revokeObjectURL(item.preview);
+            orden++;
+          } catch {
+            fallaron.push(item);
+          }
+          setSubiendo((n) => n - 1);
+        }
+        setEnCola(fallaron);
+        setSubiendo(0);
+        if (fallaron.length > 0) {
+          toast.error(
+            fallaron.length === 1
+              ? "El producto se guardó, pero una foto no se pudo subir."
+              : `El producto se guardó, pero ${fallaron.length} fotos no se pudieron subir.`
+          );
+          seguirEditando = true;
+        }
+      }
+
       toast.ok(productoId ? "Cambios guardados" : "Producto creado");
       if (seguirEditando) {
         setForm((f) => ({ ...f, slug: slugFinal }));
@@ -189,7 +248,18 @@ export default function ProductoEditar() {
   async function onArchivos(files: FileList | null) {
     if (!files || files.length === 0) return;
     if (!productoId) {
-      toast.error("Guardá el producto antes de subir fotos.");
+      // Todavía no hay producto: se validan y se dejan en cola.
+      const nuevas: Array<{ file: File; preview: string }> = [];
+      for (const f of Array.from(files)) {
+        const invalido = validarImagen(f);
+        if (invalido) {
+          toast.error(invalido);
+          return;
+        }
+        nuevas.push({ file: f, preview: URL.createObjectURL(f) });
+      }
+      setEnCola((c) => [...c, ...nuevas]);
+      if (inputFile.current) inputFile.current.value = "";
       return;
     }
     const lista = Array.from(files);
@@ -346,11 +416,11 @@ export default function ProductoEditar() {
               </Campo>
               <Campo etiqueta="Precio (Gs.)" requerido>
                 <input
-                  type="number"
-                  min={0}
-                  step={1000}
-                  value={form.precio}
-                  onChange={(e) => set("precio", Number(e.target.value))}
+                  type="text"
+                  inputMode="numeric"
+                  value={comoTexto(form.precio)}
+                  onChange={(e) => set("precio", soloDigitos(e.target.value))}
+                  placeholder="0"
                   className={INPUT}
                 />
               </Campo>
@@ -435,9 +505,36 @@ export default function ProductoEditar() {
           <Bloque titulo="Fotografías">
             {!productoId && (
               <p className="rounded-2xl bg-menta/50 px-4 py-3 text-[13px] text-tinta">
-                Guardá el producto y después subí las fotos: se agrupan por
-                producto en el bucket.
+                Elegí las fotos ahora: se suben solas cuando guardes el producto.
               </p>
+            )}
+
+            {enCola.length > 0 && (
+              <ul className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
+                {enCola.map((item, i) => (
+                  <li key={item.preview} className="relative">
+                    <img
+                      src={item.preview}
+                      alt=""
+                      className="aspect-[2/3] w-full rounded-xl object-cover opacity-80 ring-2 ring-dashed ring-salvia/50"
+                    />
+                    <span className="absolute left-1.5 top-1.5 rounded-full bg-tinta/75 px-2 py-0.5 text-[10px] font-medium text-crema">
+                      {i === 0 && imagenes.length === 0 ? "Portada" : "Sin subir"}
+                    </span>
+                    <div className="mt-1.5 flex items-center justify-center">
+                      <MiniAccion
+                        onClick={() => {
+                          URL.revokeObjectURL(item.preview);
+                          setEnCola((c) => c.filter((x) => x.preview !== item.preview));
+                        }}
+                        etiqueta="Quitar foto"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </MiniAccion>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             )}
 
             {imagenes.length > 0 && (
@@ -520,22 +617,18 @@ export default function ProductoEditar() {
           <Bloque titulo="Orden">
             <div className="grid gap-4 sm:grid-cols-2">
               <Campo etiqueta="En el catálogo">
-                <input type="number" value={form.orden_catalogo} onChange={(e) => set("orden_catalogo", Number(e.target.value))} className={INPUT} />
+                <input type="text" inputMode="numeric" value={comoTexto(form.orden_catalogo)} onChange={(e) => set("orden_catalogo", soloDigitos(e.target.value))} placeholder="0" className={INPUT} />
               </Campo>
               <Campo etiqueta="En el inicio">
-                <input type="number" value={form.orden_home} onChange={(e) => set("orden_home", Number(e.target.value))} className={INPUT} />
+                <input type="text" inputMode="numeric" value={comoTexto(form.orden_home)} onChange={(e) => set("orden_home", soloDigitos(e.target.value))} placeholder="0" className={INPUT} />
               </Campo>
             </div>
           </Bloque>
 
-          <Bloque titulo="SEO">
-            <Campo etiqueta="Título">
-              <input value={form.seo_title ?? ""} onChange={(e) => set("seo_title", e.target.value)} className={INPUT} />
-            </Campo>
-            <Campo etiqueta="Descripción">
-              <textarea value={form.seo_description ?? ""} onChange={(e) => set("seo_description", e.target.value)} rows={3} className={cn(INPUT, "min-h-20 py-3")} />
-            </Campo>
-          </Bloque>
+          {/* El bloque "SEO" del producto se saca del formulario: la web no lee
+           `seo_title` ni `seo_description` de cada producto, el SEO del sitio
+          sale de Configuración. Las columnas siguen en la base y lo que ya
+          estuviera cargado se conserva al guardar. */}
 
           {problemas.length > 0 && (
             <ul className="rounded-2xl bg-rosa/25 px-5 py-4 text-[13px] text-tinta">
@@ -551,13 +644,6 @@ export default function ProductoEditar() {
             >
               {guardando && <Loader2 className="h-4 w-4 animate-spin" />}
               Guardar
-            </button>
-            <button
-              onClick={() => void guardar(true)}
-              disabled={guardando}
-              className="min-h-11 rounded-full border border-salvia/40 text-sm text-tinta transition-colors hover:bg-salvia/15 disabled:opacity-60"
-            >
-              Guardar y seguir editando
             </button>
             <button
               onClick={() => navegar("/admin/productos")}
