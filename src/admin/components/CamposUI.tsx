@@ -2,8 +2,15 @@ import { cn } from "@/lib/utils";
 
 /** Piezas de formulario compartidas por los editores del panel. */
 
-export const INPUT =
-  "min-h-11 w-full rounded-2xl border border-salvia/35 bg-white px-4 text-[15px] text-tinta outline-none transition-colors focus:border-salvia-600 focus:ring-2 focus:ring-salvia/25";
+/**
+ * Sin ancho: para los campos que van dentro de una fila flex y necesitan
+ * uno propio. `cn` solo concatena, no resuelve conflictos de Tailwind, asi
+ * que un `w-32` sobre `INPUT` no le gana al `w-full` y la fila desborda.
+ */
+export const INPUT_BASE =
+  "min-h-11 rounded-2xl border border-salvia/35 bg-white px-4 text-[15px] text-tinta outline-none transition-colors focus:border-salvia-600 focus:ring-2 focus:ring-salvia/25";
+
+export const INPUT = cn(INPUT_BASE, "w-full");
 
 export const AREA = cn(INPUT, "min-h-24 py-3 leading-relaxed");
 

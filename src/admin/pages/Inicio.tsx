@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp, Eye, EyeOff, Pencil, Plus, X } from "lucide-react";
 import { useToast } from "@/admin/components/Toasts";
-import { AREA, Aviso, Campo, INPUT, PILL_COLOR } from "@/admin/components/CamposUI";
+import { AREA, Aviso, Campo, INPUT, INPUT_BASE, PILL_COLOR } from "@/admin/components/CamposUI";
 import { mensajeError } from "@/services/admin";
 import {
   guardarSeccion,
@@ -215,7 +215,7 @@ export default function Inicio() {
                             c[i] = { ...c[i], texto: e.target.value };
                             setValores(c);
                           }}
-                          className={cn(INPUT, "flex-1")}
+                          className={cn(INPUT, "min-w-0 flex-1")}
                         />
                         <select
                           value={v.color}
@@ -225,7 +225,7 @@ export default function Inicio() {
                             setValores(c);
                           }}
                           aria-label={`Color de ${v.texto}`}
-                          className={cn(INPUT, "w-32 shrink-0", PILL_COLOR[v.color])}
+                          className={cn(INPUT_BASE, "w-32 shrink-0", PILL_COLOR[v.color])}
                         >
                           {TEMAS_DISPONIBLES.map((t) => (
                             <option key={t} value={t}>{t}</option>
@@ -246,7 +246,7 @@ export default function Inicio() {
                       value={nuevoValor}
                       onChange={(e) => setNuevoValor(e.target.value)}
                       placeholder="Agregar valor…"
-                      className={cn(INPUT, "flex-1")}
+                      className={cn(INPUT, "min-w-0 flex-1")}
                     />
                     <button
                       onClick={() => {

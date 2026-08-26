@@ -7,7 +7,7 @@ import {
   BarraGuardar,
   Bloque,
   Campo,
-  INPUT,
+  INPUT, INPUT_BASE,
   PILL_COLOR,
   Switch,
 } from "@/admin/components/CamposUI";
@@ -166,7 +166,7 @@ export default function HeroEditar() {
                       copia[i] = { ...copia[i], texto: e.target.value };
                       setChips(copia);
                     }}
-                    className={cn(INPUT, "flex-1")}
+                    className={cn(INPUT, "min-w-0 flex-1")}
                   />
                   <select
                     value={c.color}
@@ -176,7 +176,7 @@ export default function HeroEditar() {
                       setChips(copia);
                     }}
                     aria-label={`Color de ${c.texto}`}
-                    className={cn(INPUT, "w-32 shrink-0", PILL_COLOR[c.color])}
+                    className={cn(INPUT_BASE, "w-32 shrink-0", PILL_COLOR[c.color])}
                   >
                     {TEMAS_DISPONIBLES.map((t) => (
                       <option key={t} value={t}>{t}</option>
@@ -200,7 +200,7 @@ export default function HeroEditar() {
                 value={nuevoChip}
                 onChange={(e) => setNuevoChip(e.target.value)}
                 placeholder="Agregar chip…"
-                className={cn(INPUT, "flex-1")}
+                className={cn(INPUT, "min-w-0 flex-1")}
               />
               <button
                 onClick={() => {

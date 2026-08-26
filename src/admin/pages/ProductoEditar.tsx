@@ -415,7 +415,7 @@ export default function ProductoEditar() {
                   }
                 }}
                 placeholder="Agregar talle y Enter"
-                className={cn(INPUT, "flex-1")}
+                className={cn(INPUT, "min-w-0 flex-1")}
               />
               <button
                 type="button"
