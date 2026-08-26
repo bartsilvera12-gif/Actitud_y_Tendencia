@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  Home,
   ExternalLink,
   Heart,
   Image,
@@ -24,9 +25,7 @@ const MENU = [
   { to: "/admin/productos", label: "Productos", Icon: Shirt },
   { to: "/admin/categorias", label: "Categorías", Icon: Tags },
   { to: "/admin/lineas", label: "Líneas", Icon: Layers },
-  // "Contenido del inicio" se saca del menú a pedido. La ruta /admin/inicio
-  // sigue existiendo y se llega escribiéndola, para no perder el control de
-  // qué secciones se ven en la web.
+  { to: "/admin/inicio", label: "Contenido del inicio", Icon: Home },
   { to: "/admin/hero", label: "Hero", Icon: Image },
   { to: "/admin/lookbook", label: "Lookbook", Icon: Heart },
   { to: "/admin/redes", label: "Redes y contacto", Icon: Share2 },
