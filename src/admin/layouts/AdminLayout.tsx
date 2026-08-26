@@ -68,10 +68,10 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="min-h-svh bg-gradient-to-br from-menta/35 via-crema to-lila/20">
+    <div className="min-h-svh bg-gradient-to-br from-menta via-menta/80 to-salvia/45">
       <div className="mx-auto flex max-w-[1600px]">
         {/* Sidebar desktop */}
-        <aside className="sticky top-0 hidden h-svh w-64 shrink-0 flex-col border-r border-salvia/25 bg-crema/70 px-4 py-6 backdrop-blur lg:flex">
+        <aside className="sticky top-0 hidden h-svh w-64 shrink-0 flex-col border-r border-salvia/40 bg-crema px-4 py-6 shadow-[1px_0_12px_-6px_rgba(37,37,37,0.25)] lg:flex">
           <img src="/brand/logo-gold.png" alt="Actitud & Tendencia" className="mx-2 h-8 w-auto" />
           <p className="mx-2 mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-salvia-700">
             Panel
@@ -82,7 +82,7 @@ export default function AdminLayout() {
 
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Header */}
-          <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-salvia/25 bg-crema/85 px-4 py-3 backdrop-blur-xl md:px-6">
+          <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-salvia/40 bg-crema/95 px-4 py-3 backdrop-blur-xl md:px-6">
             <button
               onClick={() => setMenuAbierto(true)}
               aria-label="Abrir menú"
