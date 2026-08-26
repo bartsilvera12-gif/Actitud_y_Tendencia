@@ -146,7 +146,56 @@ RESET ROLE;
 
 ---
 
-## 8. Estado de la verificación
+## 8. Subir el sitio a Hostinger
+
+```bash
+npm run build
+```
+
+Deja todo en **`dist/`** (~9 MB, 67 archivos). Se sube el **contenido** de esa
+carpeta —no la carpeta— a `public_html` del hosting, por el Administrador de
+archivos de hPanel o por FTP.
+
+### Tres cosas para no olvidar
+
+**El `.htaccess` va sí o sí.** Está en `public/.htaccess` y Vite lo copia a
+`dist/` en cada build. Sin él, entrar directo a `/admin/login` o a
+`/politicadeprivacidad` —o recargar estando ahí— devuelve **404**: para Apache
+esas carpetas no existen, las rutas las resuelve React. Ojo que los
+administradores de archivos suelen **ocultar los archivos que empiezan con
+punto**; hay que activar "mostrar archivos ocultos" para verlo y subirlo.
+
+**Las variables se hornean al compilar.** Vite mete `VITE_SUPABASE_URL`, la
+`anon key` y el schema dentro del bundle en el momento del `npm run build`. Si
+el `.env` no está o está mal, el sitio sube igual pero sale sin productos. Para
+comprobarlo antes de subir:
+
+```bash
+grep -c "api.neura.com.py" dist/assets/index-*.js
+```
+
+Tiene que devolver `1`. Si devuelve `0`, faltan las variables: revisá el
+`.env` y volvé a compilar.
+
+**Va en la raíz del dominio.** El `index.html` apunta a `/assets/...` con ruta
+absoluta. Si el sitio fuera a vivir en un subdirectorio (`midominio.com/tienda`)
+hay que agregar `base: "/tienda/"` en `vite.config.ts` y recompilar, o no carga
+ni el CSS ni el JavaScript.
+
+### Probarlo antes de subir
+
+```bash
+npm run preview
+```
+
+Sirve `dist/` igual que lo haría el hosting. Verificado así: `/`,
+`/admin/login` y `/politicadeprivacidad` responden 200.
+
+> El proyecto también está en Vercel, que compila solo con cada push y toma
+> las variables de su panel. Las dos formas conviven: apuntan a la misma base.
+
+---
+## 9. Estado de la verificación
 
 Verificado con el schema expuesto y el bucket creado, ejecutando contra la base
 real — no por lectura de código.
