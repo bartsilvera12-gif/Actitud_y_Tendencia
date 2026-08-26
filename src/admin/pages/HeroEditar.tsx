@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ImagePlus, Loader2, Plus, X } from "lucide-react";
+import { ImagePlus, Loader2 } from "lucide-react";
 import { useToast } from "@/admin/components/Toasts";
 import {
   AREA,
@@ -7,15 +7,12 @@ import {
   BarraGuardar,
   Bloque,
   Campo,
-  INPUT, INPUT_BASE,
-  PILL_COLOR,
+  INPUT,
 } from "@/admin/components/CamposUI";
 import { mensajeError } from "@/services/admin";
 import { guardarChips, guardarHero, obtenerHeroAdmin } from "@/services/contenidoAdmin";
 import { subirImagen, validarImagen } from "@/services/storage";
-import { TEMAS_DISPONIBLES } from "@/lib/categories";
 import type { TemaColor } from "@/types/database";
-import { cn } from "@/lib/utils";
 
 type Chip = { texto: string; color: TemaColor };
 
@@ -34,7 +31,6 @@ export default function HeroEditar() {
   const [imagenPath, setImagenPath] = useState<string | null>(null);
 
   const [chips, setChips] = useState<Chip[]>([]);
-  const [nuevoChip, setNuevoChip] = useState("");
 
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
@@ -153,67 +149,10 @@ export default function HeroEditar() {
             </Campo>
           </Bloque>
 
-          <Bloque titulo="Chips" ayuda="Las etiquetas pastel bajo la descripción.">
-            <div className="flex flex-col gap-2">
-              {chips.map((c, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <input
-                    value={c.texto}
-                    onChange={(e) => {
-                      const copia = [...chips];
-                      copia[i] = { ...copia[i], texto: e.target.value };
-                      setChips(copia);
-                    }}
-                    className={cn(INPUT, "min-w-0 flex-1")}
-                  />
-                  <select
-                    value={c.color}
-                    onChange={(e) => {
-                      const copia = [...chips];
-                      copia[i] = { ...copia[i], color: e.target.value as TemaColor };
-                      setChips(copia);
-                    }}
-                    aria-label={`Color de ${c.texto}`}
-                    className={cn(INPUT_BASE, "w-32 shrink-0", PILL_COLOR[c.color])}
-                  >
-                    {TEMAS_DISPONIBLES.map((t) => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
-                  </select>
-                  <button
-                    onClick={() => setChips(chips.filter((_, j) => j !== i))}
-                    aria-label={`Quitar ${c.texto}`}
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-tinta hover:bg-rosa/35"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
-              {chips.length === 0 && (
-                <p className="text-sm text-tinta-500">Sin chips.</p>
-              )}
-            </div>
-            <div className="flex gap-2">
-              <input
-                value={nuevoChip}
-                onChange={(e) => setNuevoChip(e.target.value)}
-                placeholder="Agregar chip…"
-                className={cn(INPUT, "min-w-0 flex-1")}
-              />
-              <button
-                onClick={() => {
-                  const t = nuevoChip.trim();
-                  if (!t) return;
-                  setChips([...chips, { texto: t, color: "menta" }]);
-                  setNuevoChip("");
-                }}
-                className="flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-salvia/40 px-4 text-sm text-tinta hover:bg-salvia/15"
-              >
-                <Plus className="h-4 w-4" />
-                Agregar
-              </button>
-            </div>
-          </Bloque>
+          {/* El bloque "Chips" se saca del panel a pedido. Los chips que ya
+              estén cargados se siguen mostrando en la portada (en pantallas de
+              más de 720px de alto) y se conservan al guardar; lo que se quita
+              es la posibilidad de editarlos desde acá. */}
         </div>
 
         <div className="flex flex-col gap-5">
@@ -265,19 +204,6 @@ export default function HeroEditar() {
                 </span>
               </p>
               <p className="mt-2 text-xs leading-relaxed text-tinta-500">{descripcion}</p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {chips.map((c, i) => (
-                  <span
-                    key={i}
-                    className={cn(
-                      "rounded-full px-3 py-1 text-[11px] text-salvia-900",
-                      PILL_COLOR[c.color]
-                    )}
-                  >
-                    {c.texto}
-                  </span>
-                ))}
-              </div>
             </div>
           </Bloque>
 
