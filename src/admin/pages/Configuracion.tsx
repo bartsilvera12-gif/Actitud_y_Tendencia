@@ -191,9 +191,9 @@ export default function Configuracion() {
             {seoDesc.length} caracteres
           </span>
         </Campo>
-        <Campo etiqueta="Palabras clave" ayuda="Separadas por comas.">
-          <input value={seoKeywords} onChange={(e) => setSeoKeywords(e.target.value)} className={INPUT} />
-        </Campo>
+        {/* "Palabras clave" se saca: el sitio no dibuja ninguna meta keywords,
+            así que llenarlo no tenía efecto. La columna sigue en la base y su
+            valor se conserva al guardar. */}
       </Bloque>
 
       <Bloque titulo="WhatsApp">
