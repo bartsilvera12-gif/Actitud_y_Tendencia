@@ -46,7 +46,10 @@ export async function obtenerHero(): Promise<Hero | null> {
       titulo_destacado_2, descripcion, imagen_url, activo, orden,
       hero_chips ( id, texto, color, orden, activo )
     `)
-    .eq("activo", true)
+    // Sin filtro por `activo` acá, pero eso solo no alcanza: la policy de RLS
+    // tampoco le muestra a `anon` una portada apagada. Lo que garantiza que el
+    // hero se vea siempre es que el panel guarda `activo: true` y ya no expone
+    // el interruptor para apagarlo.
     .order("orden", { ascending: true })
     .limit(1);
 

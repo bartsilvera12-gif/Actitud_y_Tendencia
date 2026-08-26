@@ -9,7 +9,6 @@ import {
   Campo,
   INPUT, INPUT_BASE,
   PILL_COLOR,
-  Switch,
 } from "@/admin/components/CamposUI";
 import { mensajeError } from "@/services/admin";
 import { guardarChips, guardarHero, obtenerHeroAdmin } from "@/services/contenidoAdmin";
@@ -33,7 +32,7 @@ export default function HeroEditar() {
   const [descripcion, setDescripcion] = useState("");
   const [imagenUrl, setImagenUrl] = useState<string | null>(null);
   const [imagenPath, setImagenPath] = useState<string | null>(null);
-  const [activo, setActivo] = useState(true);
+
   const [chips, setChips] = useState<Chip[]>([]);
   const [nuevoChip, setNuevoChip] = useState("");
 
@@ -56,7 +55,6 @@ export default function HeroEditar() {
           setDescripcion(h.descripcion ?? "");
           setImagenUrl(h.imagen_url);
           setImagenPath(h.imagen_storage_path);
-          setActivo(h.activo);
           setChips(
             (h.hero_chips ?? [])
               .filter((c) => c.activo)
@@ -106,7 +104,7 @@ export default function HeroEditar() {
         descripcion: descripcion.trim() || null,
         imagen_url: imagenUrl,
         imagen_storage_path: imagenPath,
-        activo,
+        activo: true,
         orden: 0,
       });
       setId(heroId);
@@ -133,9 +131,9 @@ export default function HeroEditar() {
             titulo="Textos"
             ayuda="El título se arma en dos líneas; las destacadas van en itálica."
           >
-            <Campo etiqueta="Etiqueta" ayuda="Ej.: Nueva colección · Verano">
-              <input value={etiqueta} onChange={(e) => setEtiqueta(e.target.value)} className={INPUT} />
-            </Campo>
+            {/* El campo "Etiqueta" se saca: Hero.tsx no lo dibuja en ningún lado,
+                así que llenarlo no tenía ningún efecto. La columna sigue en la
+                base y su valor se conserva al guardar. */}
             <div className="grid gap-4 sm:grid-cols-2">
               <Campo etiqueta="Primera línea">
                 <input value={l1} onChange={(e) => setL1(e.target.value)} className={INPUT} placeholder="Vestí tu" />
@@ -259,12 +257,7 @@ export default function HeroEditar() {
 
           <Bloque titulo="Vista previa">
             <div className="rounded-xl bg-crema p-4">
-              {etiqueta && (
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-salvia-700">
-                  {etiqueta}
-                </p>
-              )}
-              <p className="mt-2 font-display text-2xl leading-tight text-tinta">
+              <p className="font-display text-2xl leading-tight text-tinta">
                 {l1}
                 <span className="block italic text-salvia-700">{d1}</span>
                 <span className="block">
@@ -288,14 +281,9 @@ export default function HeroEditar() {
             </div>
           </Bloque>
 
-          <Bloque titulo="Estado">
-            <Switch
-              etiqueta="Portada activa"
-              ayuda="Si está apagada, el hero no se muestra."
-              valor={activo}
-              onChange={setActivo}
-            />
-          </Bloque>
+          {/* El interruptor "Portada activa" se sacó a pedido: la portada se
+              muestra siempre. Se sigue guardando `activo: true` para que una
+              fila vieja apagada quede encendida al primer guardado. */}
 
           <BarraGuardar guardando={guardando} onGuardar={() => void guardar()} />
         </div>
