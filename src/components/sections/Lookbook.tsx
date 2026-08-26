@@ -24,7 +24,10 @@ export default function Lookbook() {
         ? productos.find((p) => p.uuid === it.productoId)
         : undefined;
       return {
-        url: it.imagenUrl ?? prod?.fotos[2] ?? prod?.fotos[0],
+        // La portada del producto, que es la que muestra el panel al elegirlo.
+        // Antes tomaba `fotos[2]`, asi que en la web salia una foto distinta de
+        // la que se veia al armar el lookbook.
+        url: it.imagenUrl ?? prod?.fotos[0],
         nombre: prod?.nombre ?? "Lookbook",
       };
     })
