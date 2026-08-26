@@ -10,9 +10,14 @@ import { cn, formatGs } from "@/lib/utils";
 export default function NuevosIngresos() {
   const { productos, seccion } = useDatos();
   const s = seccion("nuevos_ingresos");
-  // Qué prendas aparecen se decide desde el panel con el flag `destacado`.
-  const destacados = productos.filter((p) => p.destacado).slice(0, 2);
-  if (!s || destacados.length === 0) return null;
+  // Aparecen las prendas tildadas como "Nuevo ingreso" en el panel, todas:
+  // el corte fijo en dos hacía que tildar una prenda no tuviera efecto.
+  // El orden es el de "Orden en el inicio" de cada producto.
+  const nuevos = productos
+    .filter((p) => p.nuevo)
+    .slice()
+    .sort((a, b) => (a.ordenHome ?? 0) - (b.ordenHome ?? 0));
+  if (!s || nuevos.length === 0) return null;
 
   return (
     <section
@@ -40,7 +45,7 @@ export default function NuevosIngresos() {
         </div>
 
         <div className="mt-14 space-y-16 md:space-y-24">
-          {destacados.map((p, i) => (
+          {nuevos.map((p, i) => (
             <div
               key={p.id}
               className="grid items-center gap-8 md:grid-cols-2 md:gap-14"

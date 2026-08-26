@@ -512,9 +512,8 @@ export default function ProductoEditar() {
           <Bloque titulo="Estado">
             <div className="flex flex-col gap-1">
               <Switch etiqueta="Activo" ayuda="Si está apagado no aparece en la web." valor={form.activo} onChange={(v) => set("activo", v)} />
-              <Switch etiqueta="Nuevo ingreso" valor={form.nuevo} onChange={(v) => set("nuevo", v)} />
-              <Switch etiqueta="Destacado" ayuda="Aparece en “Nuevos ingresos”." valor={form.destacado} onChange={(v) => set("destacado", v)} />
-              <Switch etiqueta="Mostrar en el inicio" valor={form.mostrar_home} onChange={(v) => set("mostrar_home", v)} />
+              <Switch etiqueta="Nuevo ingreso" ayuda="Aparece en la sección “Nuevos ingresos” de la web." valor={form.nuevo} onChange={(v) => set("nuevo", v)} />
+              <Switch etiqueta="Destacado" ayuda="Se adelanta en la grilla del inicio." valor={form.destacado} onChange={(v) => set("destacado", v)} />
             </div>
           </Bloque>
 

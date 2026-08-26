@@ -20,11 +20,13 @@ export default function Products() {
   const [active, setActive] = useState<Product | null>(null);
   const s = seccion("productos");
 
-  // El adelanto respeta `mostrar_home` y `orden_home`, editables desde el panel.
+  // Qué prendas se adelantan en el inicio se decide con el flag "Destacado"
+  // del panel; el orden, con "Orden en el inicio". El resto queda detrás del
+  // botón "Ver más", que abre el catálogo completo.
   const adelanto = useMemo(
     () =>
       productos
-        .filter((p) => p.mostrarHome !== false)
+        .filter((p) => p.destacado)
         .sort((a, b) => (a.ordenHome ?? 0) - (b.ordenHome ?? 0))
         .slice(0, ADELANTO),
     [productos]
