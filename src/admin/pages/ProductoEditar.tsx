@@ -27,7 +27,7 @@ import {
 } from "@/services/admin";
 import { borrarImagen, subirImagen, validarImagen } from "@/services/storage";
 import type { FilaCategoria, FilaImagen, FilaLinea } from "@/types/database";
-import { cn } from "@/lib/utils";
+import { cn, formatGs } from "@/lib/utils";
 
 type Form = DatosProducto & { talles: string[] };
 
@@ -59,6 +59,7 @@ const VACIO: Form = {
   linea_id: null,
   color: "",
   precio: 0,
+  precio_oferta: null,
   descripcion: "",
   tipo_talle: "letra",
   nuevo: false,
@@ -119,6 +120,7 @@ export default function ProductoEditar() {
             linea_id: p.linea_id,
             color: p.color ?? "",
             precio: Number(p.precio),
+            precio_oferta: p.precio_oferta == null ? null : Number(p.precio_oferta),
             descripcion: p.descripcion ?? "",
             tipo_talle: p.tipo_talle,
             nuevo: p.nuevo,
@@ -158,6 +160,8 @@ export default function ProductoEditar() {
   const problemas: string[] = [];
   if (!form.nombre.trim()) problemas.push("El nombre es obligatorio.");
   if (form.precio < 0) problemas.push("El precio no puede ser negativo.");
+  if (form.precio_oferta !== null && form.precio_oferta >= form.precio)
+    problemas.push("El precio de oferta tiene que ser menor que el precio.");
   if (!form.categoria_id) problemas.push("Elegí una categoría.");
   if (!form.linea_id) problemas.push("Elegí una línea.");
 
@@ -180,6 +184,7 @@ export default function ProductoEditar() {
         linea_id: form.linea_id,
         color: form.color?.trim() || null,
         precio: Math.max(0, Math.round(form.precio)),
+        precio_oferta: form.precio_oferta ? Math.round(form.precio_oferta) : null,
         descripcion: form.descripcion?.trim() || null,
         tipo_talle: form.tipo_talle,
         nuevo: form.nuevo,
@@ -421,6 +426,26 @@ export default function ProductoEditar() {
                   value={comoTexto(form.precio)}
                   onChange={(e) => set("precio", soloDigitos(e.target.value))}
                   placeholder="0"
+                  className={INPUT}
+                />
+              </Campo>
+              <Campo
+                etiqueta="Precio oferta (Gs.)"
+                ayuda={
+                  form.precio_oferta
+                    ? `En la web se muestra ${formatGs(form.precio_oferta)} y el precio original tachado.`
+                    : "Dejalo vacío si la prenda no está en oferta."
+                }
+              >
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={comoTexto(form.precio_oferta ?? 0)}
+                  onChange={(e) => {
+                    const n = soloDigitos(e.target.value);
+                    set("precio_oferta", n === 0 ? null : n);
+                  }}
+                  placeholder="Sin oferta"
                   className={INPUT}
                 />
               </Campo>

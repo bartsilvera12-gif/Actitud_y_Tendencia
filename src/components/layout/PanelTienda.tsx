@@ -4,7 +4,7 @@ import { useDatos } from "@/lib/datos";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { useTienda } from "@/lib/tienda";
 import { waPedido } from "@/lib/whatsapp";
-import { cn, formatGs } from "@/lib/utils";
+import { cn, formatGs, precioVigente } from "@/lib/utils";
 
 /** Panel lateral único: muestra el carrito o los favoritos según el estado. */
 export default function PanelTienda() {
@@ -142,7 +142,7 @@ export default function PanelTienda() {
                           {p.categoria}
                         </p>
                         <p className="mt-1 text-sm font-medium text-salvia-700">
-                          {formatGs(p.precio)}
+                          {formatGs(precioVigente(p))}
                         </p>
 
                         <div className="mt-auto flex flex-wrap items-center gap-2 pt-2">

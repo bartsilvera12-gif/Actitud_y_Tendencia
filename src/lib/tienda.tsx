@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useDatos } from "@/lib/datos";
 import type { Product } from "@/types/contenido";
+import { precioVigente } from "@/lib/utils";
 
 export type ItemCarrito = {
   id: string;
@@ -128,7 +129,7 @@ export function TiendaProvider({ children }: { children: ReactNode }) {
       carrito.flatMap((l) => {
         const producto = productos.find((p) => p.id === l.id);
         if (!producto) return [];
-        return [{ ...l, producto, subtotal: producto.precio * l.cantidad }];
+        return [{ ...l, producto, subtotal: precioVigente(producto) * l.cantidad }];
       }),
     [carrito, productos]
   );

@@ -17,6 +17,8 @@ export type Product = {
   categoria: string;
   color: string;
   precio: number;
+  /** Precio promocional. `null` = sin oferta. */
+  precioOferta: number | null;
   talles: string[];
   tipoTalle: "numerico" | "letra" | "unico";
   descripcion: string;

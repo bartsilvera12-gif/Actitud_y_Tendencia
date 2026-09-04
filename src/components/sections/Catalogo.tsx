@@ -8,7 +8,7 @@ import ProductModal from "@/components/sections/ProductModal";
 import FloralAccent from "@/components/ui/FloralAccent";
 import { useCatalogo } from "@/lib/catalogo";
 import { temaDe } from "@/lib/categories";
-import { cn, formatGs } from "@/lib/utils";
+import { cn, formatGs, precioVigente } from "@/lib/utils";
 
 type Orden = "recientes" | "menor" | "mayor";
 
@@ -25,7 +25,7 @@ export default function Catalogo() {
   // El rango de precios sale del catálogo real, que ahora es dinámico.
   const [precioPiso, precioTope] = useMemo(() => {
     if (productos.length === 0) return [0, 0];
-    const ps = productos.map((p) => p.precio);
+    const ps = productos.map((p) => precioVigente(p));
     return [Math.min(...ps), Math.max(...ps)];
   }, [productos]);
 
@@ -45,12 +45,12 @@ export default function Catalogo() {
       (p) =>
         (categoria === "Todos" || p.categoria === categoria) &&
         (linea === "Todas" || p.linea === linea) &&
-        p.precio <= (precioMax ?? precioTope) &&
+        precioVigente(p) <= (precioMax ?? precioTope) &&
         (!soloDestacados || p.destacado) &&
         (!soloNuevos || p.nuevo)
     );
-    if (orden === "menor") return [...filtrados].sort((a, b) => a.precio - b.precio);
-    if (orden === "mayor") return [...filtrados].sort((a, b) => b.precio - a.precio);
+    if (orden === "menor") return [...filtrados].sort((a, b) => precioVigente(a) - precioVigente(b));
+    if (orden === "mayor") return [...filtrados].sort((a, b) => precioVigente(b) - precioVigente(a));
     return filtrados; // "recientes" = orden curado del catálogo
   }, [productos, categoria, linea, precioMax, precioTope, orden, soloDestacados, soloNuevos]);
 
@@ -106,7 +106,7 @@ export default function Catalogo() {
           <p className="mt-2.5 text-[15px] text-tinta-500">
             {visibles.length} {visibles.length === 1 ? "producto" : "productos"}
             {visibles.length > 0 && (
-              <> · precio hasta {formatGs(Math.max(...visibles.map((p) => p.precio)))}</>
+              <> · precio hasta {formatGs(Math.max(...visibles.map((p) => precioVigente(p))))}</>
             )}
           </p>
 

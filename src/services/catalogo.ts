@@ -13,7 +13,7 @@ import type { Categoria, Linea, Product } from "@/types/contenido";
 
 // Se piden solo las columnas que la UI usa; nada de select *.
 const CAMPOS_PRODUCTO = `
-  id, slug, nombre, color, precio, descripcion, tipo_talle,
+  id, slug, nombre, color, precio, precio_oferta, descripcion, tipo_talle,
   nuevo, destacado, mostrar_home, orden_home, orden_catalogo,
   categoria:categorias ( nombre, slug, tema_color, flor_key ),
   linea:lineas ( nombre, slug ),
@@ -43,6 +43,7 @@ export function mapProducto(fila: FilaProductoCompleto): Product {
     categoria: fila.categoria?.nombre ?? "",
     color: fila.color ?? "",
     precio: Number(fila.precio) || 0,
+    precioOferta: fila.precio_oferta == null ? null : Number(fila.precio_oferta),
     talles,
     tipoTalle: fila.tipo_talle,
     descripcion: fila.descripcion ?? "",

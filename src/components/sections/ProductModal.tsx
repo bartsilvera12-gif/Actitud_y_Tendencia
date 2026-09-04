@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Heart, ShoppingBag, X } from "lucide-react";
 import type { Product } from "@/types/contenido";
 import { useTienda } from "@/lib/tienda";
-import { cn, formatGs } from "@/lib/utils";
+import { cn, formatGs, precioVigente, enOferta } from "@/lib/utils";
 
 type Props = {
   product: Product | null;
@@ -142,8 +142,13 @@ export default function ProductModal({ product, onClose }: Props) {
               <h3 className="mt-2 font-display text-3xl leading-tight text-tinta">
                 {product.nombre}
               </h3>
-              <p className="mt-3 text-2xl font-light text-salvia-700">
-                {formatGs(product.precio)}
+              <p className="mt-3 flex flex-wrap items-baseline gap-x-3">
+                <span className="text-2xl font-light text-salvia-700">{formatGs(precioVigente(product))}</span>
+                {enOferta(product) && (
+                  <span className="text-base text-tinta-500 line-through">
+                    {formatGs(product.precio)}
+                  </span>
+                )}
               </p>
               <p className="mt-5 text-sm leading-relaxed text-tinta-500">
                 {product.descripcion}

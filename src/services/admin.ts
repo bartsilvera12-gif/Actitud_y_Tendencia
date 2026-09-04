@@ -92,6 +92,7 @@ const CAMPOS_ADMIN = `
   id, slug, nombre, categoria_id, linea_id, color, precio, descripcion,
   tipo_talle, nuevo, destacado, activo, mostrar_home, orden_home,
   orden_catalogo, seo_title, seo_description, created_at, updated_at,
+  precio_oferta,
   categoria:categorias ( nombre ),
   linea:lineas ( nombre ),
   producto_imagenes ( url, principal, orden )
@@ -143,6 +144,7 @@ export type DatosProducto = {
   mostrar_home: boolean;
   orden_home: number;
   orden_catalogo: number;
+  precio_oferta: number | null;
   seo_title: string | null;
   seo_description: string | null;
 };
@@ -206,6 +208,7 @@ export async function duplicarProducto(slug: string): Promise<string> {
     linea_id: orig.linea_id,
     color: orig.color,
     precio: Number(orig.precio),
+    precio_oferta: orig.precio_oferta,
     descripcion: orig.descripcion,
     tipo_talle: orig.tipo_talle,
     nuevo: orig.nuevo,
@@ -385,6 +388,8 @@ export function mensajeError(e: unknown): string {
     if (err.code === "23503")
       return "No se puede eliminar: hay productos que dependen de este registro.";
     if (err.code === "23505") return "Ya existe un registro con ese slug.";
+    if (err.code === "23514")
+      return "El precio de oferta tiene que ser mayor a cero y menor que el precio.";
     if (err.code === "42501")
       return "Tu usuario no tiene permisos para esta acción.";
     if (err.message) return err.message;

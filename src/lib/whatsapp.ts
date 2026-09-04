@@ -1,5 +1,5 @@
 import type { Product } from "@/types/contenido";
-import { formatGs } from "@/lib/utils";
+import { formatGs, precioVigente } from "@/lib/utils";
 
 /**
  * Armado de links de WhatsApp.
@@ -42,7 +42,7 @@ export function waProduct(
   return waLink(
     numero,
     `¡Hola Actitud & Tendencia! 🌷\n` +
-      `Me interesa *${product.nombre}*${talleTxt} (${formatGs(product.precio)}).\n` +
+      `Me interesa *${product.nombre}*${talleTxt} (${formatGs(precioVigente(product))}).\n` +
       `¿Tienen disponibilidad?`
   );
 }

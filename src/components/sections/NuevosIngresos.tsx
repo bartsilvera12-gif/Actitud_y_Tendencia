@@ -5,7 +5,7 @@ import TiltedCard from "@/components/reactbits/TiltedCard";
 import ParallaxImage from "@/components/reactbits/ParallaxImage";
 import Button from "@/components/ui/Button";
 import FloralAccent from "@/components/ui/FloralAccent";
-import { cn, formatGs } from "@/lib/utils";
+import { cn, formatGs, precioVigente, enOferta } from "@/lib/utils";
 
 export default function NuevosIngresos() {
   const { productos, seccion } = useDatos();
@@ -73,8 +73,13 @@ export default function NuevosIngresos() {
                 <p className="mt-4 max-w-md text-[15px] leading-relaxed text-tinta-500">
                   {p.descripcion}
                 </p>
-                <p className="mt-5 text-2xl font-light text-salvia-700">
-                  {formatGs(p.precio)}
+                <p className="mt-5 flex flex-wrap items-baseline gap-x-3">
+                  <span className="text-2xl font-light text-salvia-700">{formatGs(precioVigente(p))}</span>
+                  {enOferta(p) && (
+                    <span className="text-base text-tinta-500 line-through">
+                      {formatGs(p.precio)}
+                    </span>
+                  )}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {p.talles.map((t) => (

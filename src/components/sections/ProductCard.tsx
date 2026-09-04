@@ -5,7 +5,7 @@ import FloralAccent from "@/components/ui/FloralAccent";
 import { temaDe } from "@/lib/categories";
 import { useDatos } from "@/lib/datos";
 import { useTienda } from "@/lib/tienda";
-import { cn, formatGs } from "@/lib/utils";
+import { cn, formatGs, precioVigente, enOferta } from "@/lib/utils";
 
 type Props = {
   product: Product;
@@ -75,8 +75,13 @@ export default function ProductCard({ product, onOpen }: Props) {
         <h3 className="mt-0.5 truncate text-sm font-medium text-tinta">
           {product.nombre}
         </h3>
-        <p className="mt-1 text-sm font-medium text-salvia-700">
-          {formatGs(product.precio)}
+        <p className="mt-1 flex flex-wrap items-baseline gap-x-2 text-sm">
+          <span className="font-medium text-salvia-700">{formatGs(precioVigente(product))}</span>
+          {enOferta(product) && (
+            <span className="text-xs text-tinta-500 line-through">
+              {formatGs(product.precio)}
+            </span>
+          )}
         </p>
       </div>
       </SpotlightCard>

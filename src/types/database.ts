@@ -75,6 +75,8 @@ export type FilaProducto = {
   linea_id: string | null;
   color: string | null;
   precio: number;
+  /** Precio promocional. `null` = sin oferta. Siempre menor que `precio`. */
+  precio_oferta: number | null;
   descripcion: string | null;
   tipo_talle: TipoTalle;
   nuevo: boolean;
